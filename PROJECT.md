@@ -211,6 +211,8 @@ Script and stylesheet load order matters (runtime compilation, globals via `wind
 - **Wrong repo confirmed deleted** (user handled via web UI). `gh auth login --web` added `finaga` to the keyring; `finaga` is now the active account, `AndreFinageiv` remains present but inactive.
 - **Re-created repo on correct account**: [`finaga/portfolio`](https://github.com/finaga/portfolio) — **public**, `main` tracked to `origin/main`. Push successful.
 - **Fixed git author identity** — global git config on this machine is `AndreFinageiv <andre.finageiv@baxenergy.com>` (work), so the first 3 commits pushed under that identity. Set **local** (repo-scoped) config to `finaga <finaga@gmail.com>`, rebased `--root` to reauthor all 3 existing commits with `--reset-author`, then `git push --force-with-lease`. History is clean: `d9e9a24` `2126e67` `f40ffc0` all authored as `finaga`. **Global config intentionally left as `AndreFinageiv`** — protects BaxEnergy work repos on this machine from accidental personal attribution.
+- **Verified email linking**: GitHub's commit `author` field resolves to user `finaga` → means `finaga@gmail.com` is already verified on the account, commits will show Andre's avatar and count in the contribution graph. Profile's public `email` and `name` are `null` (privacy choice, not a bug).
+- **Decided GitHub workflow** (new section above): solo-designer-lightweight. Main-line for small changes, branches only for "big swings" to get Vercel preview URLs, Issues as design backlog, short public-facing README separate from this internal PROJECT.md, no CI / no Dependabot / no branch protection. Priority next steps: (1) wire Vercel↔GitHub for auto-deploy, (2) write README.md, (3) promote carry-forwards to Issues.
 
 ### Session 2026-04-19
 _(prior session — summary only, not live)_
@@ -245,10 +247,33 @@ _(prior session — summary only, not live)_
 
 ---
 
+## GitHub workflow
+
+**Repo**: [`finaga/portfolio`](https://github.com/finaga/portfolio) (public, `main`).
+**Local identity**: `finaga <finaga@gmail.com>` (per-repo override — machine global stays as work identity).
+
+### The rules
+1. **Most changes land on `main` directly.** Solo designer, zero collaborators — no branch ceremony for typos, copy edits, small visual tweaks.
+2. **Use a short-lived branch for "big swings"** (new case study, major redesign, nav overhaul). Branch name pattern: `case/<slug>`, `design/<slug>`, `fix/<slug>`. Open a PR to self so Vercel generates a preview URL. Sit on the preview. Merge when happy.
+3. **Commits**: loose convention — `<scope>: <outcome>` (`case(farsight): expand reflection section`, `fix: contact mailto Safari bug`, `docs: log deploy setup`). Avoid `wip`, `update`, `misc`.
+4. **Issues are the design backlog.** Promote `Known carry-forwards` entries and "next cases" into GitHub Issues. Labels: `case`, `copy`, `visual`, `a11y`, `performance`, `new-case`. Close via commit trailer `Closes #N`.
+5. **README.md is for visitors** (recruiters, peers). Keep it short: what it is, live URL, stack, zero-build rationale. `PROJECT.md` stays as internal memory and is NOT for the public face.
+6. **Skipped by design** (don't add without a reason): CI / GitHub Actions, Dependabot, branch protection, releases/tags. The project has zero dependencies and one committer.
+7. **Secrets never enter the repo.** `.env*` already in `.gitignore`. Any future API keys (contact form, analytics tokens) go into Vercel project env vars.
+
+### Ideal deploy wiring
+Connect Vercel to the GitHub repo so every `git push origin main` auto-deploys production; every branch/PR gets a preview URL. Replaces the current `vercel --prod` CLI flow.
+
+---
+
 ## Deploy
 
+### Preferred: GitHub-integrated Vercel
+Push to `main` → Vercel auto-deploys production. Push to any other branch / open a PR → Vercel builds a preview deployment at a unique URL. Configure once in the Vercel dashboard by importing the `finaga/portfolio` repo.
+
+### Fallback: CLI
 ```bash
-cd /Users/finaga/Library/CloudStorage/Dropbox/_PORT2023/_Port2026/portfolio
+cd "/Users/andre.finageiv/Library/CloudStorage/Dropbox/_Claude/2026 Portfolio"
 vercel --prod
 ```
 
