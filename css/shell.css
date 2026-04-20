@@ -1,0 +1,460 @@
+/* =========================================================================
+   SHELL — topbar, stage, project-tabs, statusbar, grid overlays, motion, tweaks
+   ========================================================================= */
+
+/* ---------- COLUMN GRID OVERLAY ----------------------------------------- */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: linear-gradient(to right, var(--rule) 0.5px, transparent 0.5px);
+  background-size: calc(100% / 12) 100%;
+  background-repeat: repeat;
+  transition: background-image var(--dur-theme) var(--ease);
+}
+
+/* ---------- TOP BAR ------------------------------------------------------
+   Hierarchy (decision: "asymmetric weights, uniform size family"):
+     LEFT   — 11px, weight 500, 0.12em   (name carries a touch more presence)
+     CENTER — 9px,  weight 400, 0.15em, 45% opacity (recedes — wayfinding, not title)
+     RIGHT  — 10px, weight 400, 0.12em, lime on active + hover underline
+   All three columns sit in the same mono family, but the jump from 9 -> 10 -> 11
+   across the three columns + the opacity drop on center gives the three columns
+   distinct readings without shouting.
+   ---------------------------------------------------------------------- */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 0 40px;
+  background: var(--bg);
+  color: var(--fg);
+  transition: background var(--dur-theme) var(--ease), color var(--dur-theme) var(--ease);
+}
+.topbar .t-left,
+.topbar .t-right {
+  font-family: var(--ff-mono);
+  text-transform: uppercase;
+}
+button.t-left {
+  background: transparent;
+  border: 0;
+  padding: 4px 0;
+  justify-self: start;
+  text-align: left;
+  cursor: pointer;
+  color: var(--fg);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  transition: color 0.25s var(--ease);
+}
+button.t-left:hover {
+  color: var(--lime);
+}
+.topbar .t-right {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+}
+.topbar .t-right button {
+  background: transparent;
+  border: 0;
+  padding: 4px 0;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  color: inherit;
+  position: relative;
+  opacity: 1;
+  transition: color 0.25s var(--ease), opacity 0.25s var(--ease);
+}
+.topbar .t-right button[aria-current="false"] {
+  opacity: 0.55;
+}
+.topbar .t-right button[aria-current="false"]:hover {
+  opacity: 0.85;
+}
+.topbar .t-right button[aria-current="true"] {
+  color: var(--lime);
+  opacity: 1;
+}
+.topbar .t-right button::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-hover) var(--ease);
+}
+.topbar .t-right button:hover::after,
+.topbar .t-right button[aria-current="true"]::after {
+  transform: scaleX(1);
+}
+.topbar .t-right button:not(:hover):not([aria-current="true"])::after {
+  transform-origin: right center;
+}
+.topbar .t-right .sep {
+  color: var(--dim);
+}
+
+/* ---------- STAGE -------------------------------------------------------- */
+.stage {
+  padding-top: 100px;
+  padding-bottom: 28px;
+  min-height: 100vh;
+  position: relative;
+  z-index: 2;
+  background: var(--bg);
+  color: var(--fg);
+  transition: background var(--dur-theme) var(--ease), color var(--dur-theme) var(--ease);
+}
+
+/* ---------- PROJECT TABS -------------------------------------------------
+   Editorial treatment (single-row, fits the existing 44px strip):
+     01  BAXENERGY FARSIGHT · SAAS
+   - Folio number (01..04) — mono, dim, tabular
+   - Label (project short, medium weight)
+   - Domain tag (SAAS / GROWTH / BRAND) — dimmer, after a mid-dot
+   - Active tab: full opacity + lime label + lime rule bar at top edge
+   - Hover tab: opacity rises + faint fg rule at top edge
+   ------------------------------------------------------------------------ */
+.project-tabs {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0;
+  padding: 0 24px;
+  background: var(--bg);
+  border-top: 0.5px solid var(--rule);
+  border-bottom: 0.5px solid var(--rule);
+  z-index: 30;
+  transition: background var(--dur-theme) var(--ease), color var(--dur-theme) var(--ease), border-color var(--dur-theme) var(--ease);
+}
+.project-tabs .pt-btn {
+  position: relative;
+  background: transparent;
+  border: 0;
+  padding: 0 22px;
+  font-family: var(--ff-mono);
+  color: var(--fg);
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.25s var(--ease);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  line-height: 1;
+}
+.project-tabs .pt-btn:hover { opacity: 0.75; }
+.project-tabs .pt-btn[aria-current="true"] { opacity: 1; }
+
+/* Top-edge rule — hairline that fills on active/hover, matching the lime
+   accent language established by the topbar nav. */
+.project-tabs .pt-btn .pt-rule {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 0;
+  height: 1px;
+  background: var(--lime);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-hover) var(--ease), background var(--dur-theme) var(--ease);
+}
+.project-tabs .pt-btn:hover .pt-rule {
+  background: var(--fg);
+  transform: scaleX(0.6);
+}
+.project-tabs .pt-btn[aria-current="true"] .pt-rule {
+  background: var(--lime);
+  transform: scaleX(1);
+}
+
+.project-tabs .pt-folio {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg);
+  opacity: 0.5;
+  font-variant-numeric: tabular-nums;
+}
+.project-tabs .pt-btn[aria-current="true"] .pt-folio {
+  color: var(--lime);
+  opacity: 1;
+}
+
+.project-tabs .pt-body {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.project-tabs .pt-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: inherit;
+}
+.project-tabs .pt-btn[aria-current="true"] .pt-label {
+  color: var(--lime);
+}
+.project-tabs .pt-domain {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg);
+  opacity: 0.35;
+  position: relative;
+  padding-left: 12px;
+}
+.project-tabs .pt-domain::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.7;
+}
+
+.project-tabs .sep {
+  width: 0.5px;
+  align-self: center;
+  height: 14px;
+  background: var(--fg);
+  opacity: 0.18;
+  flex-shrink: 0;
+}
+
+/* ---------- STATUS BAR (cockpit readouts) -------------------------------- */
+.statusbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  background: var(--bg);
+  border-top: 0.5px solid var(--rule);
+  color: var(--fg);
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  z-index: 31;
+  opacity: 0.7;
+  transition: background var(--dur-theme) var(--ease), color var(--dur-theme) var(--ease), border-color var(--dur-theme) var(--ease);
+}
+.statusbar b {
+  color: var(--fg);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.statusbar .sep {
+  opacity: 0.4;
+}
+.statusbar .cursor {
+  display: inline-block;
+  width: 6px;
+  height: 10px;
+  background: var(--fg);
+  margin-left: 4px;
+  vertical-align: -1px;
+  animation: blink 1.05s steps(1, end) infinite;
+  opacity: 0.8;
+}
+@keyframes blink {
+  0%, 49%   { opacity: 0.85; }
+  50%, 100% { opacity: 0; }
+}
+.statusbar .live {
+  margin-left: auto;
+  color: var(--lime);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 1;
+}
+.statusbar .live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 8px var(--lime);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ---------- SCROLL CUE ---------------------------------------------------
+   A soft wayfinding cue — vertical rule + "SCROLL" label, bottom-right of
+   the viewport, sitting just above the project tabs. Fades away once the
+   user has demonstrably driven scroll (>100px wheel delta or console pane
+   has scrolled past 100px). Uses --fg at low opacity — never lime.
+   ------------------------------------------------------------------------ */
+.scroll-cue {
+  position: fixed;
+  right: 40px;
+  bottom: 104px;   /* above project-tabs (28 statusbar + 72 tabs + 4 gap) */
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  color: var(--fg);
+  opacity: 0.55;
+  transition: opacity var(--dur-theme) var(--ease), transform var(--dur-theme) var(--ease);
+  animation: scrollCueNudge 2.4s var(--ease) infinite;
+}
+.scroll-cue[data-hidden="true"] {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: none;
+}
+.scroll-cue[data-reduced="true"] {
+  animation: none;
+}
+.scroll-cue .sc-label {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+.scroll-cue .sc-rule {
+  width: 1px;
+  height: 40px;
+  background: currentColor;
+  opacity: 0.7;
+  display: block;
+  transform-origin: top center;
+  animation: scrollCueSweep 2.4s var(--ease) infinite;
+}
+.scroll-cue[data-reduced="true"] .sc-rule {
+  animation: none;
+}
+@keyframes scrollCueNudge {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(3px); }
+}
+@keyframes scrollCueSweep {
+  0%   { transform: scaleY(0); transform-origin: top center; opacity: 0.2; }
+  45%  { transform: scaleY(1); transform-origin: top center; opacity: 0.85; }
+  55%  { transform: scaleY(1); transform-origin: bottom center; opacity: 0.85; }
+  100% { transform: scaleY(0); transform-origin: bottom center; opacity: 0.2; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue { animation: none; }
+  .scroll-cue .sc-rule { animation: none; opacity: 0.6; }
+}
+
+/* ---------- MOTION — enter ---------------------------------------------- */
+@keyframes fadeUp {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.enter {
+  animation: fadeUp var(--dur-enter) var(--ease) both;
+}
+
+/* ---------- GRID DEBUG --------------------------------------------------- */
+.grid-debug {
+  position: fixed;
+  inset: 100px 0 0 0;
+  pointer-events: none;
+  z-index: 20;
+  display: none;
+  background-image:
+    linear-gradient(to right, var(--rule) 1px, transparent 1px);
+  background-size: calc(100% / 12) 100%;
+}
+body[data-grid="true"] .grid-debug { display: block; }
+
+/* ---------- TWEAKS PANEL ------------------------------------------------- */
+.tweaks {
+  position: fixed;
+  top: 76px;
+  right: 20px;
+  width: 240px;
+  background: var(--bg);
+  border: 0.5px solid var(--rule);
+  padding: 20px;
+  z-index: 50;
+  display: none;
+  color: var(--fg);
+}
+.tweaks[data-open="true"] { display: block; }
+.tweaks h3 {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin: 0 0 16px;
+  font-weight: 500;
+}
+.tweaks .row { margin-bottom: 16px; }
+.tweaks label {
+  display: block;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.tweaks input[type="range"] { width: 100%; accent-color: currentColor; }
+.tweaks .switch { display: flex; gap: 8px; }
+.tweaks .switch button {
+  flex: 1;
+  padding: 8px 10px;
+  background: transparent;
+  border: 1px solid currentColor;
+  color: var(--fg);
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  opacity: 0.4;
+}
+.tweaks .switch button[aria-pressed="true"] {
+  opacity: 1;
+}
+.tweaks .tw-keys {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 0.5px solid var(--rule);
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}

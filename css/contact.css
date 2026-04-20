@@ -1,0 +1,198 @@
+/* =========================================================================
+   CONTACT PAGE — cards, availability calendar
+   ========================================================================= */
+
+.contact-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 64px;
+  border-top: 0.5px solid var(--rule);
+  border-bottom: 0.5px solid var(--rule);
+}
+.contact-card {
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 180px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  border-right: 0.5px solid var(--rule);
+  transition: background var(--dur-hover) var(--ease);
+}
+.contact-card:last-child { border-right: 0; }
+.contact-card:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+body[data-theme="dark"] .contact-card:hover,
+html[data-theme="dark"] .contact-card:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+.contact-card .c-k {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+.contact-card .c-v {
+  font-family: var(--ff-display);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.contact-card .c-foot {
+  margin-top: auto;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  position: relative;
+  display: inline-block;
+  align-self: flex-start;
+  transition: color var(--dur-hover) var(--ease);
+}
+.contact-card .c-foot::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-hover) var(--ease);
+}
+.contact-card:hover .c-foot::after {
+  transform: scaleX(1);
+}
+.contact-card:not(:hover) .c-foot::after {
+  transform-origin: right center;
+}
+.contact-card .c-foot.is-confirmed {
+  color: var(--lime-2);
+}
+.contact-card .c-foot.is-confirmed::after {
+  transform: scaleX(1);
+  background: var(--lime-2);
+}
+
+.availability {
+  margin-top: 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  padding-top: 40px;
+  border-top: 0.5px solid var(--rule);
+}
+.avail-label {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.avail-big {
+  font-family: var(--ff-display);
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.avail-big .q3-accent {
+  color: var(--lime-2);
+  position: relative;
+  display: inline-block;
+}
+.avail-body {
+  font-family: var(--ff-sans);
+  margin-top: 24px;
+  font-size: 14px;
+  line-height: 1.65;
+  max-width: 520px;
+  color: var(--fg);
+}
+
+.cal-strip {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-top: 4px;
+}
+.cal-cell {
+  aspect-ratio: 1;
+  border: 0.5px solid var(--rule);
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  text-align: left;
+  padding: 8px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font: inherit;
+  font-family: var(--ff-mono);
+  cursor: default;
+  transition:
+    background var(--dur-hover) var(--ease),
+    border-color var(--dur-hover) var(--ease),
+    color var(--dur-hover) var(--ease),
+    transform var(--dur-hover) var(--ease);
+}
+.cal-cell .d {
+  font-family: var(--ff-display);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+  transition: color var(--dur-hover) var(--ease);
+}
+.cal-cell[data-slot="open"] {
+  opacity: 1;
+  cursor: pointer;
+  border-color: var(--rule);
+}
+.cal-cell[data-slot="open"]:hover,
+.cal-cell[data-slot="open"]:focus-visible {
+  background: var(--lime);
+  border-color: var(--lime-2);
+  color: var(--ink);
+  outline: none;
+}
+.cal-cell[data-slot="open"]:hover .d,
+.cal-cell[data-slot="open"]:focus-visible .d {
+  color: var(--ink);
+}
+.cal-cell[data-slot="open"]:active {
+  transform: translateY(1px);
+}
+.cal-cell[data-slot="full"] {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+.cal-cell[data-slot="weekend"] {
+  opacity: 0.1;
+  cursor: not-allowed;
+}
+.cal-cell:disabled {
+  /* keep visual opacity driven by data-slot; remove browser default */
+  pointer-events: none;
+}
+.cal-legend {
+  margin-top: 20px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}

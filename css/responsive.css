@@ -1,0 +1,100 @@
+/* =========================================================================
+   RESPONSIVE — mobile & narrow
+   ========================================================================= */
+
+@media (max-width: 900px) {
+  .topbar { padding: 0 16px; grid-template-columns: 1fr auto; }
+  .topbar .t-center { display: none; }
+
+  .stage { padding-top: 52px; }
+  .topbar { height: 52px; }
+
+  .split {
+    height: auto;
+    min-height: 0;
+  }
+  .viewport {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: 52vh;
+    min-height: 360px;
+    border-right: 0;
+    border-bottom: 0.5px solid var(--rule);
+    padding: 20px;
+  }
+  .viewport .breadcrumb { top: 20px; left: 20px; }
+  .viewport .big-num { bottom: 16px; left: 20px; font-size: 120px; }
+  .viewport .plate-dots { right: 20px; bottom: 20px; }
+
+  .console {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    height: auto;
+    overflow-y: visible;
+    padding: 40px 24px;
+  }
+  .console > .console-section { padding: 24px 0; }
+  .case-name { font-size: 32px; }
+  .kpi-v { font-size: 44px; }
+  .meta-grid { grid-template-columns: 80px 1fr; row-gap: 12px; }
+
+  .deepdive {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    height: auto;
+    transform: none;
+    pointer-events: auto;
+    display: none;
+    padding: 64px 24px 80px;
+  }
+  .deepdive[data-open="true"] {
+    display: block;
+  }
+  .deepdive-close {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-bottom: 24px;
+  }
+
+  .project-tabs {
+    top: 52px;
+    bottom: auto;
+    height: auto;
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    justify-content: flex-start;
+  }
+  .project-tabs button { padding: 6px 10px; font-size: 9px; }
+
+  .statusbar {
+    padding: 0 14px;
+    gap: 8px;
+    font-size: 9px;
+  }
+  .statusbar .sep:nth-of-type(n+2) { display: none; }
+
+  .deepdive section {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .deepdive section .sec-label { position: static; }
+
+  .page-about, .page-contact { padding: 48px 20px 80px; }
+  .page-hero { grid-template-columns: 1fr; gap: 20px; padding-bottom: 40px; }
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .about-stats { grid-template-columns: 1fr 1fr; }
+  .about-selected { grid-template-columns: 1fr; gap: 16px; }
+  .contact-cards { grid-template-columns: 1fr 1fr; }
+  .contact-card { border-right: 0.5px solid var(--rule); }
+  .contact-card:nth-child(2n) { border-right: 0; }
+  .contact-card:nth-child(-n+2) { border-bottom: 0.5px solid var(--rule); }
+  .availability { grid-template-columns: 1fr; gap: 48px; }
+}

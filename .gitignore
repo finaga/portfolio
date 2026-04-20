@@ -1,0 +1,43 @@
+# Portfolio 2026 — zero-build static site
+# React via CDN + Babel Standalone. No bundler. No package.json at root.
+
+# macOS
+.DS_Store
+
+# Defensive: any subfolder that sprouts a node install
+node_modules/
+*.local
+
+# Vite cache (legacy — .vite/ folder lingers from earlier experiments)
+.vite/
+
+# Legacy scaffold — full Vite project kept as archive, not shipped
+OLD test/
+
+# Deploy tooling
+.vercel/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Claude Code local settings (machine-specific)
+.claude/settings.local.json
+
+# Editor / IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*.suo

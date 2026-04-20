@@ -1,0 +1,489 @@
+/* =========================================================================
+   ABOUT PAGE — editorial spread (12-col)
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   Spread wrapper — 12-col grid drives every section alignment
+   ------------------------------------------------------------------------- */
+.about-spread {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 24px;
+  row-gap: 0;
+}
+
+.about-spread > section,
+.about-spread > nav {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 24px;
+}
+
+/* -------------------------------------------------------------------------
+   HERO — folio corner, eyebrow, massive wordmark with inline signature
+   ------------------------------------------------------------------------- */
+.about-hero {
+  padding: 24px 0 56px;
+  border-bottom: 0.5px solid var(--rule);
+  position: relative;
+  row-gap: 0;
+}
+
+.about-hero .ah-folio {
+  grid-column: 12 / -1;
+  grid-row: 1;
+  justify-self: end;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
+  padding-top: 4px;
+}
+
+.about-hero .ah-eyebrow {
+  grid-column: 1 / span 11;
+  grid-row: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 20px;
+}
+
+.about-hero .ah-eyebrow .section-label {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.about-hero .ah-locator {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--fg);
+  text-transform: uppercase;
+}
+
+.about-hero .ah-title {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  padding-top: 8px;
+}
+
+.about-hero h1 {
+  font-family: var(--ff-display);
+  font-size: clamp(88px, 16.5vw, 260px);
+  font-weight: 500;
+  line-height: 0.82;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  margin: 0;
+  position: relative;
+  display: inline-block;
+}
+
+.about-hero .ah-sub {
+  grid-column: 1 / span 6;
+  grid-row: 3;
+  font-family: var(--ff-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--fg);
+  margin: 36px 0 0;
+  max-width: 520px;
+}
+
+.about-hero .ah-meta {
+  grid-column: 8 / -1;
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 16px;
+  margin-top: 40px;
+  border-top: 0.5px solid var(--rule);
+  padding-top: 18px;
+}
+.about-hero .ah-meta > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.about-hero .ah-meta .k {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.about-hero .ah-meta .v {
+  font-family: var(--ff-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg);
+  letter-spacing: 0.01em;
+}
+.about-hero .ah-meta .dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  margin-right: 6px;
+  vertical-align: 1px;
+  box-shadow: 0 0 10px var(--lime);
+}
+
+/* -------------------------------------------------------------------------
+   INDEX — thin eyebrow nav pinned between sections
+   ------------------------------------------------------------------------- */
+.about-index {
+  grid-column: 1 / -1;
+  padding: 20px 0;
+  border-bottom: 0.5px solid var(--rule);
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  text-transform: uppercase;
+  display: flex !important;
+  gap: 18px;
+  align-items: center;
+}
+.about-index .sep {
+  color: var(--dim);
+}
+
+/* -------------------------------------------------------------------------
+   BIO — 4-col label / 7-col column; pull-quote at display size
+   ------------------------------------------------------------------------- */
+.about-bio {
+  padding: 80px 0;
+  border-bottom: 0.5px solid var(--rule);
+}
+.about-bio .ab-label {
+  grid-column: 1 / span 3;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: sticky;
+  top: 80px;
+  align-self: start;
+}
+.about-bio .ab-label .section-label {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--fg);
+  text-transform: uppercase;
+}
+.about-bio .ab-folio {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.about-bio .ab-body {
+  grid-column: 5 / span 7;
+  max-width: 560px;
+}
+.about-bio .ab-body p {
+  font-family: var(--ff-sans);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--fg);
+  font-weight: 400;
+  margin: 0 0 22px;
+}
+.about-bio .ab-body .ab-lede {
+  font-family: var(--ff-display);
+  font-size: clamp(28px, 3.4vw, 48px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--fg);
+  margin: 0 0 16px;
+}
+.about-bio .ab-body .ab-pull {
+  font-family: var(--ff-display);
+  font-size: clamp(44px, 6.2vw, 96px);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin: 8px 0 40px;
+  border-top: 0.5px solid var(--rule);
+  border-bottom: 0.5px solid var(--rule);
+  padding: 18px 0 24px;
+}
+
+/* -------------------------------------------------------------------------
+   STATS RAIL — 4-wide horizontal ledger
+   ------------------------------------------------------------------------- */
+.about-stats-rail {
+  padding: 72px 0;
+  border-bottom: 0.5px solid var(--rule);
+}
+.about-stats-rail .asr-head {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 0.5px solid var(--rule);
+  padding-bottom: 16px;
+  margin-bottom: 32px;
+}
+.about-stats-rail .asr-head .section-label {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--fg);
+  text-transform: uppercase;
+}
+.about-stats-rail .asr-note {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.about-stats-rail .asr-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 24px;
+}
+.about-stats-rail .asr-cell {
+  border-left: 0.5px solid var(--rule);
+  padding: 8px 0 8px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 180px;
+  justify-content: space-between;
+}
+.about-stats-rail .asr-cell:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+.about-stats-rail .asr-k {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.about-stats-rail .asr-v {
+  font-family: var(--ff-display);
+  font-size: clamp(72px, 9.5vw, 148px);
+  font-weight: 500;
+  line-height: 0.85;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+}
+.about-stats-rail .asr-sup {
+  font-family: var(--ff-display);
+  font-size: 0.42em;
+  line-height: 1;
+  color: var(--lime);
+  font-weight: 500;
+  margin-top: 0.14em;
+}
+
+/* -------------------------------------------------------------------------
+   CLIENTS — display-size wordmark rows with rule dividers
+   ------------------------------------------------------------------------- */
+.about-clients {
+  padding: 72px 0 24px;
+}
+.about-clients .ac-head {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 0.5px solid var(--rule);
+  padding-bottom: 16px;
+  margin-bottom: 8px;
+}
+.about-clients .ac-head .section-label {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--fg);
+  text-transform: uppercase;
+}
+.about-clients .ac-note {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.about-clients .ac-list {
+  grid-column: 1 / -1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.about-clients .ac-row {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  align-items: baseline;
+  column-gap: 24px;
+  border-bottom: 0.5px solid var(--rule);
+  padding: 18px 0 14px;
+}
+.about-clients .ac-idx {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
+  padding-top: 8px;
+}
+.about-clients .ac-name {
+  font-family: var(--ff-display);
+  font-size: clamp(40px, 5.8vw, 92px);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+.about-clients .ac-year {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
+  padding-top: 8px;
+  text-align: right;
+}
+.about-clients .ac-row-dim .ac-name {
+  color: var(--dim);
+}
+
+/* -------------------------------------------------------------------------
+   RESPONSIVE — below 900px, collapse the 12-col into single column
+   ------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .about-spread {
+    column-gap: 0;
+  }
+  .about-spread > section,
+  .about-spread > nav {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+
+  .about-hero { padding: 12px 0 40px; }
+  .about-hero .ah-folio,
+  .about-hero .ah-eyebrow,
+  .about-hero .ah-title,
+  .about-hero .ah-sub,
+  .about-hero .ah-meta {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+  .about-hero .ah-folio {
+    justify-self: start;
+    margin-bottom: 12px;
+  }
+  .about-hero .ah-eyebrow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding-bottom: 16px;
+  }
+  .about-hero h1 {
+    font-size: clamp(64px, 18vw, 120px);
+    line-height: 0.85;
+  }
+  .about-hero .ah-sub { margin-top: 24px; }
+  .about-hero .ah-meta {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 16px;
+    margin-top: 28px;
+  }
+
+  .about-index {
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    font-size: 9px;
+    padding: 14px 0;
+  }
+
+  .about-bio { padding: 48px 0; }
+  .about-bio .ab-label {
+    grid-column: 1 / -1;
+    position: static;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 0.5px solid var(--rule);
+    margin-bottom: 24px;
+  }
+  .about-bio .ab-body { grid-column: 1 / -1; max-width: 100%; }
+  .about-bio .ab-body .ab-pull {
+    font-size: clamp(40px, 11vw, 64px);
+    padding: 14px 0 18px;
+    margin: 4px 0 28px;
+  }
+
+  .about-stats-rail { padding: 48px 0; }
+  .about-stats-rail .asr-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .about-stats-rail .asr-grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+    row-gap: 24px;
+  }
+  .about-stats-rail .asr-cell {
+    min-height: auto;
+    padding-left: 14px;
+    gap: 12px;
+  }
+  .about-stats-rail .asr-cell:nth-child(3) {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .about-stats-rail .asr-v {
+    font-size: clamp(56px, 16vw, 96px);
+  }
+
+  .about-clients { padding: 48px 0 16px; }
+  .about-clients .ac-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .about-clients .ac-row {
+    grid-template-columns: 32px 1fr;
+    row-gap: 2px;
+    padding: 14px 0 10px;
+  }
+  .about-clients .ac-year {
+    grid-column: 2 / -1;
+    text-align: left;
+    padding-top: 2px;
+  }
+  .about-clients .ac-name {
+    font-size: clamp(36px, 11vw, 56px);
+  }
+}

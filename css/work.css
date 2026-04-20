@@ -1,0 +1,259 @@
+/* =========================================================================
+   WORK VIEW — split, viewport (left), console (right)
+   ========================================================================= */
+
+.split {
+  position: relative;
+  height: calc(100vh - 128px);
+}
+
+/* ---------- VIEWPORT (left pane) ---------------------------------------- */
+.viewport {
+  position: fixed;
+  top: 100px;
+  left: 0;
+  width: 58.333%;
+  height: calc(100vh - 128px);
+  padding: 40px;
+  overflow: hidden;
+  border-right: 0.5px solid var(--rule);
+  z-index: 5;
+}
+
+.viewport .viewport-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+.viewport .viewport-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom, rgba(5,6,8,0.35) 0%, rgba(5,6,8,0) 40%, rgba(5,6,8,0.55) 80%, rgba(5,6,8,0.85) 100%),
+    linear-gradient(to right, rgba(5,6,8,0.65) 0%, rgba(5,6,8,0) 45%);
+}
+.viewport[data-has-image="true"] .breadcrumb,
+.viewport[data-has-image="true"] .big-num {
+  color: #ECECEA;
+}
+.viewport .breadcrumb {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  z-index: 3;
+}
+.viewport .big-num {
+  position: absolute;
+  bottom: 32px;
+  left: 40px;
+  font-family: var(--ff-display);
+  font-size: clamp(120px, 18vw, 200px);
+  font-weight: 400;
+  line-height: 0.85;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+  z-index: 3;
+}
+.viewport .wipe {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  transform-origin: left center;
+  transform: scaleX(0);
+  z-index: 4;
+  pointer-events: none;
+}
+.viewport .wipe[data-phase="out"] {
+  animation: wipeOut 220ms var(--ease) forwards;
+}
+.viewport .wipe[data-phase="in"] {
+  animation: wipeIn 220ms var(--ease) forwards;
+}
+@keyframes wipeOut {
+  0%   { transform: scaleX(0); transform-origin: left center; }
+  100% { transform: scaleX(1); transform-origin: left center; }
+}
+@keyframes wipeIn {
+  0%   { transform: scaleX(1); transform-origin: right center; }
+  100% { transform: scaleX(0); transform-origin: right center; }
+}
+
+/* ---------- CONSOLE (right pane) ---------------------------------------- */
+.console {
+  position: fixed;
+  top: 100px;
+  right: 0;
+  width: 41.667%;
+  height: calc(100vh - 128px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 80px 60px 60px;
+  z-index: 5;
+  scrollbar-width: none;
+}
+.console::-webkit-scrollbar {
+  display: none;
+}
+.console > .console-section {
+  padding: 40px 0;
+  border-top: 0.5px solid var(--rule);
+}
+.console > .console-section:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.section-label {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 24px;
+  display: block;
+}
+
+.case-name {
+  font-family: var(--ff-display);
+  font-size: clamp(36px, 4.5vw, 56px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--fg);
+  margin: 0;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  row-gap: 16px;
+  column-gap: 24px;
+}
+.meta-grid .k {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  padding-top: 2px;
+}
+.meta-grid .v {
+  font-family: var(--ff-sans);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--fg);
+  line-height: 1.4;
+}
+
+.kpis-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 32px;
+  margin-top: 4px;
+}
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.kpi-v {
+  font-family: var(--ff-display);
+  font-size: clamp(48px, 5.5vw, 72px);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+.kpi-v .unit {
+  color: inherit;
+  font-weight: 400;
+}
+.kpi-k {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.abstract {
+  font-family: var(--ff-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--fg);
+  max-width: 520px;
+  margin: 0 0 32px;
+}
+
+.cta-read {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  background: transparent;
+  border: 1px solid var(--lime);
+  color: var(--lime);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: background 0.15s var(--ease), border-color 0.15s var(--ease), color 0.15s var(--ease), transform 0.08s var(--ease);
+}
+.cta-read:hover {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: var(--ink);
+}
+.cta-read:active {
+  transform: translate(1px, 1px);
+}
+
+.console-nav {
+  margin-top: auto;
+  padding-top: 40px;
+  border-top: 0.5px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg);
+  opacity: 0.55;
+}
+.console-nav .label {
+  opacity: 0.6;
+}
+.console-nav b {
+  font-weight: 400;
+  opacity: 1;
+}
+.console-nav .next {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  color: inherit;
+  opacity: 1;
+}
+.console-nav .next:hover { opacity: 0.7; }
