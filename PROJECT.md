@@ -36,6 +36,7 @@ André Finageiv's personal design portfolio. Editorial-luxury aesthetic inspired
 - **Lime accent discipline.** `#B8FF3D` appears only on: active nav button, active project-tab (folio + label + bottom rule), LIVE dot in statusbar, AF-mark-style signature moments, lime pull-quote ("TWENTY YEARS DOING IT." on About), Q3 accent on Contact, hollow-outline on READ FULL CASE CTA. Do not over-lime.
 - **Use CSS variables, not hex.** All colors go through `var(--bg)`, `var(--fg)`, `var(--rule)`, `var(--muted)`, `var(--dim)`, `var(--lime)`.
 - **Preserve São Paulo positioning.** User is in São Paulo. Any "Lisbon" reference is a bug — always correct.
+- **GitHub account — NEVER `AndreFinageiv`.** That's André's BaxEnergy (work) account. The portfolio is personal. Before any `gh` / `git push` to a GitHub remote, verify `gh auth status` shows a personal account. If only `AndreFinageiv` is logged in, stop and ask which account to use — don't push speculatively.
 
 ---
 
@@ -205,6 +206,9 @@ Script and stylesheet load order matters (runtime compilation, globals via `wind
 - Confirmed Farsight case 001 renders correctly (hero image, KPIs, abstract, lime READ FULL CASE CTA, São Paulo statusbar clock).
 - **Initialized git** (`main` branch). User asked for a "Next.js" `.gitignore` — flagged that this isn't Next.js, went with a static-site `.gitignore` instead. Ignored: `node_modules/`, `.vite/`, `OLD test/` (legacy Vite scaffold), `.vercel/`, `.DS_Store`, `.env*`, `.claude/settings.local.json`, editor junk. Made first commit: `initial commit`.
 - **Created GitHub repo**: [`AndreFinageiv/portfolio`](https://github.com/AndreFinageiv/portfolio) — **public**, `main` tracked to `origin/main`. First push complete.
+- **Reverted**: the `AndreFinageiv` GitHub account is André's **BaxEnergy work account**, not personal. Portfolio should never live there. Removed the `origin` remote locally. Repo deletion on GitHub is pending — token lacked `delete_repo` scope; user to delete via web UI or via `gh auth refresh -h github.com -s delete_repo`. **Rule added above**: future GitHub operations must target André's personal account, not `AndreFinageiv`.
+- **Wrong repo confirmed deleted** (user handled via web UI). `gh auth login --web` added `finaga` to the keyring; `finaga` is now the active account, `AndreFinageiv` remains present but inactive.
+- **Re-created repo on correct account**: [`finaga/portfolio`](https://github.com/finaga/portfolio) — **public**, `main` tracked to `origin/main`. Push successful.
 
 ### Session 2026-04-19
 _(prior session — summary only, not live)_
