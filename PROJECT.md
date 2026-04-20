@@ -37,6 +37,7 @@ André Finageiv's personal design portfolio. Editorial-luxury aesthetic inspired
 - **Use CSS variables, not hex.** All colors go through `var(--bg)`, `var(--fg)`, `var(--rule)`, `var(--muted)`, `var(--dim)`, `var(--lime)`.
 - **Preserve São Paulo positioning.** User is in São Paulo. Any "Lisbon" reference is a bug — always correct.
 - **GitHub account — NEVER `AndreFinageiv`.** That's André's BaxEnergy (work) account. The portfolio is personal. Before any `gh` / `git push` to a GitHub remote, verify `gh auth status` shows a personal account. If only `AndreFinageiv` is logged in, stop and ask which account to use — don't push speculatively.
+- **Git author identity — the global config on this machine is the WORK identity** (`AndreFinageiv <andre.finageiv@baxenergy.com>`). This repo has local overrides set (`finaga <finaga@gmail.com>`). For any new personal repo created on this machine, Claude must set local `user.name` / `user.email` **before the first commit**, or commits will be mis-attributed. Do not "fix" by setting global — that would corrupt work repos.
 
 ---
 
@@ -209,6 +210,7 @@ Script and stylesheet load order matters (runtime compilation, globals via `wind
 - **Reverted**: the `AndreFinageiv` GitHub account is André's **BaxEnergy work account**, not personal. Portfolio should never live there. Removed the `origin` remote locally. Repo deletion on GitHub is pending — token lacked `delete_repo` scope; user to delete via web UI or via `gh auth refresh -h github.com -s delete_repo`. **Rule added above**: future GitHub operations must target André's personal account, not `AndreFinageiv`.
 - **Wrong repo confirmed deleted** (user handled via web UI). `gh auth login --web` added `finaga` to the keyring; `finaga` is now the active account, `AndreFinageiv` remains present but inactive.
 - **Re-created repo on correct account**: [`finaga/portfolio`](https://github.com/finaga/portfolio) — **public**, `main` tracked to `origin/main`. Push successful.
+- **Fixed git author identity** — global git config on this machine is `AndreFinageiv <andre.finageiv@baxenergy.com>` (work), so the first 3 commits pushed under that identity. Set **local** (repo-scoped) config to `finaga <finaga@gmail.com>`, rebased `--root` to reauthor all 3 existing commits with `--reset-author`, then `git push --force-with-lease`. History is clean: `d9e9a24` `2126e67` `f40ffc0` all authored as `finaga`. **Global config intentionally left as `AndreFinageiv`** — protects BaxEnergy work repos on this machine from accidental personal attribution.
 
 ### Session 2026-04-19
 _(prior session — summary only, not live)_
