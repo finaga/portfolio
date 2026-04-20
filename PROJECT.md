@@ -204,6 +204,7 @@ Script and stylesheet load order matters (runtime compilation, globals via `wind
 - Killed a stale Vite process (PID 75274) that had been running since 2026-04-06 from a ghost `node_modules/` — it was holding port 5173 and throwing a Cannot-find-module error on every request. Static serving works now; preview boots cleanly.
 - Confirmed Farsight case 001 renders correctly (hero image, KPIs, abstract, lime READ FULL CASE CTA, São Paulo statusbar clock).
 - **Initialized git** (`main` branch). User asked for a "Next.js" `.gitignore` — flagged that this isn't Next.js, went with a static-site `.gitignore` instead. Ignored: `node_modules/`, `.vite/`, `OLD test/` (legacy Vite scaffold), `.vercel/`, `.DS_Store`, `.env*`, `.claude/settings.local.json`, editor junk. Made first commit: `initial commit`.
+- **Created GitHub repo**: [`AndreFinageiv/portfolio`](https://github.com/AndreFinageiv/portfolio) — **public**, `main` tracked to `origin/main`. First push complete.
 
 ### Session 2026-04-19
 _(prior session — summary only, not live)_
