@@ -218,6 +218,10 @@ Script and stylesheet load order matters (runtime compilation, globals via `wind
 - **Both Vercel cleanups done by user**: duplicates deleted (only `portfolio` remains), Deployment Protection disabled. Live URL `https://portfolio-finaga-5767s-projects.vercel.app` now returns HTTP 200 to anonymous visitors — **site is publicly viewable**.
 - **Added README.md** — short public-facing intro for the GitHub repo page (what it is, live URL, stack, zero-build rationale, local dev, structure). Distinct from PROJECT.md (internal memory).
 - **Promoted `Known carry-forwards` to GitHub Issues** — filed via `gh issue create`. Labels created: `case`, `copy`, `visual`, `a11y`, `mobile`, `branding`, `content`, `performance`, `new-case`.
+- **Closed Issues #1 + #2 (mobile fixes)** — one-file edit to `css/responsive.css`:
+  - **#1** (ScrollCue overlap): added `.scroll-cue { display: none; }` at ≤900px. ScrollCue is a desktop-only wayfinding affordance; on stacked mobile the "there's more below" is self-evident and the cue's fixed `right: 40px; bottom: 104px` coords were landing over the right-edge KPI card.
+  - **#2** (console bleed): bumped `.console` mobile `padding` from `40px 24px` → `40px 24px 80px`. Last line of content now sits ~50px above the 28px fixed statusbar at max scroll.
+  - Verified at both mobile (375×812, cue hidden + console padding 80px) and desktop (1040×1306, cue still `display: flex` at original coords). No regression.
 
 ### Session 2026-04-19
 _(prior session — summary only, not live)_

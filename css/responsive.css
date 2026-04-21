@@ -35,8 +35,16 @@
     width: 100%;
     height: auto;
     overflow-y: visible;
-    padding: 40px 24px;
+    /* bottom padding clears the 28px fixed statusbar so end-of-content
+       doesn't sit behind it. 80px gives ~50px of breathing room. */
+    padding: 40px 24px 80px;
   }
+
+  /* ScrollCue is a desktop-only wayfinding affordance. On mobile the
+     Work view stacks (viewport on top, console below), so "there's more
+     below" is self-evident — and the cue's fixed coordinates land
+     squarely over the right-edge KPI card. Hide entirely. */
+  .scroll-cue { display: none; }
   .console > .console-section { padding: 24px 0; }
   .case-name { font-size: 32px; }
   .kpi-v { font-size: 44px; }
