@@ -20,7 +20,7 @@
 .page-hero h1 {
   font-family: var(--ff-display);
   font-size: var(--fs-display-3xl);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   line-height: 0.88;
   letter-spacing: -0.02em;
   text-transform: uppercase;

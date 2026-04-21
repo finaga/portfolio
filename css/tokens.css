@@ -2,7 +2,7 @@
    PORTFOLIO — Tokens, type imports, resets, global theme attributes
    ========================================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Inter:wght@300..700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
   /* Core neutrals — Finaga palette */
@@ -25,10 +25,10 @@
   --dim-on-dark: rgba(230, 232, 236, 0.3);
   --dim-on-light: rgba(5, 6, 8, 0.3);
 
-  /* Type — Editorial Serif stack (Fraunces + Inter + IBM Plex Mono) */
-  --ff-display: 'Fraunces', ui-serif, Georgia, 'Times New Roman', serif;
-  --ff-sans:    'Inter', ui-sans-serif, system-ui, sans-serif;
-  --ff-mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* Type — Finaga stack (industrial-condensed display + neutral sans + technical mono) */
+  --ff-display: 'Big Shoulders', ui-sans-serif, system-ui, sans-serif;
+  --ff-sans:    'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --ff-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   /* -----------------------------------------------------------------------
      Typography scale — use these tokens instead of hardcoded values.
@@ -75,6 +75,52 @@
   --ls-normal:  0;
   --ls-tight:  -0.02em; /* large display */
 
+  /* -----------------------------------------------------------------------
+     Spacing scale — 4/8 base with editorial macro-steps for page padding
+     ----------------------------------------------------------------------- */
+  --sp-0:    0;
+  --sp-1:    4px;
+  --sp-2:    8px;
+  --sp-3:   12px;
+  --sp-4:   16px;
+  --sp-5:   24px;
+  --sp-6:   32px;
+  --sp-7:   40px;
+  --sp-8:   48px;
+  --sp-9:   64px;
+  --sp-10:  80px;
+  --sp-11: 120px;
+  --sp-12: 160px;
+
+  /* -----------------------------------------------------------------------
+     Border radius — editorial sharp-rectangle discipline.
+     The portfolio is almost entirely --r-none; higher values are for
+     dots (full) or reserved (pill).
+     ----------------------------------------------------------------------- */
+  --r-none: 0;
+  --r-sm:   2px;   /* focus ring, subtle corners */
+  --r-full: 50%;   /* status dots */
+  --r-pill: 999px; /* reserved */
+
+  /* -----------------------------------------------------------------------
+     Shadows — minimal; editorial aesthetic favours type/imagery over depth
+     ----------------------------------------------------------------------- */
+  --shadow-none:      none;
+  --shadow-glow-lime: 0 0 8px var(--lime);   /* LIVE dot, availability dot */
+
+  /* -----------------------------------------------------------------------
+     Z-index layer scale — use tokens instead of raw integers
+     ----------------------------------------------------------------------- */
+  --z-base:      0;
+  --z-raised:    1;   /* in-flow content above base */
+  --z-elevated:  2;   /* page hero, grid overlays */
+  --z-sticky:    5;   /* sticky viewport elements */
+  --z-overlay:  20;   /* above content overlays */
+  --z-deepdive: 25;   /* deep-dive slide-up panel */
+  --z-statusbar: 30;  /* fixed statusbar */
+  --z-topbar:   40;   /* fixed topbar + project tabs */
+  --z-modal:    50;   /* focus rings, modals */
+
   --ease: cubic-bezier(0.625, 0.05, 0, 1);
   --dur-enter: 0.8s;
   --dur-hover: 0.6s;
@@ -100,6 +146,8 @@ html[data-theme="dark"] {
   --rule: rgba(230, 232, 236, 0.1);
   --muted: rgba(230, 232, 236, 0.45);
   --dim: rgba(230, 232, 236, 0.3);
+  --bg-hover: rgba(255, 255, 255, 0.03);
+  --fg-on-lime: var(--ink);
   background-color: #0f1117;
   color: #E6E8EC;
 }
@@ -109,6 +157,8 @@ html[data-theme="light"] {
   --rule: rgba(5, 6, 8, 0.1);
   --muted: rgba(5, 6, 8, 0.45);
   --dim: rgba(5, 6, 8, 0.3);
+  --bg-hover: rgba(0, 0, 0, 0.03);
+  --fg-on-lime: var(--ink);
   background-color: #ECECEA;
   color: #050608;
 }

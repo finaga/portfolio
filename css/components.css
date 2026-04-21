@@ -1,0 +1,115 @@
+/* =========================================================================
+   COMPONENTS — reusable primitives built on design tokens
+   Prefix: .ds-*  (design-system)
+   New features SHOULD use these classes. Existing styled components
+   (.cta-read, .deepdive-close, .contact-card, .statusbar .live) are the
+   canonical examples of each pattern and can migrate opportunistically.
+   ========================================================================= */
+
+/* ---- Status dot (LIVE indicator, availability dot) --------------------- */
+.ds-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-full);
+  background: var(--lime);
+  box-shadow: var(--shadow-glow-lime);
+}
+.ds-dot--pulse { animation: ds-dot-pulse 1.4s var(--ease) infinite; }
+@keyframes ds-dot-pulse {
+  0%, 100% { opacity: 1;    transform: scale(1); }
+  50%      { opacity: 0.55; transform: scale(0.85); }
+}
+
+/* ---- Mono label (eyebrow, cockpit readout, meta) ----------------------- */
+.ds-label {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-xxs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.ds-label--lime   { color: var(--lime); }
+.ds-label--strong { color: var(--fg); }
+
+/* ---- Outline CTA (lime hollow → lime fill on hover) -------------------- */
+.ds-btn-outline-lime {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-5);
+  background: transparent;
+  border: 1px solid var(--lime);
+  color: var(--lime);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s var(--ease),
+              color      0.15s var(--ease),
+              transform  0.08s var(--ease);
+}
+.ds-btn-outline-lime:hover {
+  background: var(--lime);
+  color: var(--fg-on-lime);
+}
+.ds-btn-outline-lime:active {
+  transform: translate(1px, 1px);
+}
+
+/* ---- Ghost button (back, close, subtle nav) ---------------------------- */
+.ds-btn-ghost {
+  background: transparent;
+  border: 0;
+  padding: var(--sp-2) 0;
+  font-family: var(--ff-mono);
+  font-size: var(--fs-xxs);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--fg);
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity 0.15s var(--ease), color 0.15s var(--ease);
+}
+.ds-btn-ghost:hover {
+  opacity: 1;
+  color: var(--lime);
+}
+
+/* ---- Card (interactive surface with hover bg) -------------------------- */
+.ds-card {
+  padding: var(--sp-6) var(--sp-5);
+  background: transparent;
+  border: 0;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--dur-hover) var(--ease);
+}
+.ds-card:hover {
+  background: var(--bg-hover);
+}
+
+/* ---- Underline tail (hover-animated underline — card foot, link) ------- */
+.ds-underline-tail {
+  position: relative;
+  display: inline-block;
+}
+.ds-underline-tail::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-hover) var(--ease);
+}
+.ds-underline-tail:hover::after,
+.ds-underline-tail--active::after {
+  transform: scaleX(1);
+}

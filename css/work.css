@@ -127,7 +127,7 @@
 .case-name {
   font-family: var(--ff-display);
   font-size: var(--fs-display-md);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   line-height: var(--lh-tight);
   letter-spacing: 0.02em;
   text-transform: uppercase;

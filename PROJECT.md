@@ -103,22 +103,55 @@ Script and stylesheet load order matters (runtime compilation, globals via `wind
 
 ---
 
-## Design tokens (authoritative, in `css/tokens.css`)
+## Design System (authoritative, in `css/tokens.css` + `css/components.css`)
+
+All foundations are CSS custom properties in `css/tokens.css`. Reusable component primitives live in `css/components.css` under the `.ds-*` prefix. **New CSS must use tokens and (where possible) `.ds-*` primitives.** Existing hardcoded values migrate opportunistically.
 
 ### Colors
-- `--ink: #050608` (deepest), `--bone: #ECECEA`, `--lime: #B8FF3D`, `--lime-2: #9EEA1E`
-- **Dark bg uses `#0f1117`** (slightly lighter than `--ink` — user asked for "almost black, not black")
-- Semantic (theme-aware): `--bg`, `--fg`, `--rule`, `--muted`, `--dim`
+- **Neutrals** — `--ink: #050608` (deepest), `--ink-2: #0C0F14`, `--bone: #ECECEA`, `--paper: #F5F4F0`. Dark bg is `#0f1117` ("almost black, not black").
+- **Accent** — `--lime: #B8FF3D` (primary signature), `--lime-2: #9EEA1E` (softer).
+- **Semantic (theme-aware)** — `--bg`, `--fg`, `--rule`, `--muted`, `--dim`, `--bg-hover`, `--fg-on-lime`. Dark theme: bone fg + 10/45/30% alphas + rgba(255,255,255,0.03) hover. Light theme inverts.
+- **Lime discipline** — appears only on: active nav, active project-tab (folio + label + bottom rule), LIVE dot, AFMark signature moments, lime pull-quote ("TWENTY YEARS DOING IT." on About), Q3 accent on Contact, hollow-outline on READ FULL CASE CTA. Do not over-lime.
 
 ### Typography
-- **Families** — `--ff-display: 'Fraunces'` (variable serif, opsz 9..144, wght 400..900, ital 0/1) · `--ff-sans: 'Inter'` (variable, wght 300..700) · `--ff-mono: 'IBM Plex Mono'` (wght 400, 500).
-- **Size scale (fixed — body + labels)** — `--fs-micro` 9 · `--fs-xxs` 10 · `--fs-xs` 11 · `--fs-sm` 12 · `--fs-md` 14 · `--fs-lg` 16 · `--fs-xl` 18 · `--fs-2xl` 24 · `--fs-3xl` 32.
-- **Size scale (fluid — display, clamp)** — `--fs-display-sm` (28–48) · `--fs-display-md` (36–56, case headline) · `--fs-display-lg` (48–80, avail-big) · `--fs-display-xl` (56–104, deep-dive §) · `--fs-display-pull` (44–96, About pull-quote) · `--fs-display-2xl` (72–148, About stats) · `--fs-display-3xl` (88–220, pages hero) · `--fs-display-ultra` (88–260, About wordmark) · `--fs-display-mega` (120–200, case number "001").
-- **Weight policy** — `--fw-regular` 400 (body + ultra-display where size carries voice, e.g. case number 001) · `--fw-medium` 500 (mono labels) · `--fw-bold` 700 (display voice — case headline, About wordmark/lede/pull-quote, stat bignums, client wordmarks, deep-dive §, page-hero, avail-big).
+- **Families** — `--ff-display: 'Big Shoulders'` (condensed industrial) · `--ff-sans: 'Space Grotesk'` (geometric neo-grotesque) · `--ff-mono: 'JetBrains Mono'` (technical).
+- **Size scale — fixed (body + labels)** — `--fs-micro` 9 · `--fs-xxs` 10 · `--fs-xs` 11 · `--fs-sm` 12 · `--fs-md` 14 · `--fs-lg` 16 · `--fs-xl` 18 · `--fs-2xl` 24 · `--fs-3xl` 32.
+- **Size scale — fluid (display, clamp)** — `--fs-display-sm` (28–48) · `--fs-display-md` (36–56, case headline) · `--fs-display-lg` (48–80, avail-big) · `--fs-display-xl` (56–104, deep-dive §) · `--fs-display-pull` (44–96, About pull-quote) · `--fs-display-2xl` (72–148, About stats) · `--fs-display-3xl` (88–220, pages hero) · `--fs-display-ultra` (88–260, About wordmark) · `--fs-display-mega` (120–200, case number "001").
+- **Weight policy** — `--fw-regular` 400 (body, ultra-display, KPI values) · `--fw-medium` 500 (mono labels, display voice with Big Shoulders) · `--fw-bold` 700 (reserved for heavier display experiments).
 - **Line heights** — `--lh-tight` 1.0 · `--lh-snug` 1.1 · `--lh-heading` 1.2 · `--lh-body` 1.5 · `--lh-relaxed` 1.65.
 - **Letter-spacing** — `--ls-wide` 0.12em (mono uppercase) · `--ls-normal` 0 · `--ls-tight` -0.02em (large display).
-- **Rule**: new component CSS MUST use these tokens rather than hardcoded sizes/weights. Existing components partially migrated — the 9 display slots listed above all consume `--fs-display-*` + `--fw-bold`. Label/body components still use px; migration is non-blocking future work.
-- _Previously Big Shoulders / Space Grotesk / JetBrains Mono — swapped 2026-04-21 for editorial-luxury pivot (option A)._
+- 9 display slots currently consume `--fs-display-*` + `--fw-medium` (case name, About wordmark/lede/pull-quote, stat bignums, client wordmarks, deep-dive §, page-hero, avail-big).
+
+### Spacing
+4/8-based scale with editorial macro-steps. **12 tokens**:
+`--sp-0` 0 · `--sp-1` 4 · `--sp-2` 8 · `--sp-3` 12 · `--sp-4` 16 · `--sp-5` 24 · `--sp-6` 32 · `--sp-7` 40 · `--sp-8` 48 · `--sp-9` 64 · `--sp-10` 80 · `--sp-11` 120 · `--sp-12` 160.
+
+### Corners / Radius
+Editorial discipline: **sharp rectangles by default**. `--r-none` 0 (everywhere) · `--r-sm` 2px (focus ring, subtle corners) · `--r-full` 50% (dots) · `--r-pill` 999px (reserved).
+
+### Shadows
+Minimal — "type and imagery lead". `--shadow-none` · `--shadow-glow-lime` `0 0 8px var(--lime)` (LIVE dot, availability dot). No elevation shadows; flat surfaces are the style.
+
+### Z-index layers
+`--z-base` 0 · `--z-raised` 1 · `--z-elevated` 2 · `--z-sticky` 5 · `--z-overlay` 20 · `--z-deepdive` 25 · `--z-statusbar` 30 · `--z-topbar` 40 · `--z-modal` 50.
+
+### Component primitives (`css/components.css`, prefix `.ds-*`)
+- **`.ds-dot`** — 8px lime circle with lime glow. `.ds-dot--pulse` for animated variant. (LIVE indicator pattern.)
+- **`.ds-label`** — mono 10px uppercase label with wide letter-spacing. Variants: `.ds-label--lime`, `.ds-label--strong`. (Eyebrow, cockpit readout.)
+- **`.ds-btn-outline-lime`** — lime hollow button; fills lime on hover with ink text; 1px-offset on active. (Primary CTA.)
+- **`.ds-btn-ghost`** — borderless mono text button; opacity 0.6 → 1 + lime color on hover. (Back, close, subtle nav.)
+- **`.ds-card`** — interactive surface with `--bg-hover` on hover. (Click-through card foundation.)
+- **`.ds-underline-tail`** — pseudo-element underline that scales from 0 → full on hover. Variant class `.ds-underline-tail--active` for always-on state.
+
+### Existing-component inventory (canonical examples, not yet refactored)
+These work and look right; new similar components should use `.ds-*` instead.
+| Pattern | Existing class | File | `.ds-*` equivalent |
+|---|---|---|---|
+| Primary CTA | `.cta-read` | [css/work.css:202](css/work.css:202) | `.ds-btn-outline-lime` |
+| Back/close | `.deepdive-close` | [css/deepdive.css:25](css/deepdive.css:25) | `.ds-btn-ghost` |
+| Clickable card | `.contact-card` | [css/contact.css:13](css/contact.css:13) | `.ds-card` + `.ds-underline-tail` on foot |
+| Status dot | `.statusbar .live-dot` | [css/shell.css:304](css/shell.css:304) | `.ds-dot` + `.ds-dot--pulse` |
+| Active underline | `.project-tabs .pt-rule` | [css/shell.css:178](css/shell.css:178) | `.ds-underline-tail` (adaptation) |
 
 ### Motion
 - `--ease: cubic-bezier(0.625, 0.05, 0, 1)`
@@ -206,6 +239,8 @@ Script and stylesheet load order matters (runtime compilation, globals via `wind
 - Fixed viewport + scrollable console + deep-dive slide trigger
 
 ### Session 2026-04-21
+- **Full Design System foundation committed** — after typography exploration, formalized foundations for Colors, Typography, Spacing, Corners, Shadows, Z-index, plus a `css/components.css` file with 6 reusable `.ds-*` primitives (dot, label, btn-outline-lime, btn-ghost, card, underline-tail). New CSS files must use these tokens / primitives; existing hardcoded values migrate opportunistically. Added `--bg-hover` and `--fg-on-lime` theme-aware tokens. Linked `components.css` in `index.html` right after `tokens.css`. Documented the whole system in the "Design System" section above (replaces previous "Design tokens" section).
+- **Font pivot (option A) rejected after preview review** — André preferred the pre-Fraunces look. Reverted `--ff-display/sans/mono` back to Big Shoulders / Space Grotesk / JetBrains Mono in `css/tokens.css` and `data.js` (SVG plate factory). Reverted the 9 display slots from `var(--fw-bold)` (700) → `var(--fw-medium)` (500) to restore the original visual weight. Kept all the new typography tokens (`--fs-*`, `--fw-*`, `--lh-*`, `--ls-*`) — those are stack-agnostic and were the real deliverable of the exploration. The Fraunces exploration lives in commits `e23d01b` and `3b1a0a6` on this branch; history is preserved for future reference.
 - **Typography token system added** — formalized a basic design system for type after the font pivot. Added `--fs-*` (9 fixed-px body/label steps + 9 fluid clamp-based display steps), `--fw-*` (regular/medium/bold), `--lh-*` (tight/snug/heading/body/relaxed), `--ls-*` (wide/normal/tight) to `css/tokens.css`. Policy: display voice = 700; body + ultra-display (case number, at 120–200px where size carries voice) = 400; mono labels = 500.
 - **Applied `--fw-bold` (700) to 9 display slots** — `.case-name` (work.css), `.about-hero h1`, `.ab-lede`, `.ab-pull`, `.asr-v`, `.ac-name` (about.css), `.page-hero h1` (pages.css), `.deepdive h2` (deepdive.css), `.avail-big` (contact.css). Primary motivation: the skill's editorial-serif reference uses 700 for display, and Fraunces at 500 was reading under-weighted for "magazine masthead" presence. Verified via `preview_inspect` — case headline now 700 at 46.8px (desktop), About wordmark 700 at 171.6px (desktop clamp-resolved), deep-dive § 700 at 78px. No console errors. Left at 400: `.big-num` case number (at 200px size carries the voice; 700 would be brutal), body prose, mono labels (500).
 - Used `ui-ux-pro-max` skill to validate the pairing against its 57-pairing typography DB. Skill's canonical "Editorial Serif" pick for portfolio/luxury = Playfair Display / Lora / Courier Prime. Our pick (Fraunces / Inter / IBM Plex Mono) diverges deliberately because the site is a hybrid — editorial-luxury aesthetic over SaaS/control-room content. A serif body (Lora) would undercut KPI tables and console readouts; Inter is right. Fraunces ≈ Playfair in editorial register but with variable axes; Plex Mono ≈ Courier Prime but with software precision vs. typewriter warmth. Decision logged in this session as "better-calibrated for hybrid brief".

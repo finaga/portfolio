@@ -100,7 +100,7 @@ html[data-theme="dark"] .contact-card:hover {
 .avail-big {
   font-family: var(--ff-display);
   font-size: var(--fs-display-lg);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   line-height: 0.92;
   letter-spacing: -0.01em;
   text-transform: uppercase;

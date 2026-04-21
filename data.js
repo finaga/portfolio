@@ -23,7 +23,7 @@ function makePlate(seed, tone = 'dark') {
   </defs>
   <rect width="1200" height="800" fill="url(#g${s})"/>
   <rect width="1200" height="800" fill="url(#grid${s})"/>
-  <g font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11" fill="${label}" letter-spacing="1">
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="${label}" letter-spacing="1">
     <text x="40" y="44">PLATE / ${String(s).padStart(3,'0')}</text>
   </g>
 </svg>`;
@@ -43,9 +43,9 @@ function plate(kind, opts = {}) {
   const rule = tone === 'dark' ? 'rgba(230,232,236,0.10)' : 'rgba(5,6,8,0.08)';
   const soft = tone === 'dark' ? 'rgba(230,232,236,0.55)' : 'rgba(5,6,8,0.55)';
   const dim  = tone === 'dark' ? 'rgba(230,232,236,0.28)' : 'rgba(5,6,8,0.28)';
-  const DISP = `font-family='Fraunces, ui-serif, Georgia, serif'`;
-  const MONO = `font-family='IBM Plex Mono, ui-monospace, monospace'`;
-  const SANS = `font-family='Inter, ui-sans-serif, sans-serif'`;
+  const DISP = `font-family='Big Shoulders, Impact, ui-sans-serif, sans-serif'`;
+  const MONO = `font-family='JetBrains Mono, ui-monospace, monospace'`;
+  const SANS = `font-family='Space Grotesk, ui-sans-serif, sans-serif'`;
 
   const defs = `
     <defs>
