@@ -222,6 +222,7 @@ Script and stylesheet load order matters (runtime compilation, globals via `wind
   - **#1** (ScrollCue overlap): added `.scroll-cue { display: none; }` at ≤900px. ScrollCue is a desktop-only wayfinding affordance; on stacked mobile the "there's more below" is self-evident and the cue's fixed `right: 40px; bottom: 104px` coords were landing over the right-edge KPI card.
   - **#2** (console bleed): bumped `.console` mobile `padding` from `40px 24px` → `40px 24px 80px`. Last line of content now sits ~50px above the 28px fixed statusbar at max scroll.
   - Verified at both mobile (375×812, cue hidden + console padding 80px) and desktop (1040×1306, cue still `display: flex` at original coords). No regression.
+- **`READ FULL CASE` arrow changed from `→` → `↓`** (user request via launch-selected-element). Click target is the deep-dive panel which slides up from below; scrolling past console bottom also pulls the deep-dive up. Down-arrow matches that motion semantically. Single-source change in `components/Console.jsx` line 41 — affects all 4 cases. The `NEXT: <case> →` nav below keeps its right arrow (horizontal case-tab navigation, different metaphor).
 
 ### Session 2026-04-19
 _(prior session — summary only, not live)_
