@@ -30,6 +30,51 @@
   --ff-sans:    'Inter', ui-sans-serif, system-ui, sans-serif;
   --ff-mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
+  /* -----------------------------------------------------------------------
+     Typography scale — use these tokens instead of hardcoded values.
+     Display tokens are fluid (clamp); body/label tokens are fixed px.
+     Weight policy: 700 = display voice · 400 = body + ultra-display (size carries)
+     ----------------------------------------------------------------------- */
+
+  /* Font sizes — fixed (body + labels) */
+  --fs-micro:   9px;    /* smallest mono (project tab folio) */
+  --fs-xxs:    10px;    /* primary mono labels (§ CASE, SYS, LOC, FILE) */
+  --fs-xs:     11px;    /* mono with emphasis */
+  --fs-sm:     12px;    /* secondary mono, small body */
+  --fs-md:     14px;    /* default reading (console meta) */
+  --fs-lg:     16px;    /* html/body root */
+  --fs-xl:     18px;    /* body large, small heading */
+  --fs-2xl:    24px;    /* card heading */
+  --fs-3xl:    32px;    /* section heading */
+
+  /* Font sizes — fluid (display) */
+  --fs-display-sm:    clamp(28px, 3.4vw, 48px);     /* display subtitle */
+  --fs-display-md:    clamp(36px, 4.5vw, 56px);     /* case headline (FARSIGHT) */
+  --fs-display-lg:    clamp(48px, 6vw, 80px);       /* avail-big */
+  --fs-display-xl:    clamp(56px, 7.5vw, 104px);    /* deep-dive section */
+  --fs-display-pull:  clamp(44px, 6.2vw, 96px);     /* about pull-quote */
+  --fs-display-2xl:   clamp(72px, 9.5vw, 148px);    /* about stat big-nums */
+  --fs-display-3xl:   clamp(88px, 15vw, 220px);     /* pages hero */
+  --fs-display-ultra: clamp(88px, 16.5vw, 260px);   /* about wordmark */
+  --fs-display-mega:  clamp(120px, 18vw, 200px);    /* case number (001) */
+
+  /* Font weights */
+  --fw-regular: 400;    /* body + ultra-display */
+  --fw-medium:  500;    /* mono labels, subhead */
+  --fw-bold:    700;    /* display voice */
+
+  /* Line heights */
+  --lh-tight:   1.0;    /* ultra-display */
+  --lh-snug:    1.1;    /* display */
+  --lh-heading: 1.2;    /* headings */
+  --lh-body:    1.5;    /* body */
+  --lh-relaxed: 1.65;   /* long-form */
+
+  /* Letter spacing */
+  --ls-wide:    0.12em; /* mono labels uppercase */
+  --ls-normal:  0;
+  --ls-tight:  -0.02em; /* large display */
+
   --ease: cubic-bezier(0.625, 0.05, 0, 1);
   --dur-enter: 0.8s;
   --dur-hover: 0.6s;

@@ -144,8 +144,8 @@
 }
 .deepdive h2 {
   font-family: var(--ff-display);
-  font-size: clamp(56px, 7.5vw, 104px);
-  font-weight: 500;
+  font-size: var(--fs-display-xl);
+  font-weight: var(--fw-bold);
   line-height: 0.92;
   letter-spacing: -0.01em;
   text-transform: uppercase;

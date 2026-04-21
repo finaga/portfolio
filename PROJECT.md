@@ -111,9 +111,13 @@ Script and stylesheet load order matters (runtime compilation, globals via `wind
 - Semantic (theme-aware): `--bg`, `--fg`, `--rule`, `--muted`, `--dim`
 
 ### Typography
-- `--ff-display: 'Fraunces'` (headlines, numbers, display — variable serif, opsz 9..144, wght 400..900, ital 0/1)
-- `--ff-sans: 'Inter'` (body, sub — variable, wght 300..700)
-- `--ff-mono: 'IBM Plex Mono'` (labels, mono readouts — wght 400, 500)
+- **Families** — `--ff-display: 'Fraunces'` (variable serif, opsz 9..144, wght 400..900, ital 0/1) · `--ff-sans: 'Inter'` (variable, wght 300..700) · `--ff-mono: 'IBM Plex Mono'` (wght 400, 500).
+- **Size scale (fixed — body + labels)** — `--fs-micro` 9 · `--fs-xxs` 10 · `--fs-xs` 11 · `--fs-sm` 12 · `--fs-md` 14 · `--fs-lg` 16 · `--fs-xl` 18 · `--fs-2xl` 24 · `--fs-3xl` 32.
+- **Size scale (fluid — display, clamp)** — `--fs-display-sm` (28–48) · `--fs-display-md` (36–56, case headline) · `--fs-display-lg` (48–80, avail-big) · `--fs-display-xl` (56–104, deep-dive §) · `--fs-display-pull` (44–96, About pull-quote) · `--fs-display-2xl` (72–148, About stats) · `--fs-display-3xl` (88–220, pages hero) · `--fs-display-ultra` (88–260, About wordmark) · `--fs-display-mega` (120–200, case number "001").
+- **Weight policy** — `--fw-regular` 400 (body + ultra-display where size carries voice, e.g. case number 001) · `--fw-medium` 500 (mono labels) · `--fw-bold` 700 (display voice — case headline, About wordmark/lede/pull-quote, stat bignums, client wordmarks, deep-dive §, page-hero, avail-big).
+- **Line heights** — `--lh-tight` 1.0 · `--lh-snug` 1.1 · `--lh-heading` 1.2 · `--lh-body` 1.5 · `--lh-relaxed` 1.65.
+- **Letter-spacing** — `--ls-wide` 0.12em (mono uppercase) · `--ls-normal` 0 · `--ls-tight` -0.02em (large display).
+- **Rule**: new component CSS MUST use these tokens rather than hardcoded sizes/weights. Existing components partially migrated — the 9 display slots listed above all consume `--fs-display-*` + `--fw-bold`. Label/body components still use px; migration is non-blocking future work.
 - _Previously Big Shoulders / Space Grotesk / JetBrains Mono — swapped 2026-04-21 for editorial-luxury pivot (option A)._
 
 ### Motion
@@ -202,6 +206,9 @@ Script and stylesheet load order matters (runtime compilation, globals via `wind
 - Fixed viewport + scrollable console + deep-dive slide trigger
 
 ### Session 2026-04-21
+- **Typography token system added** — formalized a basic design system for type after the font pivot. Added `--fs-*` (9 fixed-px body/label steps + 9 fluid clamp-based display steps), `--fw-*` (regular/medium/bold), `--lh-*` (tight/snug/heading/body/relaxed), `--ls-*` (wide/normal/tight) to `css/tokens.css`. Policy: display voice = 700; body + ultra-display (case number, at 120–200px where size carries voice) = 400; mono labels = 500.
+- **Applied `--fw-bold` (700) to 9 display slots** — `.case-name` (work.css), `.about-hero h1`, `.ab-lede`, `.ab-pull`, `.asr-v`, `.ac-name` (about.css), `.page-hero h1` (pages.css), `.deepdive h2` (deepdive.css), `.avail-big` (contact.css). Primary motivation: the skill's editorial-serif reference uses 700 for display, and Fraunces at 500 was reading under-weighted for "magazine masthead" presence. Verified via `preview_inspect` — case headline now 700 at 46.8px (desktop), About wordmark 700 at 171.6px (desktop clamp-resolved), deep-dive § 700 at 78px. No console errors. Left at 400: `.big-num` case number (at 200px size carries the voice; 700 would be brutal), body prose, mono labels (500).
+- Used `ui-ux-pro-max` skill to validate the pairing against its 57-pairing typography DB. Skill's canonical "Editorial Serif" pick for portfolio/luxury = Playfair Display / Lora / Courier Prime. Our pick (Fraunces / Inter / IBM Plex Mono) diverges deliberately because the site is a hybrid — editorial-luxury aesthetic over SaaS/control-room content. A serif body (Lora) would undercut KPI tables and console readouts; Inter is right. Fraunces ≈ Playfair in editorial register but with variable axes; Plex Mono ≈ Courier Prime but with software precision vs. typewriter warmth. Decision logged in this session as "better-calibrated for hybrid brief".
 - **Typography pivot — Editorial Serif direction (option A)**. Swapped the type stack from Big Shoulders / Space Grotesk / JetBrains Mono → **Fraunces / Inter / IBM Plex Mono**. Rationale: aligns the site more closely with the stated "Italian fashion case site" editorial-luxury brief than the prior industrial-condensed stack. Fraunces' high contrast makes the lime `#B8FF3D` punch harder on headlines; IBM Plex Mono is warmer + more editorial than JetBrains Mono; Inter is the neutral workhorse body. Two other directions considered but not chosen: B (Bodoni Moda / Inter Tight / JetBrains Mono — full couture Didone) and C (Bebas Neue / Manrope / Space Mono — industrial-refined, same lane). Edits: `css/tokens.css` (@import + `--ff-*` vars) and `data.js` (SVG plate factory font-family strings at lines 26, 46-48). Verified in preview on Work/001 Farsight and About views — all three families load (`document.fonts` = 23 entries across Fraunces, Inter, IBM Plex Mono), no console errors, lime CTA and pull-quote still hold. Shipped on branch `claude/inspiring-mendeleev-2a7575` for preview-URL review before merge.
 
 ### Session 2026-04-20

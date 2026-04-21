@@ -75,8 +75,8 @@
 
 .about-hero h1 {
   font-family: var(--ff-display);
-  font-size: clamp(88px, 16.5vw, 260px);
-  font-weight: 500;
+  font-size: var(--fs-display-ultra);
+  font-weight: var(--fw-bold);
   line-height: 0.82;
   letter-spacing: -0.025em;
   text-transform: uppercase;
@@ -202,8 +202,8 @@
 }
 .about-bio .ab-body .ab-lede {
   font-family: var(--ff-display);
-  font-size: clamp(28px, 3.4vw, 48px);
-  font-weight: 500;
+  font-size: var(--fs-display-sm);
+  font-weight: var(--fw-bold);
   line-height: 1;
   letter-spacing: -0.01em;
   text-transform: uppercase;
@@ -212,8 +212,8 @@
 }
 .about-bio .ab-body .ab-pull {
   font-family: var(--ff-display);
-  font-size: clamp(44px, 6.2vw, 96px);
-  font-weight: 500;
+  font-size: var(--fs-display-pull);
+  font-weight: var(--fw-bold);
   line-height: 0.92;
   letter-spacing: -0.02em;
   text-transform: uppercase;
@@ -283,8 +283,8 @@
 }
 .about-stats-rail .asr-v {
   font-family: var(--ff-display);
-  font-size: clamp(72px, 9.5vw, 148px);
-  font-weight: 500;
+  font-size: var(--fs-display-2xl);
+  font-weight: var(--fw-bold);
   line-height: 0.85;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
@@ -357,7 +357,7 @@
 .about-clients .ac-name {
   font-family: var(--ff-display);
   font-size: clamp(40px, 5.8vw, 92px);
-  font-weight: 500;
+  font-weight: var(--fw-bold);
   line-height: 0.95;
   letter-spacing: -0.01em;
   text-transform: uppercase;
