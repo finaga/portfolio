@@ -111,9 +111,10 @@ Script and stylesheet load order matters (runtime compilation, globals via `wind
 - Semantic (theme-aware): `--bg`, `--fg`, `--rule`, `--muted`, `--dim`
 
 ### Typography
-- `--ff-display: 'Big Shoulders'` (headlines, numbers, display)
-- `--ff-sans: 'Space Grotesk'` (body, sub)
-- `--ff-mono: 'JetBrains Mono'` (labels, mono readouts)
+- `--ff-display: 'Fraunces'` (headlines, numbers, display — variable serif, opsz 9..144, wght 400..900, ital 0/1)
+- `--ff-sans: 'Inter'` (body, sub — variable, wght 300..700)
+- `--ff-mono: 'IBM Plex Mono'` (labels, mono readouts — wght 400, 500)
+- _Previously Big Shoulders / Space Grotesk / JetBrains Mono — swapped 2026-04-21 for editorial-luxury pivot (option A)._
 
 ### Motion
 - `--ease: cubic-bezier(0.625, 0.05, 0, 1)`
@@ -199,6 +200,9 @@ Script and stylesheet load order matters (runtime compilation, globals via `wind
 - Added SYS/NOMINAL cockpit statusbar
 - Added BG image for case 001 Farsight
 - Fixed viewport + scrollable console + deep-dive slide trigger
+
+### Session 2026-04-21
+- **Typography pivot — Editorial Serif direction (option A)**. Swapped the type stack from Big Shoulders / Space Grotesk / JetBrains Mono → **Fraunces / Inter / IBM Plex Mono**. Rationale: aligns the site more closely with the stated "Italian fashion case site" editorial-luxury brief than the prior industrial-condensed stack. Fraunces' high contrast makes the lime `#B8FF3D` punch harder on headlines; IBM Plex Mono is warmer + more editorial than JetBrains Mono; Inter is the neutral workhorse body. Two other directions considered but not chosen: B (Bodoni Moda / Inter Tight / JetBrains Mono — full couture Didone) and C (Bebas Neue / Manrope / Space Mono — industrial-refined, same lane). Edits: `css/tokens.css` (@import + `--ff-*` vars) and `data.js` (SVG plate factory font-family strings at lines 26, 46-48). Verified in preview on Work/001 Farsight and About views — all three families load (`document.fonts` = 23 entries across Fraunces, Inter, IBM Plex Mono), no console errors, lime CTA and pull-quote still hold. Shipped on branch `claude/inspiring-mendeleev-2a7575` for preview-URL review before merge.
 
 ### Session 2026-04-20
 - Added the **"this file IS the project memory" rule** at the top. Every future change must be logged here in the same turn.
