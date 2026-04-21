@@ -215,6 +215,9 @@ Script and stylesheet load order matters (runtime compilation, globals via `wind
 - **Decided GitHub workflow** (new section above): solo-designer-lightweight. Main-line for small changes, branches only for "big swings" to get Vercel preview URLs, Issues as design backlog, short public-facing README separate from this internal PROJECT.md, no CI / no Dependabot / no branch protection. Priority next steps: (1) wire Vercel↔GitHub for auto-deploy, (2) write README.md, (3) promote carry-forwards to Issues.
 - **Vercel↔GitHub wiring done** (user connected via dashboard). Active team: `finaga-5767s-projects` (`team_y5GaYAU4NKo0bDNkPkdtKR1N`). Canonical project: `portfolio` (`prj_IuRliC3CyeOTMsjyWTS2TXhkaiNZ`). Latest deploy = commit `936a9e9`, state `READY`, auto-triggered by GitHub integration. **Two cleanup actions pending in Vercel dashboard (user):** (a) delete duplicate projects `portfolio2026` and `portfolio-c1xc` — same repo imported 3×; (b) disable Deployment Protection on `portfolio` project — production URL currently returns 401 to anonymous visitors (blocks recruiters).
 - **Added Vercel MCP plugin** (`npx plugins add vercel/vercel-plugin` → `vercel@claude-plugins-official`). Adds 25 skills, 6 cmds, 3 agents, hooks, MCP tools. Requires `/restart` to load.
+- **Both Vercel cleanups done by user**: duplicates deleted (only `portfolio` remains), Deployment Protection disabled. Live URL `https://portfolio-finaga-5767s-projects.vercel.app` now returns HTTP 200 to anonymous visitors — **site is publicly viewable**.
+- **Added README.md** — short public-facing intro for the GitHub repo page (what it is, live URL, stack, zero-build rationale, local dev, structure). Distinct from PROJECT.md (internal memory).
+- **Promoted `Known carry-forwards` to GitHub Issues** — filed via `gh issue create`. Labels created: `case`, `copy`, `visual`, `a11y`, `mobile`, `branding`, `content`, `performance`, `new-case`.
 
 ### Session 2026-04-19
 _(prior session — summary only, not live)_
@@ -246,8 +249,8 @@ _(prior session — summary only, not live)_
 - No favicon / OG image currently — need a new treatment now that AFMark is gone.
 - Deep-dive plate thumbs are editorial SVG composites — not real screens. Upgrade path is real project screenshots.
 - `linkedin.com/in/andrefinageiv` URL was assumed — verify with André.
-- **Vercel duplicate projects** — `portfolio2026` and `portfolio-c1xc` both also connected to `finaga/portfolio` repo. Every push triggers 3 parallel deploys. User to delete both via dashboard → Settings → Advanced → Delete Project.
-- **Vercel Deployment Protection is ON** on the `portfolio` project — prod URL returns 401 to anonymous visitors. User to disable (Settings → Deployment Protection → Vercel Authentication → Disabled, or "Only Preview Deployments") so recruiters can load the live site.
+- ~~Vercel duplicate projects `portfolio2026` / `portfolio-c1xc`~~ — **resolved 2026-04-20**: user deleted both in dashboard; only `portfolio` remains.
+- ~~Vercel Deployment Protection is ON~~ — **resolved 2026-04-20**: user disabled it; prod URL now returns HTTP 200 anonymously.
 
 ---
 
