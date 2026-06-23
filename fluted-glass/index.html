@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fluted Glass — Shader Demo</title>
+<style>
+  :root{
+    --bg:#0f1117; --fg:#ECECEA; --lime:#B8FF3D; --dim:#6b7280;
+    --rule:rgba(236,236,234,0.14); --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:var(--bg);color:var(--fg);
+    font-family:var(--mono);overflow:hidden}
+  .stage{position:fixed;inset:0}
+  canvas{display:block;width:100%;height:100%}
+
+  /* editorial overlay, mimics the portfolio hero */
+  .overlay{position:absolute;inset:0;pointer-events:none;
+    display:flex;flex-direction:column;justify-content:space-between;padding:40px}
+  .row{display:flex;justify-content:space-between;align-items:flex-start}
+  .label{font-size:11px;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--fg);opacity:0.85;text-shadow:0 1px 12px rgba(0,0,0,0.6)}
+  .label .lime{color:var(--lime)}
+  .big-num{font-family:var(--mono);font-weight:700;font-size:clamp(80px,16vw,220px);
+    line-height:0.8;letter-spacing:-0.04em;color:var(--fg);opacity:0.95;
+    text-shadow:0 4px 40px rgba(0,0,0,0.5);align-self:flex-end}
+
+  /* control panel */
+  .panel{position:absolute;top:0;right:0;height:100%;width:300px;
+    background:rgba(10,12,16,0.82);backdrop-filter:blur(20px);
+    border-left:1px solid var(--rule);padding:24px 22px;overflow-y:auto;
+    transition:transform .4s cubic-bezier(.62,.05,0,1)}
+  .panel.hidden{transform:translateX(100%)}
+  .panel h1{font-size:12px;letter-spacing:0.2em;text-transform:uppercase;
+    margin-bottom:4px}
+  .panel .sub{font-size:10px;color:var(--dim);letter-spacing:0.14em;
+    margin-bottom:20px;text-transform:uppercase}
+  .ctrl{margin-bottom:15px}
+  .ctrl label{display:flex;justify-content:space-between;font-size:10px;
+    letter-spacing:0.1em;text-transform:uppercase;color:var(--fg);
+    opacity:0.75;margin-bottom:6px}
+  .ctrl label .val{color:var(--lime);opacity:1}
+  input[type=range]{width:100%;height:2px;-webkit-appearance:none;
+    background:var(--rule);outline:none;border-radius:2px}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;
+    height:11px;border-radius:50%;background:var(--lime);cursor:pointer}
+  select{width:100%;background:#161922;color:var(--fg);border:1px solid var(--rule);
+    font-family:var(--mono);font-size:11px;padding:6px 8px;border-radius:3px}
+  .toggle{position:fixed;top:20px;right:20px;z-index:10;background:rgba(10,12,16,0.82);
+    backdrop-filter:blur(20px);border:1px solid var(--rule);color:var(--fg);
+    font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;
+    padding:8px 12px;border-radius:4px;cursor:pointer}
+  .toggle:hover{color:var(--lime);border-color:var(--lime)}
+  .hint{position:absolute;bottom:40px;left:40px;font-size:10px;color:var(--dim);
+    letter-spacing:0.14em;text-transform:uppercase;pointer-events:none}
+  .img-pick{display:flex;gap:6px;margin-bottom:18px}
+  .img-pick button{flex:1;background:#161922;border:1px solid var(--rule);
+    color:var(--fg);font-family:var(--mono);font-size:9px;padding:6px 4px;
+    border-radius:3px;cursor:pointer;letter-spacing:0.08em}
+  .img-pick button.active{border-color:var(--lime);color:var(--lime)}
+  .upload{display:block;text-align:center;background:#161922;border:1px dashed var(--rule);
+    color:var(--fg);font-family:var(--mono);font-size:10px;letter-spacing:0.08em;
+    padding:9px 4px;border-radius:3px;cursor:pointer;margin-bottom:18px;text-transform:uppercase}
+  .upload:hover{border-color:var(--lime);color:var(--lime)}
+  .stage.dragover::after{content:'DROP IMAGE';position:absolute;inset:0;z-index:5;
+    display:flex;align-items:center;justify-content:center;font-family:var(--mono);
+    font-size:14px;letter-spacing:0.3em;color:var(--lime);
+    background:rgba(10,12,16,0.55);border:2px dashed var(--lime)}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <canvas id="gl"></canvas>
+    <div class="overlay">
+      <div class="row">
+        <div class="label">CASE / 001 · <span class="lime">FLUTED GLASS</span></div>
+        <div class="label">SÃO PAULO · BR · 2026</div>
+      </div>
+      <div class="big-num">001</div>
+    </div>
+    <div class="hint">↳ Move your cursor across the glass</div>
+  </div>
+
+  <button class="toggle" id="toggle">Controls</button>
+
+  <div class="panel" id="panel">
+    <h1>Fluted Glass</h1>
+    <div class="sub">Semplice 7.2.0 — replicated shader</div>
+
+    <div class="img-pick" id="imgPick">
+      <button data-img="../portfolio/assets/bg-ski.jpg" class="active">SKI</button>
+      <button data-img="../portfolio/assets/bg-farsight.jpg">FARSIGHT</button>
+      <button data-img="../portfolio/assets/bg-toptal.jpg">TOPTAL</button>
+      <button data-img="../portfolio/assets/bg-fit4box.jpg">FIT4BOX</button>
+    </div>
+    <label class="upload" id="uploadBtn">↑ Load your own image…
+      <input type="file" id="fileInput" accept="image/*" hidden>
+    </label>
+
+    <div class="ctrl">
+      <label>Lens Mode <span class="val" id="v_lensMode">curved</span></label>
+      <select id="lensMode"><option value="0">Curved (power)</option><option value="1">Cosine</option></select>
+    </div>
+    <div class="ctrl">
+      <label>Flute Shape <span class="val" id="v_fluteShape">lines</span></label>
+      <select id="fluteShape"><option value="0">Lines</option><option value="1">Waves</option><option value="2">Zigzag</option><option value="3">Noise</option></select>
+    </div>
+    <div class="ctrl"><label>Flute Count <span class="val" id="v_fluteCount">40</span></label><input type="range" id="fluteCount" min="2" max="120" step="1" value="40"></div>
+    <div class="ctrl"><label>Flute Power <span class="val" id="v_flutePower">4.0</span></label><input type="range" id="flutePower" min="1" max="8" step="0.1" value="4"></div>
+    <div class="ctrl"><label>Distortion <span class="val" id="v_distortion">0.05</span></label><input type="range" id="distortion" min="0" max="0.2" step="0.005" value="0.05"></div>
+    <div class="ctrl"><label>Dispersion <span class="val" id="v_dispersion">1.54</span></label><input type="range" id="dispersion" min="0" max="5" step="0.01" value="1.54"></div>
+    <div class="ctrl"><label>Shape Freq <span class="val" id="v_shapeFrequency">1.0</span></label><input type="range" id="shapeFrequency" min="0.5" max="10" step="0.1" value="1"></div>
+    <div class="ctrl"><label>Blur Size <span class="val" id="v_blurSize">0</span></label><input type="range" id="blurSize" min="0" max="20" step="0.5" value="0"></div>
+    <div class="ctrl"><label>Frost <span class="val" id="v_frostAmount">0</span></label><input type="range" id="frostAmount" min="0" max="100" step="1" value="0"></div>
+    <div class="ctrl"><label>Angle <span class="val" id="v_angle">0°</span></label><input type="range" id="angle" min="0" max="180" step="1" value="0"></div>
+    <div class="ctrl"><label>Mouse Strength <span class="val" id="v_mouseStrength">1.0</span></label><input type="range" id="mouseStrength" min="0" max="3" step="0.1" value="1"></div>
+  </div>
+
+<script id="vert" type="x-shader/x-vertex">
+attribute vec2 position;
+varying vec2 vUv;
+void main(){
+  vUv = position * 0.5 + 0.5;
+  gl_Position = vec4(position, 0.0, 1.0);
+}
+</script>
+
+<!-- Exact fluted-glass.frag from Semplice 7.2.0 (WebGL1 / GLSL ES 1.00) -->
+<script id="frag" type="x-shader/x-fragment">
+precision mediump float;
+varying vec2 vUv;
+uniform float time;
+uniform vec2 resolution;
+uniform vec2 mouse;
+uniform sampler2D coverImage;
+
+uniform float lensMode;
+uniform float fluteShape;
+uniform float shapeFrequency;
+uniform float fluteCount;
+uniform float flutePower;
+uniform float distortion;
+uniform float dispersion;
+uniform float blurSize;
+uniform float frostAmount;
+uniform float angle;
+uniform float mouseStrength;
+
+const float PI = 3.14159265;
+
+// hash noise
+float hash(vec2 p) {
+  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+float noise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  float a = hash(i);
+  float b = hash(i + vec2(1.0, 0.0));
+  float c = hash(i + vec2(0.0, 1.0));
+  float d = hash(i + vec2(1.0, 1.0));
+  return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
+
+void main() {
+  vec2 uv = vUv;
+  float aspect = resolution.x / resolution.y;
+
+  // size 0 = passthrough, no effect
+  if(fluteCount < 0.5) {
+    gl_FragColor = texture2D(coverImage, uv);
+    return;
+  }
+
+  // rotate UV for angled flutes
+  float rad = angle * PI / 180.0;
+  float cosA = cos(rad);
+  float sinA = sin(rad);
+  vec2 center = vec2(0.5);
+  vec2 rotUv = vec2(
+    cosA * (uv.x - center.x) - sinA * (uv.y - center.y) + center.x,
+    sinA * (uv.x - center.x) + cosA * (uv.y - center.y) + center.y
+  );
+
+  // mouse proximity (used for multiple effects) — skip if mouse hasn't entered yet
+  bool mouseActive = mouse.x >= 0.0 && mouse.y >= 0.0;
+  vec2 mDelta = uv - mouse;
+  float mDist = mouseActive ? length(mDelta * vec2(aspect, 1.0)) : 10.0;
+  float mProximity = smoothstep(0.35, 0.0, mDist) * mouseStrength;
+  float mRing = smoothstep(0.0, 0.15, mDist) * smoothstep(0.4, 0.2, mDist) * mouseStrength;
+
+  // rotate mouse into flute space for bending
+  vec2 rotMouse = vec2(
+    cosA * (mouse.x - center.x) - sinA * (mouse.y - center.y) + center.x,
+    sinA * (mouse.x - center.x) + cosA * (mouse.y - center.y) + center.y
+  );
+
+  // flute shape modulation on rotated x coordinate
+  float fluteX = rotUv.x;
+  float freq = shapeFrequency;
+
+  // shape 0 = lines (straight, no modulation)
+  // shape 1 = waves
+  if(fluteShape > 0.5 && fluteShape < 1.5) {
+    fluteX += sin(rotUv.y * PI * 2.0 * freq) * 0.025;
+  }
+  // shape 2 = zigzag
+  else if(fluteShape > 1.5 && fluteShape < 2.5) {
+    float zy = fract(rotUv.y * freq);
+    fluteX += (zy < 0.5 ? zy * 2.0 - 0.5 : 1.5 - zy * 2.0) * 0.04;
+  }
+  // shape 3 = noise (organic wobble)
+  else if(fluteShape > 2.5) {
+    float n = noise(rotUv * vec2(freq * 3.0, freq * 8.0)) * 2.0 - 1.0;
+    fluteX += n * 0.03;
+  }
+
+  // mouse bending — flutes curve radially around cursor
+  vec2 bendDelta = rotUv - rotMouse;
+  float bendDist = length(bendDelta * vec2(aspect, 1.0));
+  float bendStrength = smoothstep(0.35, 0.0, bendDist) * 0.08 * mouseStrength;
+  fluteX += bendDelta.x * bendStrength;
+
+  // calculate position within flute
+  float fluteWidth = 1.0 / fluteCount;
+  float flutePos = mod(fluteX, fluteWidth) / fluteWidth;
+  float fluteCentered = flutePos * 2.0 - 1.0; // -1 to 1
+
+  // lens displacement
+  float displacement;
+  if(lensMode < 0.5) {
+    // curved (power-based)
+    displacement = sign(fluteCentered) * pow(abs(fluteCentered), flutePower);
+  } else {
+    // cosine
+    displacement = sin(fluteCentered * PI * 0.5);
+  }
+
+  // mouse: reduce distortion at cursor center (peek through glass)
+  float clearZone = 1.0 - mProximity * 0.6;
+  float effectiveDistortion = distortion * clearZone;
+
+  // displacement vector rotated back to original UV space
+  vec2 dispVec = vec2(
+    cosA * displacement * effectiveDistortion,
+    sinA * displacement * effectiveDistortion
+  );
+
+  // frost amount for scattering
+  float frostAmt = (frostAmount / 100.0) * clearZone;
+
+  // chromatic dispersion — boosted at cursor ring for prismatic effect
+  float disperseBoost = 1.0 + mRing * 3.0;
+  vec2 disperseVec = vec2(cosA, sinA) * dispersion * 0.008 * displacement * disperseBoost;
+
+  // parallax — image shifts based on mouse position (like changing viewing angle)
+  vec2 parallax = mouseActive ? (mouse - 0.5) * mouseStrength * 0.005 : vec2(0.0);
+
+  // blur radius in UV space
+  float blurRad = blurSize / resolution.x;
+  vec2 blurDir = vec2(cosA, sinA); // blur along flute direction
+
+  // base sample point
+  vec2 baseUv = uv + dispVec + parallax;
+
+  vec3 color;
+
+  if(frostAmt > 0.01) {
+    // frost: stochastic scatter (many random samples around point)
+    vec3 acc = vec3(0.0);
+    float frostRad = frostAmt * 0.012;
+    const int FROST_SAMPLES = 12;
+    for(int i = 0; i < FROST_SAMPLES; i++) {
+      // pseudo-random offset per sample using hash
+      float fi = float(i);
+      float angle2 = hash(vec2(fi * 73.17, fi * 31.81 + uv.x * 127.0)) * PI * 2.0;
+      float radius = hash(vec2(fi * 51.43 + uv.y * 89.0, fi * 17.39)) * frostRad;
+      vec2 fOff = vec2(cos(angle2), sin(angle2)) * radius;
+      // also apply flute blur if active
+      float t = (fi / float(FROST_SAMPLES - 1) - 0.5) * 2.0;
+      vec2 blurOff = blurDir * t * blurRad;
+      vec2 sUv = baseUv + fOff + blurOff;
+      float r = texture2D(coverImage, clamp(sUv + disperseVec, 0.0, 1.0)).r;
+      float g = texture2D(coverImage, clamp(sUv, 0.0, 1.0)).g;
+      float b = texture2D(coverImage, clamp(sUv - disperseVec, 0.0, 1.0)).b;
+      acc += vec3(r, g, b);
+    }
+    color = acc / float(FROST_SAMPLES);
+  } else if(blurSize > 0.5) {
+    // flute blur only (no frost)
+    vec3 acc = vec3(0.0);
+    float weightSum = 0.0;
+    const int SAMPLES = 9;
+    for(int i = 0; i < SAMPLES; i++) {
+      float t = (float(i) / float(SAMPLES - 1) - 0.5) * 2.0;
+      float w = 1.0 - abs(t) * 0.5;
+      vec2 blurOff = blurDir * t * blurRad;
+      vec2 sUv = baseUv + blurOff;
+      float r = texture2D(coverImage, clamp(sUv + disperseVec, 0.0, 1.0)).r;
+      float g = texture2D(coverImage, clamp(sUv, 0.0, 1.0)).g;
+      float b = texture2D(coverImage, clamp(sUv - disperseVec, 0.0, 1.0)).b;
+      acc += vec3(r, g, b) * w;
+      weightSum += w;
+    }
+    color = acc / weightSum;
+  } else {
+    // no frost, no blur
+    float r = texture2D(coverImage, clamp(baseUv + disperseVec, 0.0, 1.0)).r;
+    float g = texture2D(coverImage, clamp(baseUv, 0.0, 1.0)).g;
+    float b = texture2D(coverImage, clamp(baseUv - disperseVec, 0.0, 1.0)).b;
+    color = vec3(r, g, b);
+  }
+
+  // subtle edge highlight on flute boundaries
+  float edgeDist = abs(fluteCentered);
+  float edge = smoothstep(0.85, 1.0, edgeDist) * 0.06;
+  color += edge;
+
+  gl_FragColor = vec4(color, 1.0);
+}
+</script>
+
+<script>
+(function(){
+  const canvas = document.getElementById('gl');
+  const gl = canvas.getContext('webgl', { antialias:true, premultipliedAlpha:false });
+  if(!gl){ document.body.innerHTML = '<p style="padding:40px">WebGL not supported.</p>'; return; }
+
+  function compile(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+      throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, document.getElementById('vert').textContent));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, document.getElementById('frag').textContent));
+  gl.linkProgram(prog);
+  if(!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+  gl.useProgram(prog);
+
+  // fullscreen quad
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]), gl.STATIC_DRAW);
+  const posLoc = gl.getAttribLocation(prog, 'position');
+  gl.enableVertexAttribArray(posLoc);
+  gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+  const U = {};
+  ['time','resolution','mouse','coverImage','lensMode','fluteShape','shapeFrequency',
+   'fluteCount','flutePower','distortion','dispersion','blurSize','frostAmount',
+   'angle','mouseStrength'].forEach(n => U[n] = gl.getUniformLocation(prog, n));
+
+  // texture
+  const tex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1,1,0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([20,22,28,255]));
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+  let imgEl = null;
+  const off = document.createElement('canvas');
+  const offCtx = off.getContext('2d');
+
+  // re-draw image into an offscreen canvas with object-fit:cover, then upload.
+  // keeps the original shader untouched (it just samples uv in [0,1]).
+  function uploadCover(){
+    if(!imgEl) return;
+    const W = canvas.width, H = canvas.height;
+    off.width = W; off.height = H;
+    const ir = imgEl.width / imgEl.height, cr = W / H;
+    let dw, dh, dx, dy;
+    if(ir > cr){ dh = H; dw = H * ir; dx = (W - dw)/2; dy = 0; }
+    else       { dw = W; dh = W / ir; dx = 0; dy = (H - dh)/2; }
+    offCtx.clearRect(0,0,W,H);
+    offCtx.drawImage(imgEl, dx, dy, dw, dh);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, off);
+  }
+
+  function loadImage(src){
+    const im = new Image();
+    im.crossOrigin = 'anonymous';
+    im.onload = () => { imgEl = im; uploadCover(); };
+    im.src = src;
+  }
+
+  // mouse: uv space, y flipped to match bottom-origin vUv
+  const mouse = { x:-1, y:-1 };
+  window.addEventListener('pointermove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = (e.clientX - r.left) / r.width;
+    mouse.y = 1 - (e.clientY - r.top) / r.height;
+  });
+  window.addEventListener('pointerleave', () => { mouse.x = -1; mouse.y = -1; });
+
+  function resize(){
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(canvas.clientWidth * dpr);
+    canvas.height = Math.round(canvas.clientHeight * dpr);
+    gl.viewport(0,0,canvas.width,canvas.height);
+    uploadCover();
+  }
+  window.addEventListener('resize', resize);
+
+  // params
+  const P = { lensMode:0, fluteShape:0, shapeFrequency:1, fluteCount:40, flutePower:4,
+    distortion:0.05, dispersion:1.54, blurSize:0, frostAmount:0, angle:0, mouseStrength:1 };
+
+  function bindControl(id, fmt){
+    const el = document.getElementById(id), out = document.getElementById('v_'+id);
+    if(!el) return;
+    const apply = () => { P[id] = parseFloat(el.value); if(out) out.textContent = fmt ? fmt(el.value) : el.value; };
+    el.addEventListener('input', apply); apply();
+  }
+  bindControl('fluteCount'); bindControl('flutePower', v=>parseFloat(v).toFixed(1));
+  bindControl('distortion', v=>parseFloat(v).toFixed(3)); bindControl('dispersion', v=>parseFloat(v).toFixed(2));
+  bindControl('shapeFrequency', v=>parseFloat(v).toFixed(1)); bindControl('blurSize');
+  bindControl('frostAmount'); bindControl('angle', v=>v+'°'); bindControl('mouseStrength', v=>parseFloat(v).toFixed(1));
+  document.getElementById('lensMode').addEventListener('change', e=>{
+    P.lensMode = parseFloat(e.target.value); document.getElementById('v_lensMode').textContent = e.target.selectedOptions[0].text.split(' ')[0].toLowerCase(); });
+  document.getElementById('fluteShape').addEventListener('change', e=>{
+    P.fluteShape = parseFloat(e.target.value); document.getElementById('v_fluteShape').textContent = e.target.selectedOptions[0].text.toLowerCase(); });
+
+  // image picker
+  document.getElementById('imgPick').addEventListener('click', e=>{
+    const b = e.target.closest('button'); if(!b) return;
+    document.querySelectorAll('#imgPick button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); loadImage(b.dataset.img);
+  });
+
+  // load a user-supplied image (file picker or drag-drop)
+  function loadFile(file){
+    if(!file || !file.type.startsWith('image/')) return;
+    const url = URL.createObjectURL(file);
+    const im = new Image();
+    im.onload = () => { imgEl = im; uploadCover(); URL.revokeObjectURL(url); };
+    im.src = url;
+    document.querySelectorAll('#imgPick button').forEach(x=>x.classList.remove('active'));
+  }
+  document.getElementById('fileInput').addEventListener('change', e => loadFile(e.target.files[0]));
+
+  const stage = document.querySelector('.stage');
+  ['dragenter','dragover'].forEach(ev => stage.addEventListener(ev, e => { e.preventDefault(); stage.classList.add('dragover'); }));
+  ['dragleave','drop'].forEach(ev => stage.addEventListener(ev, e => { e.preventDefault(); if(ev==='dragleave' && e.relatedTarget) return; stage.classList.remove('dragover'); }));
+  stage.addEventListener('drop', e => { e.preventDefault(); stage.classList.remove('dragover'); if(e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
+
+  // panel toggle
+  const panel = document.getElementById('panel');
+  document.getElementById('toggle').addEventListener('click', ()=> panel.classList.toggle('hidden'));
+
+  const t0 = performance.now();
+  function frame(){
+    const t = (performance.now() - t0) / 1000;
+    gl.uniform1f(U.time, t);
+    gl.uniform2f(U.resolution, canvas.width, canvas.height);
+    gl.uniform2f(U.mouse, mouse.x, mouse.y);
+    gl.uniform1i(U.coverImage, 0);
+    gl.uniform1f(U.lensMode, P.lensMode);
+    gl.uniform1f(U.fluteShape, P.fluteShape);
+    gl.uniform1f(U.shapeFrequency, P.shapeFrequency);
+    gl.uniform1f(U.fluteCount, P.fluteCount);
+    gl.uniform1f(U.flutePower, P.flutePower);
+    gl.uniform1f(U.distortion, P.distortion);
+    gl.uniform1f(U.dispersion, P.dispersion);
+    gl.uniform1f(U.blurSize, P.blurSize);
+    gl.uniform1f(U.frostAmount, P.frostAmount);
+    gl.uniform1f(U.angle, P.angle);
+    gl.uniform1f(U.mouseStrength, P.mouseStrength);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    requestAnimationFrame(frame);
+  }
+
+  resize();
+  loadImage('../portfolio/assets/bg-ski.jpg');
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

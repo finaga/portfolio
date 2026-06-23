@@ -1,59 +1,236 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>André Finageiv — Portfolio 2026</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>André Finageiv — Index 2026</title>
+<meta name="description" content="André Finageiv — work index. Portfolio, experiments, and interface studies." />
+<meta name="author" content="André Finageiv" />
+<meta name="theme-color" content="#0f1117" />
+<meta name="color-scheme" content="dark" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="André Finageiv — Index 2026" />
+<meta property="og:description" content="Work index — portfolio, experiments, and interface studies." />
+<meta property="og:url" content="https://finageiv.com/" />
+<meta property="og:site_name" content="André Finageiv" />
+<meta name="twitter:card" content="summary" />
 
-<!-- Primary meta -->
-<meta name="description" content="André Finageiv — Product Designer. 20+ years across enterprise SaaS, real-time control rooms, and growth funnels. Currently leading design ops at Farsight (BaxEnergy · Yokogawa).">
-<meta name="author" content="André Finageiv">
-<meta name="theme-color" content="#0f1117">
-<meta name="color-scheme" content="dark light">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
-<!-- Open Graph -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="André Finageiv — Portfolio 2026">
-<meta property="og:description" content="Product Designer. 20+ years across enterprise SaaS, real-time control rooms, and growth funnels.">
-<meta property="og:url" content="https://finageiv.com/">
-<meta property="og:site_name" content="André Finageiv">
+  :root{
+    --bg:#0f1117; --fg:#E6E8EC; --lime:#B8FF3D; --lime-2:#9EEA1E;
+    --rule:rgba(230,232,236,0.1); --rule-strong:rgba(230,232,236,0.18);
+    --muted:rgba(230,232,236,0.45); --dim:rgba(230,232,236,0.3);
+    --ff-display:'Big Shoulders',ui-sans-serif,system-ui,sans-serif;
+    --ff-sans:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+    --ff-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --ease:cubic-bezier(0.625,0.05,0,1);
+    --topbar:56px; --statusbar:28px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--fg);font-family:var(--ff-sans);
+    -webkit-font-smoothing:antialiased;min-height:100%}
+  body{padding-top:var(--topbar);padding-bottom:var(--statusbar)}
+  a{color:inherit;text-decoration:none}
+  :focus{outline:none}
+  :focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:2px}
 
-<!-- Twitter -->
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="André Finageiv — Portfolio 2026">
-<meta name="twitter:description" content="Product Designer. 20+ years across enterprise SaaS, real-time control rooms, and growth funnels.">
+  /* ---- topbar ---- */
+  .topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar);z-index:20;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 28px;background:rgba(15,17,23,0.8);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--rule)}
+  .wordmark{font-family:var(--ff-mono);font-size:12px;letter-spacing:0.22em;
+    text-transform:uppercase;transition:color var(--dur,0.4s) var(--ease)}
+  .wordmark:hover{color:var(--lime)}
+  .topbar .tag{font-family:var(--ff-mono);font-size:11px;letter-spacing:0.2em;
+    text-transform:uppercase;color:var(--muted)}
 
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/shell.css">
-<link rel="stylesheet" href="css/work.css">
-<link rel="stylesheet" href="css/deepdive.css">
-<link rel="stylesheet" href="css/pages.css">
-<link rel="stylesheet" href="css/about.css">
-<link rel="stylesheet" href="css/contact.css">
-<link rel="stylesheet" href="css/responsive.css">
+  /* ---- shell ---- */
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+  /* ---- masthead ---- */
+  .masthead{padding:clamp(48px,9vh,110px) 0 clamp(32px,5vh,56px)}
+  .eyebrow{font-family:var(--ff-mono);font-size:11px;letter-spacing:0.28em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:22px;
+    display:flex;gap:14px;align-items:center}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--lime);
+    box-shadow:0 0 12px var(--lime);animation:pulse 2.4s var(--ease) infinite}
+  .display{font-family:var(--ff-display);font-weight:600;line-height:0.84;
+    letter-spacing:-0.02em;font-size:clamp(72px,17vw,230px);text-transform:uppercase}
+  .display .slash{color:var(--lime)}
+  .lede{font-family:var(--ff-sans);font-weight:300;max-width:40ch;
+    font-size:clamp(14px,1.5vw,17px);line-height:1.5;color:var(--muted);
+    margin-top:26px}
+
+  /* ---- index grid ---- */
+  .index-head{display:flex;justify-content:space-between;align-items:baseline;
+    border-top:1px solid var(--rule-strong);padding-top:16px;margin-bottom:6px}
+  .index-head span{font-family:var(--ff-mono);font-size:10px;letter-spacing:0.2em;
+    text-transform:uppercase;color:var(--dim)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:0;
+    border-bottom:1px solid var(--rule)}
+  .card{position:relative;display:flex;flex-direction:column;gap:18px;
+    padding:34px 30px 30px;border-top:1px solid var(--rule);
+    border-left:1px solid var(--rule);min-height:230px;
+    transition:background var(--ease) 0.5s;isolation:isolate}
+  .card:nth-child(odd){border-left:none}
+  .card::after{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:0;
+    background:var(--lime);transition:width 0.5s var(--ease);z-index:2}
+  .card:hover{background:rgba(184,255,61,0.03)}
+  .card:hover::after{width:100%}
+  .card-soon{opacity:0.5;cursor:default}
+  .card-soon:hover{background:none}
+  .card-soon:hover::after{width:0}
+  .card-soon .status{color:var(--dim)}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start}
+  .folio{font-family:var(--ff-display);font-weight:500;font-size:30px;
+    letter-spacing:0.02em;line-height:1;color:var(--fg);transition:color 0.4s var(--ease)}
+  .card:hover .folio{color:var(--lime)}
+  .status{font-family:var(--ff-mono);font-size:9px;letter-spacing:0.16em;
+    text-transform:uppercase;padding:4px 8px;border:1px solid var(--rule-strong);
+    border-radius:999px;color:var(--muted);white-space:nowrap}
+  .status[data-s="live"]{color:var(--lime);border-color:rgba(184,255,61,0.4)}
+  .status[data-s="lab"]{color:var(--lime-2);border-color:rgba(158,234,30,0.35)}
+  .card-title{font-family:var(--ff-display);font-weight:500;
+    font-size:clamp(28px,3.4vw,42px);line-height:0.95;letter-spacing:-0.01em;
+    text-transform:uppercase}
+  .card-desc{font-family:var(--ff-sans);font-weight:300;font-size:13.5px;
+    line-height:1.5;color:var(--muted);max-width:34ch;margin-top:-4px}
+  .card-foot{margin-top:auto;display:flex;justify-content:space-between;
+    align-items:center;font-family:var(--ff-mono);font-size:10px;
+    letter-spacing:0.18em;text-transform:uppercase;color:var(--dim)}
+  .card-foot .go{color:var(--muted);transition:transform 0.5s var(--ease),color 0.4s var(--ease)}
+  .card:hover .go{color:var(--lime);transform:translateX(6px)}
+
+  /* ---- footer note ---- */
+  .colophon{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+    padding:40px 0 80px;font-family:var(--ff-mono);font-size:10px;
+    letter-spacing:0.16em;text-transform:uppercase;color:var(--dim)}
+
+  /* ---- statusbar ---- */
+  .statusbar{position:fixed;bottom:0;left:0;right:0;height:var(--statusbar);z-index:20;
+    display:flex;align-items:center;gap:26px;padding:0 28px;
+    background:rgba(15,17,23,0.85);backdrop-filter:blur(14px);
+    border-top:1px solid var(--rule);font-family:var(--ff-mono);
+    font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);
+    overflow:hidden;white-space:nowrap}
+  .statusbar .seg{display:flex;gap:8px;align-items:center}
+  .statusbar .k{color:var(--dim)}
+  .statusbar .cursor{display:inline-block;width:6px;height:12px;background:var(--lime);
+    margin-left:2px;animation:blink 1.1s steps(1) infinite;vertical-align:middle}
+  .statusbar .live{margin-left:auto;display:flex;gap:8px;align-items:center;color:var(--lime)}
+  .statusbar .live .ld{width:6px;height:6px;border-radius:50%;background:var(--lime);
+    box-shadow:0 0 10px var(--lime);animation:pulse 2.4s var(--ease) infinite}
+
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
+  @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .fu{opacity:0;animation:fadeUp 0.8s var(--ease) forwards}
+
+  @media (max-width:760px){
+    .grid{grid-template-columns:1fr}
+    .card{border-left:none}
+    .statusbar{gap:16px}
+    .statusbar .seg.loc, .statusbar .seg.file{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .fu{animation:none;opacity:1;transform:none}
+    .dot,.ld{animation:none}
+    .cursor{animation:none}
+    .card:hover .go{transform:none}
+  }
+</style>
 </head>
 <body>
-<div id="root"></div>
+  <header class="topbar">
+    <a class="wordmark" href="/">André Finageiv</a>
+    <span class="tag">Index / 2026</span>
+  </header>
 
-<script>
-  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-    "gridDebug": false,
-    "fontScale": 1
-  }/*EDITMODE-END*/;
-</script>
+  <main class="wrap">
+    <section class="masthead">
+      <div class="eyebrow fu" style="animation-delay:0ms"><span class="dot"></span> § Workbench / São Paulo · BR</div>
+      <h1 class="display fu" style="animation-delay:80ms">Index<span class="slash">.</span></h1>
+      <p class="lede fu" style="animation-delay:200ms">
+        A live shelf of everything in flight — the portfolio, shader studies,
+        and interface experiments. New pieces land here as they ship.
+      </p>
+    </section>
 
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+    <div class="index-head fu" style="animation-delay:260ms">
+      <span>Directory</span><span id="count">— entries</span>
+    </div>
 
-<script src="data.js"></script>
-<script type="text/babel" src="components/Shell.jsx"></script>
-<script type="text/babel" src="components/Viewport.jsx"></script>
-<script type="text/babel" src="components/Console.jsx"></script>
-<script type="text/babel" src="components/DeepDive.jsx"></script>
-<script type="text/babel" src="components/AboutPage.jsx"></script>
-<script type="text/babel" src="components/ContactPage.jsx"></script>
-<script type="text/babel" src="app.jsx"></script>
+    <div class="grid">
+      <a class="card fu" style="animation-delay:300ms" href="/portfolio/">
+        <div class="card-top"><div class="folio">01</div><div class="status" data-s="live">Live</div></div>
+        <div class="card-title">Portfolio 2026</div>
+        <p class="card-desc">Personal design portfolio — four cases, deep-dives, About &amp; Contact.</p>
+        <div class="card-foot"><span>Site · Editorial</span><span class="go">Open ↗</span></div>
+      </a>
+
+      <a class="card fu" style="animation-delay:360ms" href="/fluted-glass/">
+        <div class="card-top"><div class="folio">02</div><div class="status" data-s="lab">Lab</div></div>
+        <div class="card-title">Fluted Glass</div>
+        <p class="card-desc">WebGL refraction shader study — a faithful replica of the Semplice fluted-glass effect.</p>
+        <div class="card-foot"><span>WebGL · Shader</span><span class="go">Open ↗</span></div>
+      </a>
+
+      <a class="card fu" style="animation-delay:420ms" href="/dashboard">
+        <div class="card-top"><div class="folio">03</div><div class="status">Study</div></div>
+        <div class="card-title">EnergyAPM</div>
+        <p class="card-desc">Asset Performance Management — a real-time control-room interface study.</p>
+        <div class="card-foot"><span>SaaS · Dashboard</span><span class="go">Open ↗</span></div>
+      </a>
+
+      <a class="card fu" style="animation-delay:480ms" href="/marathon-preview">
+        <div class="card-top"><div class="folio">04</div><div class="status">Study</div></div>
+        <div class="card-title">Marathon HUD</div>
+        <p class="card-desc">Race-telemetry heads-up widget — live pace, splits, and effort readouts.</p>
+        <div class="card-foot"><span>Widget · HUD</span><span class="go">Open ↗</span></div>
+      </a>
+
+      <div class="card card-soon fu" style="animation-delay:540ms" aria-disabled="true">
+        <div class="card-top"><div class="folio">05</div><div class="status">Soon</div></div>
+        <div class="card-title">Button System</div>
+        <p class="card-desc">Headless button showcase on Base UI — variants, sizes, states, theming. (Vite build — wiring up.)</p>
+        <div class="card-foot"><span>Components · Vite</span><span class="go">Building…</span></div>
+      </div>
+    </div>
+
+    <div class="colophon">
+      <span>© 2026 André Finageiv</span>
+      <span>Built in São Paulo · 23.55°S 46.63°W</span>
+      <span>Index.2026</span>
+    </div>
+  </main>
+
+  <footer class="statusbar">
+    <span class="seg"><span class="k">Sys</span> <span id="clock">--:--:--</span><span class="cursor"></span></span>
+    <span class="seg loc"><span class="k">Loc</span> São Paulo · 23.55°S 46.63°W</span>
+    <span class="seg file"><span class="k">File</span> Index.2026</span>
+    <span class="live"><span class="ld"></span> Live</span>
+  </footer>
+
+  <script>
+    // entry count
+    document.getElementById('count').textContent =
+      String(document.querySelectorAll('.grid .card').length).padStart(2,'0') + ' entries';
+
+    // live São Paulo clock
+    const clock = document.getElementById('clock');
+    function tick(){
+      try{
+        clock.textContent = new Intl.DateTimeFormat('en-GB', {
+          timeZone:'America/Sao_Paulo', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+        }).format(new Date());
+      }catch(e){ clock.textContent = new Date().toLocaleTimeString('en-GB'); }
+    }
+    tick(); setInterval(tick, 1000);
+  </script>
 </body>
 </html>

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marathon HUD Widget</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+/* ── Tokens ─────────────────────────────────────────────────────────────────
+   All text on #060606 — verified WCAG ratios:
+   #39FF14  15.1:1  AAA   primary / active
+   #2ECC1A   8.8:1  AAA   secondary labels
+   #228822   4.8:1  AA    muted / sublabels
+   #AAFF00  16.6:1  AAA   warn 50–79%
+   #FF3300   5.7:1  AA    crit 80–100%
+──────────────────────────────────────────────────────────────────────────── */
+:root {
+  --bg:      #060606;
+  --panel:   #040D04;
+  --border:  #143A14;
+  --accent:  #39FF14;
+  --sec:     #2ECC1A;
+  --muted:   #228822;
+  --warn:    #AAFF00;
+  --crit:    #FF3300;
+  --crit-dk: #6B0000;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #020902;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+}
+
+/* ── macOS menu bar ─────────────────────────────────────────────────────── */
+.menubar {
+  width: 340px;
+  background: #1C1C1E;
+  padding: 5px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  border-radius: 6px 6px 0 0;
+}
+.mb-item { color: #D8D8D8; font-size: 13px; font-family: -apple-system, sans-serif; }
+.mb-active {
+  background: rgba(57,255,20,0.08);
+  border: 1px solid rgba(57,255,20,0.25);
+  padding: 1px 8px;
+  color: var(--accent);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+}
+
+/* ── Widget shell ───────────────────────────────────────────────────────── */
+.widget {
+  width: 340px;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  /* Top-right angular cut */
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+  border-left:   1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  border-right:  1px solid var(--border);
+}
+
+/* Top accent rule (stops before the cut) */
+.widget-top-rule {
+  position: absolute;
+  top: 0; left: 0; right: 18px;
+  height: 2px;
+  background: var(--accent);
+  z-index: 20;
+}
+
+/* Diagonal cut line */
+.widget-cut {
+  position: absolute;
+  top: 0; right: 0;
+  width: 26px; height: 26px;
+  z-index: 20;
+  overflow: hidden;
+}
+.widget-cut::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 36px; height: 2px;
+  background: var(--accent);
+  transform-origin: top right;
+  transform: rotate(45deg) translateY(-1px);
+}
+
+/* Plus-grid texture */
+.plus-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  /* Repeating cross/plus pattern */
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.18;
+}
+
+/* Scan lines */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(0,0,0,0.09) 3px, rgba(0,0,0,0.09) 4px
+  );
+}
+
+/* Ghost mirror text — decorative background */
+.ghost-text {
+  position: absolute;
+  right: -8px;
+  top: 38px;
+  font-family: 'Orbitron', monospace;
+  font-size: 52px;
+  font-weight: 900;
+  color: rgba(57,255,20,0.03);
+  letter-spacing: -0.02em;
+  transform: scaleX(-1);
+  pointer-events: none;
+  z-index: 1;
+  white-space: nowrap;
+  line-height: 1;
+  user-select: none;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.w-header {
+  background: var(--panel);
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.h-left {}
+.h-sys {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.h-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.h-right { display: flex; align-items: center; gap: 8px; }
+.h-status {
+  border: 1px solid var(--muted);
+  padding: 3px 7px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.h-dot {
+  width: 5px; height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+.h-gear {
+  width: 24px; height: 24px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.h-gear svg { width: 12px; height: 12px; stroke: var(--muted); fill: none; stroke-width: 1.5; }
+
+/* ── Body ───────────────────────────────────────────────────────────────── */
+.w-body {
+  padding: 13px 14px;
+  position: relative;
+  z-index: 5;
+}
+
+/* Section header */
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 9px;
+}
+.sec-slashes {
+  font-size: 14px;
+  color: var(--border);
+  letter-spacing: -0.08em;
+  margin-right: 7px;
+  font-weight: bold;
+}
+.sec-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.sec-rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--border), transparent);
+  margin-left: 8px;
+}
+
+/* Metric block */
+.metric {
+  margin-bottom: 12px;
+}
+.metric-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.metric-name {
+  font-size: 12px;
+  color: var(--sec);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.metric-pct {
+  font-family: 'Orbitron', monospace;
+  font-size: 22px;
+  font-weight: 700;
+}
+.pct-ok   { color: var(--accent); }
+.pct-warn { color: var(--warn); }
+.pct-crit { color: var(--crit); }
+
+/* HUD bar — segmented with tick marks */
+.hud-bar {
+  position: relative;
+  height: 12px;
+  background: #050E05;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+/* Segment dividers overlay */
+.hud-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent calc(10% - 1px),
+    rgba(6,6,6,0.55) calc(10% - 1px),
+    rgba(6,6,6,0.55) 10%
+  );
+  z-index: 3;
+  pointer-events: none;
+}
+.hud-fill { height: 100%; position: relative; z-index: 2; }
+.hud-ok   { background: var(--accent); }
+.hud-warn { background: var(--warn); }
+/* Diagonal hazard stripe for critical */
+.hud-crit {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--crit)    0,
+    var(--crit)    5px,
+    var(--crit-dk) 5px,
+    var(--crit-dk) 10px
+  );
+}
+/* White edge tick */
+.hud-fill::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 0;
+  width: 2px; height: 100%;
+  background: rgba(255,255,255,0.5);
+  z-index: 4;
+}
+
+/* Hazard stripe decorative band — shows under critical bars */
+.hazard-band {
+  height: 6px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255,51,0,0.18) 0,
+    rgba(255,51,0,0.18) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  border-top: 1px solid rgba(255,51,0,0.2);
+  margin-top: 2px;
+}
+
+.metric-sub {
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.metric-reset {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+.metric-reset span { color: var(--sec); }
+.crit-badge {
+  font-size: 11px;
+  color: var(--crit);
+  letter-spacing: 0.14em;
+  border: 1px solid rgba(255,51,0,0.35);
+  padding: 1px 5px;
+  text-transform: uppercase;
+}
+
+/* Section divider */
+.sec-div {
+  margin: 12px 0;
+  position: relative;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+}
+.sec-div::before {
+  content: '//';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg);
+  padding: 0 6px;
+  color: var(--border);
+  font-size: 12px;
+  letter-spacing: -0.05em;
+}
+
+/* ── Token card ─────────────────────────────────────────────────────────── */
+.data-card {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  position: relative;
+  /* Angular bottom-right cut */
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+.data-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 15px; height: 2px;
+  background: var(--accent);
+  transform-origin: bottom right;
+  transform: rotate(45deg) translate(7px, -5px);
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+}
+.card-lbl {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.card-rule { flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
+.card-cost { font-size: 12px; color: var(--muted); letter-spacing: 0.06em; }
+
+.token-cols { display: flex; }
+.token-col  { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.t-rule     { width: 28px; height: 2px; }
+.t-val      { font-size: 15px; font-weight: bold; letter-spacing: 0.04em; }
+.t-lbl      { font-size: 12px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* ── Bar chart ──────────────────────────────────────────────────────────── */
+.chart-area {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 80px;
+  margin-top: 8px;
+  border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2px 0 2px;
+}
+.chart-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  height: 100%;
+}
+.c-wrap { flex: 1; width: 100%; display: flex; align-items: flex-end; }
+.c-bar { width: 100%; min-height: 2px; }
+.c-bar.today { background: var(--accent); }
+.c-bar.past  { background: var(--muted); }
+.c-bar.zero  { background: #0C1C0C; height: 2px; }
+.c-day {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.c-day.today { color: var(--accent); font-weight: bold; }
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+.w-footer {
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  padding: 8px 14px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 5;
+}
+.f-left  { display: flex; align-items: center; gap: 8px; }
+.f-coord {
+  font-size: 11px;
+  color: var(--border);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.f-sync { font-size: 12px; color: var(--muted); letter-spacing: 0.10em; text-transform: uppercase; }
+.f-sync span { color: var(--sec); }
+.f-btns { display: flex; gap: 5px; }
+.f-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  background: transparent;
+  padding: 3px 9px;
+  cursor: pointer;
+}
+.f-btn.quit { color: #185518; border-color: #0C1C0C; }
+</style>
+</head>
+<body>
+
+<div style="width:340px; display:flex; flex-direction:column;">
+
+  <!-- Menu bar -->
+  <div class="menubar">
+    <span class="mb-item">Thu Mar 19</span>
+    <span class="mb-item">9:41 AM</span>
+    <span class="mb-active">✦ 59%</span>
+    <span class="mb-item" style="font-size:15px;">🔋</span>
+  </div>
+
+  <div class="widget">
+    <div class="widget-top-rule"></div>
+    <div class="widget-cut"></div>
+    <div class="plus-grid"></div>
+    <div class="scanlines"></div>
+    <!-- Ghost mirror text (decorative) -->
+    <div class="ghost-text">USAGE</div>
+
+    <!-- Header -->
+    <div class="w-header">
+      <div class="h-left">
+        <div class="h-sys">// SYS · NOMINAL</div>
+        <div class="h-title">Claude Usage</div>
+      </div>
+      <div class="h-right">
+        <div class="h-status">
+          <div class="h-dot"></div>
+          ONLINE
+        </div>
+        <div class="h-gear">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="w-body">
+
+      <!-- Current Session -->
+      <div class="sec-head">
+        <span class="sec-slashes">//</span>
+        <span class="sec-label">Current Session</span>
+        <span class="sec-rule"></span>
+      </div>
+      <div class="metric">
+        <div class="metric-top">
+          <span class="metric-name">Session Usage</span>
+          <span class="metric-pct pct-ok">5%</span>
+        </div>
+        <div class="hud-bar">
+          <div class="hud-fill hud-ok" style="width:5%"></div>
+        </div>
+        <div class="metric-sub">
+          <span class="metric-reset">Resets in <span>4 hr 40 min</span></span>
+        </div>
+      </div>
+
+      <div class="sec-div"></div>
+
+      <!-- Weekly Limits -->
+      <div class="sec-head">
+        <span class="sec-slashes">//</span>
+        <span class="sec-label">Weekly Limits</span>
+        <span class="sec-rule"></span>
+      </div>
+      <div class="metric">
+        <div class="metric-top">
+          <span class="metric-name">All Models</span>
+          <span class="metric-pct pct-crit">59%</span>
+        </div>
+        <div class="hud-bar">
+          <div class="hud-fill hud-crit" style="width:59%"></div>
+        </div>
+        <!-- Hazard stripe band under critical bar -->
+        <div class="hazard-band"></div>
+        <div class="metric-sub">
+          <span class="metric-reset">Resets <span>Mon 9:00 AM</span></span>
+          <span class="crit-badge">▽ WARN</span>
+        </div>
+      </div>
+
+      <div class="sec-div"></div>
+
+      <!-- Token stats -->
+      <div class="data-card">
+        <div class="card-head">
+          <span class="card-lbl">Today</span>
+          <span class="card-rule"></span>
+          <span class="card-cost">$0.0284</span>
+        </div>
+        <div class="token-cols">
+          <div class="token-col">
+            <div class="t-rule" style="background:var(--accent)"></div>
+            <div class="t-val" style="color:var(--accent)">42.1k</div>
+            <div class="t-lbl">Input</div>
+          </div>
+          <div class="token-col">
+            <div class="t-rule" style="background:var(--warn)"></div>
+            <div class="t-val" style="color:var(--warn)">8.4k</div>
+            <div class="t-lbl">Output</div>
+          </div>
+          <div class="token-col">
+            <div class="t-rule" style="background:var(--muted)"></div>
+            <div class="t-val" style="color:var(--muted)">12.7k</div>
+            <div class="t-lbl">Cache</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7-Day chart -->
+      <div class="data-card" style="margin-bottom:0; padding-bottom:12px;">
+        <div class="card-head">
+          <span class="card-lbl">7-Day Activity</span>
+          <span class="card-rule"></span>
+        </div>
+        <div class="chart-area">
+          <div class="chart-col">
+            <div class="c-wrap"><div class="c-bar past" style="height:30%"></div></div>
+            <div class="c-day">Thu</div>
+          </div>
+          <div class="chart-col">
+            <div class="c-wrap"><div class="c-bar past" style="height:55%"></div></div>
+            <div class="c-day">Fri</div>
+          </div>
+          <div class="chart-col">
+            <div class="c-wrap"><div class="c-bar zero"></div></div>
+            <div class="c-day">Sat</div>
+          </div>
+          <div class="chart-col">
+            <div class="c-wrap"><div class="c-bar zero"></div></div>
+            <div class="c-day">Sun</div>
+          </div>
+          <div class="chart-col">
+            <div class="c-wrap"><div class="c-bar past" style="height:80%"></div></div>
+            <div class="c-day">Mon</div>
+          </div>
+          <div class="chart-col">
+            <div class="c-wrap"><div class="c-bar past" style="height:45%"></div></div>
+            <div class="c-day">Tue</div>
+          </div>
+          <div class="chart-col">
+            <div class="c-wrap"><div class="c-bar today" style="height:100%"></div></div>
+            <div class="c-day today">Wed</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /w-body -->
+
+    <!-- Footer -->
+    <div class="w-footer">
+      <div class="f-left">
+        <span class="f-coord">[T+00:02]</span>
+        <span class="f-sync">Last sync <span>2 min ago</span></span>
+      </div>
+      <div class="f-btns">
+        <button class="f-btn">Refresh</button>
+        <button class="f-btn quit">Quit</button>
+      </div>
+    </div>
+
+  </div><!-- /widget -->
+</div>
+
+</body>
+</html>
