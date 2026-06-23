@@ -1,53 +1,52 @@
-# Portfolio 2026
+# finageiv.com — work index
 
-André Finageiv's design portfolio — product design, enterprise SaaS, growth, and brand work.
+André Finageiv's site. A landing **hub** at the root links to the portfolio and a growing set of experiments and interface studies.
 
 **Live →** https://portfolio-finaga-5767s-projects.vercel.app
 
 ---
 
-## What this is
+## Structure
 
-Four case studies + About + Contact, each with a slide-up deep-dive panel. Editorial-luxury visual system with a cockpit-style statusbar. Based in São Paulo.
+```
+index.html            # the hub (Index 2026) — links every page below
+vercel.json           # cleanUrls + trailingSlash:true + asset caching
+portfolio/            # the main portfolio (React 18 via CDN, zero build)
+fluted-glass/         # WebGL fluted-glass shader study (vanilla WebGL, zero build)
+dashboard/            # EnergyAPM — interface study (static)
+marathon-preview/     # Marathon HUD widget (static)
+option2/              # built output of the Button System (served at /option2/)
+option2-src/          # Vite source for option2 — build, then copy dist → /option2/
+```
 
-- `001` BaxEnergy Farsight — enterprise SaaS
-- `002` BaxEnergy Grid-Ops — enterprise SaaS
-- `003` Toptal Growth — growth
-- `004` Fit4Box — brand
+Every page is its own folder with an `index.html`, served at `/<name>/`. `vercel.json` sets `trailingSlash: true` so subpaths keep their slash (the portfolio uses relative script paths and breaks without it).
 
 ## Stack
 
-- **React 18** via UMD CDN
-- **Babel Standalone** compiles `.jsx` at runtime
-- Plain CSS with custom properties
-- **Zero build step** — no bundler, no `package.json`, no runtime dependencies
-
-The constraint is deliberate: a portfolio shouldn't need `npm install` to open. Every file here is human-editable and browser-runnable as-is.
+Most of the site is **zero-build**: the portfolio and fluted-glass run React-via-CDN / vanilla WebGL with no bundler. The one exception is **option2**, a Vite app — its source lives in `option2-src/` and its built output is committed to `option2/`.
 
 ## Local dev
 
 ```bash
-npx serve -l 5173 .
+npx serve -l 5173 .      # serves the whole site; open http://localhost:5173
 ```
 
-Open http://localhost:5173.
+### Rebuilding option2
+
+```bash
+cd option2-src
+npm install
+npm run build            # vite build (base is /option2/)
+rm -rf ../option2 && mkdir ../option2 && cp -R dist/. ../option2/
+```
+
+Then commit the updated `option2/`.
 
 ## Deploy
 
-Static host. Currently deploying on Vercel via GitHub integration — every push to `main` auto-deploys production. See [`DEPLOY.md`](./DEPLOY.md) for details and alternatives (Netlify, CLI).
+Vercel via GitHub integration — every push to `main` auto-deploys production (project `portfolio`). The hub lives at the repo root, so Vercel's Root Directory stays `/`. See [`portfolio/DEPLOY.md`](./portfolio/DEPLOY.md).
 
-## Structure
-
-```
-index.html          # shell — script/stylesheet load order matters
-app.jsx             # top-level state, routing, keyboard, theme
-data.js             # case content + editorial SVG plate factory
-components/         # Shell, Viewport, Console, DeepDive, AboutPage, ContactPage
-css/                # tokens, shell, work, deepdive, pages, about, contact, responsive
-assets/             # hero imagery per case
-```
-
-Internal design-system notes and session history live in [`PROJECT.md`](./PROJECT.md).
+Internal design-system notes and session history for the portfolio live in [`portfolio/PROJECT.md`](./portfolio/PROJECT.md).
 
 ---
 

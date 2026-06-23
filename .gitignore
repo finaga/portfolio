@@ -41,3 +41,6 @@ lerna-debug.log*
 *.swp
 *.swo
 *.suo
+
+# option2: source build artifacts (dist is copied to /option2 and committed there)
+option2-src/dist/
