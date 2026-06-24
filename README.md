@@ -13,7 +13,6 @@ index.html            # the hub (Index 2026) — links every page below
 vercel.json           # cleanUrls + trailingSlash:true + asset caching
 portfolio/            # the main portfolio (React 18 via CDN, zero build)
 fluted-glass/         # WebGL fluted-glass shader study (vanilla WebGL, zero build)
-dashboard/            # EnergyAPM — interface study (static)
 marathon-preview/     # Marathon HUD widget (static)
 option2/              # built output of the Button System (served at /option2/)
 option2-src/          # Vite source for option2 — build, then copy dist → /option2/
