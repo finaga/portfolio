@@ -2,7 +2,8 @@
   "cleanUrls": true,
   "trailingSlash": true,
   "rewrites": [
-    { "source": "/gallery/:path*", "destination": "/gallery/index.html" }
+    { "source": "/gallery", "destination": "/gallery/index.html" },
+    { "source": "/gallery/(.*)", "destination": "/gallery/index.html" }
   ],
   "headers": [
     {
