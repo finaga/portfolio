@@ -1,0 +1,129 @@
+/* hero.css — editorial manifesto hero, type at the lower third */
+
+.hero {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding-top: calc(var(--header-h) + var(--sp-6));
+  padding-bottom: var(--sp-8);
+}
+
+/* load-reveal gate: hidden only when JS + motion are available */
+.motion-ok .hero-gate {
+  visibility: hidden;
+}
+
+.hero-eyebrow {
+  color: var(--muted);
+}
+
+.hero-block {
+  margin-top: auto;
+}
+
+.hero-title {
+  font-size: clamp(2.4rem, 6.6vw, 8.25rem);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  text-transform: uppercase;
+}
+
+.hero-line {
+  display: block;
+}
+
+.hero-line-ghost {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--fg);
+}
+
+.hero-under {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-6);
+  margin-top: var(--sp-9);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--rule);
+}
+
+.hero-sub {
+  font-size: var(--fs-lg);
+  color: var(--muted);
+  max-width: 34ch;
+  text-wrap: balance;
+}
+
+.hero-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-7);
+  flex-shrink: 0;
+}
+
+.hero-cta {
+  white-space: nowrap;
+  font-family: var(--ff-mono);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  border: 1px solid var(--rule-strong);
+  padding: var(--sp-3) var(--sp-5);
+  transition:
+    background var(--dur-fast) ease,
+    border-color var(--dur-fast) ease;
+}
+
+.hero-cta:hover {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: var(--ink);
+}
+
+.hero-cta:active {
+  transform: translateY(1px);
+}
+
+.hero-status {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lime);
+  outline: 1px solid var(--rule-strong);
+}
+
+@media (max-width: 767px) {
+  .hero-under {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-5);
+    margin-top: var(--sp-7);
+  }
+
+  .hero-title {
+    font-size: clamp(2.1rem, 10.5vw, 3.4rem);
+  }
+
+  .hero-foot {
+    gap: var(--sp-5);
+  }
+
+  .hero-cta {
+    padding: var(--sp-2) var(--sp-4);
+  }
+}

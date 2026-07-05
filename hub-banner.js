@@ -50,6 +50,12 @@
       '.stage{padding-top:' + (100 + H) + 'px!important}';
   } else if (layout === 'fluted') {
     off = '.stage{top:' + H + 'px!important}.toggle{top:' + (20 + H) + 'px!important}';
+  } else if (layout === 'folio') {
+    // folio: fixed .site-header at top:0 + 100dvh hero — shift both
+    off =
+      'html{scroll-padding-top:' + H + 'px}body{padding-top:' + H + 'px!important}' +
+      '.site-header{top:' + H + 'px!important}' +
+      '.hero{min-height:calc(100dvh - ' + H + 'px)!important}';
   } else {
     off = 'html{scroll-padding-top:' + H + 'px}body{padding-top:' + H + 'px!important}';
   }

@@ -1,0 +1,97 @@
+/* footer.css — the one deliberate theme flip: ink finale */
+
+.footer {
+  background: var(--inv-bg);
+  color: var(--inv-fg);
+  padding-top: var(--sp-12);
+  padding-bottom: var(--sp-6);
+}
+
+.footer ::selection {
+  background: var(--lime);
+  color: var(--ink);
+}
+
+.footer :focus-visible {
+  outline-color: var(--inv-fg);
+}
+
+.footer-avail {
+  font-size: var(--fs-display-sm);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-heading);
+  max-width: 24ch;
+  color: var(--inv-muted);
+}
+
+.footer-email {
+  display: inline-block;
+  margin-top: var(--sp-8);
+  font-size: clamp(1.9rem, 6.2vw, 7rem);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--inv-fg);
+  transition: color var(--dur-fast) ease;
+  overflow-wrap: anywhere;
+}
+
+.footer-email:hover {
+  color: var(--lime);
+}
+
+.footer-hint {
+  margin-top: var(--sp-4);
+  color: var(--inv-muted);
+}
+
+.footer-links {
+  display: flex;
+  gap: var(--sp-7);
+  margin-top: var(--sp-10);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--inv-rule);
+}
+
+.footer-links a {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--inv-muted);
+  transition: color var(--dur-fast) ease;
+}
+
+.footer-links a:hover {
+  color: var(--lime);
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  margin-top: var(--sp-11);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--inv-muted);
+}
+
+.footer-bottom a {
+  transition: color var(--dur-fast) ease;
+}
+
+.footer-bottom a:hover {
+  color: var(--lime);
+}
+
+@media (max-width: 640px) {
+  .footer-bottom {
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+}

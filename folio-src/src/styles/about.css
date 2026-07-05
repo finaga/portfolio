@@ -1,0 +1,122 @@
+/* about.css — bio spread, stats ledger, client list */
+
+.about {
+  padding-top: var(--sp-6);
+  padding-bottom: var(--sp-12);
+}
+
+.about .rule {
+  margin-bottom: var(--sp-5);
+}
+
+.about-grid {
+  row-gap: var(--sp-6);
+}
+
+.about-title {
+  grid-column: 1 / 4;
+  font-size: var(--fs-display-lg);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  text-transform: uppercase;
+}
+
+.about-body {
+  grid-column: 5 / 11;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  padding-top: var(--sp-2);
+}
+
+.about-body p {
+  font-size: var(--fs-lg);
+  line-height: var(--lh-body);
+  max-width: 58ch;
+}
+
+.about-body p:last-child {
+  color: var(--muted);
+}
+
+/* stats ledger */
+.stats {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-5);
+  margin-top: var(--sp-11);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--rule);
+}
+
+.stat-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.stat-value {
+  font-size: var(--fs-display-md);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  color: var(--muted);
+}
+
+/* clients */
+.clients {
+  margin-top: var(--sp-11);
+}
+
+.clients-title {
+  margin-bottom: var(--sp-5);
+}
+
+.client-list {
+  list-style: none;
+}
+
+.client-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  padding: var(--sp-4) 0;
+  border-top: 1px solid var(--rule);
+}
+
+.client-name {
+  font-size: var(--fs-display-sm);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-snug);
+  text-transform: uppercase;
+}
+
+.client-years {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.client-row-dim .client-name {
+  color: var(--dim);
+}
+
+@media (max-width: 900px) {
+  .about-title,
+  .about-body {
+    grid-column: 1 / -1;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-7) var(--sp-5);
+  }
+}

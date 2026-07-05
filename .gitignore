@@ -44,3 +44,6 @@ lerna-debug.log*
 
 # option2: source build artifacts (dist is copied to /option2 and committed there)
 option2-src/dist/
+
+# folio: source build artifacts (dist is copied to /folio and committed there)
+folio-src/dist/
