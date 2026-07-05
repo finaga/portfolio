@@ -244,8 +244,9 @@ function App() {
           </div>
         </div>
         <div className="row">
-          <label>Font scale · {fontScale.toFixed(2)}×</label>
+          <label htmlFor="tw-font-scale">Font scale · {fontScale.toFixed(2)}×</label>
           <input
+            id="tw-font-scale"
             type="range" min="0.85" max="1.25" step="0.05"
             value={fontScale}
             onChange={e => setFontScale(parseFloat(e.target.value))}

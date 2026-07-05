@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-05T00:00:00Z",
+  "title": "Design System: André Finageiv — Work Index & Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "void-ink": { "role": "neutral", "displayName": "Void Ink", "canonical": "oklch(6.5% 0.004 264)", "tonalRamp": ["#050608", "#0f1117", "#1a1d24", "#2a2e38", "#454b58", "#6b7280", "#9ca3af", "#d1d5db"] },
+      "cockpit-black": { "role": "neutral", "displayName": "Cockpit Black", "canonical": "oklch(16% 0.006 264)", "tonalRamp": ["#050608", "#0f1117", "#1a1d24", "#2a2e38", "#454b58", "#6b7280", "#9ca3af", "#d1d5db"] },
+      "cockpit-lime": { "role": "primary", "displayName": "Cockpit Lime", "canonical": "oklch(93% 0.28 126)", "tonalRamp": ["#2e3d0c", "#4d6614", "#71941d", "#96c227", "#B8FF3D", "#c8ff66", "#daff96", "#ecffcb"] },
+      "cockpit-lime-deep": { "role": "primary", "displayName": "Cockpit Lime Deep", "canonical": "oklch(87% 0.26 126)", "tonalRamp": ["#293407", "#455710", "#647d19", "#81a321", "#9EEA1E", "#b8f050", "#d3f68c", "#eefbc6"] },
+      "bone-white": { "role": "neutral", "displayName": "Bone White", "canonical": "oklch(93% 0.002 264)", "tonalRamp": ["#050608", "#33353a", "#606369", "#8e9095", "#bcbdc0", "#dcdcdb", "#ECECEA", "#f8f8f7"] },
+      "paper-white": { "role": "neutral", "displayName": "Paper White", "canonical": "oklch(96% 0.006 90)", "tonalRamp": ["#08070a", "#353330", "#615e58", "#8e8a82", "#bab5aa", "#dbd8d1", "#F5F4F0", "#fbfaf8"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Case numerals (001), About wordmark. Heaviest, largest, rarest voice." },
+      "headline": { "displayName": "Headline", "purpose": "Case headlines (FARSIGHT), section titles." },
+      "body": { "displayName": "Body", "purpose": "Reading copy, console meta. 65-75ch cap." },
+      "label": { "displayName": "Label / Mono", "purpose": "Every cockpit readout, nav item, and eyebrow. Always uppercase, always mono." }
+    },
+    "shadows": [
+      { "name": "shadow-none", "value": "none", "purpose": "Default for every surface — cards, buttons, panels. The system is flat at rest." },
+      { "name": "shadow-glow-lime", "value": "0 0 8px var(--lime)", "purpose": "The ONLY glow in the system. Reserved for status dots signaling 'live/active' — never used for card elevation or depth." }
+    ],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(0.625, 0.05, 0, 1)", "purpose": "Universal easing curve for entrances, hovers, theme change." },
+      { "name": "dur-enter", "value": "0.8s", "purpose": "Section entrances, deep-dive slide-up." },
+      { "name": "dur-hover", "value": "0.6s", "purpose": "Underline-tail, card background hover." },
+      { "name": "dur-theme", "value": "0.6s", "purpose": "Dark/light theme crossfade." },
+      { "name": "dot-pulse", "value": "1.4s ease infinite, opacity 1→0.55 / scale 1→0.85", "purpose": "The system's only ambient loop — status dots only." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "900px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Outline Lime Button",
+      "kind": "button",
+      "refersTo": "button-outline-lime",
+      "description": "Primary CTA — hollow lime border at rest, solid lime fill on hover.",
+      "html": "<button class=\"ds-btn-outline-lime\">READ FULL CASE</button>",
+      "css": ".ds-btn-outline-lime { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: transparent; border: 1px solid #B8FF3D; color: #B8FF3D; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.15s cubic-bezier(0.625,0.05,0,1), color 0.15s cubic-bezier(0.625,0.05,0,1), transform 0.08s cubic-bezier(0.625,0.05,0,1); } .ds-btn-outline-lime:hover { background: #B8FF3D; color: #050608; } .ds-btn-outline-lime:focus-visible { outline: 2px solid #B8FF3D; outline-offset: 2px; } .ds-btn-outline-lime:active { transform: translate(1px, 1px); }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Back/close/subtle nav — no border, dims to 60% opacity at rest.",
+      "html": "<button class=\"ds-btn-ghost\">← BACK</button>",
+      "css": ".ds-btn-ghost { background: transparent; border: 0; padding: 8px 0; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: #E6E8EC; opacity: 0.6; cursor: pointer; transition: opacity 0.15s cubic-bezier(0.625,0.05,0,1), color 0.15s cubic-bezier(0.625,0.05,0,1); } .ds-btn-ghost:hover { opacity: 1; color: #B8FF3D; } .ds-btn-ghost:focus-visible { outline: 2px solid #B8FF3D; outline-offset: 2px; }"
+    },
+    {
+      "name": "Status Dot",
+      "kind": "custom",
+      "refersTo": "status-dot",
+      "description": "The LIVE indicator and availability dot — the system's only ambient animation.",
+      "html": "<span class=\"ds-dot ds-dot--pulse\"></span>",
+      "css": ".ds-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #B8FF3D; box-shadow: 0 0 8px #B8FF3D; } .ds-dot--pulse { animation: ds-dot-pulse 1.4s cubic-bezier(0.625,0.05,0,1) infinite; } @keyframes ds-dot-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.55; transform: scale(0.85); } }"
+    },
+    {
+      "name": "Mono Label",
+      "kind": "custom",
+      "refersTo": "ds-label",
+      "description": "Cockpit readout / eyebrow text — every instrument label in the system.",
+      "html": "<span class=\"ds-label ds-label--lime\">SYS / 14:32:07</span>",
+      "css": ".ds-label { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(230,232,236,0.45); } .ds-label--lime { color: #B8FF3D; } .ds-label--strong { color: #E6E8EC; }"
+    },
+    {
+      "name": "Card (interactive surface)",
+      "kind": "card",
+      "refersTo": "ds-card",
+      "description": "Flat, borderless, transparent-to-hover-tint. No shadow, no radius.",
+      "html": "<a class=\"ds-card ds-underline-tail\" href=\"#\">FARSIGHT</a>",
+      "css": ".ds-card { padding: 32px 24px; background: transparent; border: 0; color: inherit; text-decoration: none; cursor: pointer; transition: background 0.6s cubic-bezier(0.625,0.05,0,1); } .ds-card:hover { background: rgba(255,255,255,0.03); } .ds-underline-tail { position: relative; display: inline-block; } .ds-underline-tail::after { content: ''; position: absolute; left: 0; right: 0; bottom: -3px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left center; transition: transform 0.6s cubic-bezier(0.625,0.05,0,1); } .ds-underline-tail:hover::after { transform: scaleX(1); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Instrument Panel",
+    "overview": "This is a cockpit, not a brochure. The visual system reads as calibrated equipment: a live São Paulo clock, real coordinates (23.55°S 46.63°W), a statusbar with SYS / HH:MM:SS, folio-numbered project tabs, a pulsing ● LIVE dot. Editorial-luxury type (Big Shoulders at mega scale, Space Grotesk body) sits on top of this instrument chrome the way a fashion editorial sits on a gallery wall — the panel frames the work, it doesn't compete with it. The system explicitly rejects the generic template portfolio and cold gray minimalism. Every readout is real: real time, real coordinates, real URLs.",
+    "keyCharacteristics": [
+      "Near-black stage (#0f1117, deliberately lighter than true ink)",
+      "One accent color, spent with discipline",
+      "Sharp rectangles everywhere; radius reserved for dots and focus rings",
+      "Mono type for every readout/label; display type only for headlines and hero numerals",
+      "Flat surfaces at rest; the only glow in the system signals 'live'"
+    ],
+    "rules": [
+      { "name": "The One-Signal Rule", "body": "Lime is the only accent in the system. A second saturated color anywhere is a bug.", "section": "colors" },
+      { "name": "The Real-Data Rule", "body": "Every readout reflects real state. Never fabricate a stat or timestamp for decorative effect.", "section": "colors" },
+      { "name": "The Three-Register Rule", "body": "Display type headlines, Body type reads, Mono type instruments. A given piece of text belongs to exactly one register.", "section": "typography" },
+      { "name": "The Flat-by-Default, Glow-as-Signal Rule", "body": "Surfaces never cast shadows. The single exception is the lime glow, reserved exclusively for status dots signaling 'live'.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep every readout real — live clock, true coordinates, true URLs.",
+      "Do spend lime only at the named signature moments.",
+      "Do use --r-none for every card, button, and container.",
+      "Do signal 'active/live' with the lime glow, never a drop shadow.",
+      "Do keep type in its register: Display, Body, Mono.",
+      "Do cap body copy at 65-75ch."
+    ],
+    "donts": [
+      "Don't build a generic template portfolio: no identical card grids, no eyebrow kickers stacked above every section.",
+      "Don't default to cold gray minimalism.",
+      "Don't add a second saturated accent color anywhere.",
+      "Don't add shadows to cards, buttons, or panels for 'depth'.",
+      "Don't round a button or card corner.",
+      "Don't rewrite case-study copy without explicit sign-off."
+    ]
+  }
+}

@@ -34,7 +34,11 @@
     right: auto;
     width: 100%;
     height: auto;
-    overflow-y: visible;
+    /* Shorthand, not overflow-y alone: work.css sets overflow-x:hidden on
+       this element, and per spec a visible/non-visible axis pairing gets
+       the visible axis silently recomputed to auto. Harmless today (no
+       overflow occurs), but the shorthand is the correct, quirk-proof fix. */
+    overflow: visible;
     /* bottom padding clears the 28px fixed statusbar so end-of-content
        doesn't sit behind it. 80px gives ~50px of breathing room. */
     padding: 40px 24px 80px;
@@ -81,6 +85,10 @@
     justify-content: flex-start;
   }
   .project-tabs button { padding: 6px 10px; font-size: 9px; }
+  /* Each tab wraps to its own full-width row on mobile, so the vertical
+     hairline meant to separate horizontally-adjacent tabs has nowhere
+     correct to sit — it was landing mid-row as a stray tick. Hide it. */
+  .project-tabs .sep { display: none; }
 
   .statusbar {
     padding: 0 14px;
@@ -88,6 +96,11 @@
     font-size: 9px;
   }
   .statusbar .sep:nth-of-type(n+2) { display: none; }
+  /* Coordinates and the FILE readout are secondary at this width — SYS,
+     the city name, and LIVE are the load-bearing readouts. Full detail
+     returns at 900px+. */
+  .statusbar .sb-coords,
+  .statusbar .sb-file { display: none; }
 
   .deepdive section {
     grid-template-columns: 1fr;

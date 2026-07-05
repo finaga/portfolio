@@ -5,7 +5,7 @@ function Console({ caseData, onReadMore, nextCase, onNextCase, kpiTrigger, conso
     <div className="console" ref={consoleRef}>
       <div className="console-section enter" style={{ animationDelay: '80ms' }}>
         <span className="section-label">CASE / {caseData.num} · {caseData.domain.toUpperCase()}</span>
-        <h2 className="case-name" dangerouslySetInnerHTML={{
+        <h1 className="case-name" dangerouslySetInnerHTML={{
           __html: caseData.projectShort.toUpperCase().replace(/ /g, '<br/>')
         }}/>
       </div>

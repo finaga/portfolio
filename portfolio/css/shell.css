@@ -264,6 +264,7 @@ button.t-left:hover {
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+  white-space: nowrap;
   z-index: 31;
   opacity: 0.7;
   transition: background var(--dur-theme) var(--ease), color var(--dur-theme) var(--ease), border-color var(--dur-theme) var(--ease);

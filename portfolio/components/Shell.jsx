@@ -35,9 +35,9 @@ function StatusBar() {
     <footer className="statusbar">
       <span>SYS / <b>{formatTime(now)}</b><span className="cursor" aria-hidden="true"/></span>
       <span className="sep">·</span>
-      <span>LOC / <b>SÃO PAULO</b> · 23.55°S 46.63°W</span>
+      <span>LOC / <b>SÃO PAULO</b><span className="sb-coords"> · 23.55°S 46.63°W</span></span>
       <span className="sep">·</span>
-      <span>FILE / PORTFOLIO.2026</span>
+      <span className="sb-file">FILE / PORTFOLIO.2026</span>
       <span className="live"><span className="live-dot"/> LIVE</span>
     </footer>
   );

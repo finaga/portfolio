@@ -121,7 +121,11 @@ html[data-theme="dark"] .contact-card:hover {
 
 .cal-strip {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  /* minmax(0, 1fr), not a bare 1fr: a bare fr track's implicit minimum is
+     auto (its content's min-content), so 7 day-cells refuse to shrink
+     below their intrinsic width and blow out the whole grid — including
+     ancestors — past any container narrower than ~460px. */
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 4px;
   margin-top: 4px;
 }

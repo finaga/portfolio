@@ -1,0 +1,14 @@
+{
+  "files": [
+    "index.html",
+    "portfolio/index.html",
+    "folio/index.html",
+    "fluted-glass/index.html",
+    "marathon-preview/index.html",
+    "option2/index.html"
+  ],
+  "exclude": ["folio-src/**", "option2-src/**"],
+  "insertBefore": "</body>",
+  "commentSyntax": "html",
+  "cspChecked": true
+}
