@@ -1,0 +1,74 @@
+:root {
+  /* fluid rem: 1rem = 10px at the design width (--size), scales with viewport */
+  --size: 390;
+  --grid-cols: 4;
+  --grid-gap: 0.9rem;
+  --pad-x: 2rem;
+
+  --ff-display: 'Marcellus', Georgia, 'Times New Roman', serif;
+  --ff-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+
+  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --dur: 0.75s;
+  --dur-fade: 0.35s;
+
+  /* z-scale: content < header < drawer < menu < intro */
+  --z-header: 10;
+  --z-toggle: 3;
+  --z-drawer: 5;
+  --z-menu: 20;
+  --z-intro: 30;
+}
+
+@media (min-width: 650px) {
+  :root {
+    --size: 1500;
+    --grid-cols: 12;
+    --grid-gap: 1.7rem;
+  }
+}
+
+:root,
+[data-theme='light'] {
+  --bg: #fbfbfa;
+  --fg: #0e0e0d;
+  --muted: #6f6f6c;
+  --dim: #a5a5a2;
+  --rule: rgba(14, 14, 13, 0.12);
+  --accent: #0e0e0d;
+}
+
+[data-theme='dark'] {
+  --bg: #0f1117;
+  --fg: #ececea;
+  --muted: #9a9a97;
+  --dim: #6b6b68;
+  --rule: rgba(236, 236, 234, 0.14);
+  --accent: #b8ff3d;
+}
+
+html {
+  font-size: calc(1000vw / var(--size));
+  -webkit-text-size-adjust: none;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--ff-sans);
+  font-size: max(11px, min(1.7rem, 19px));
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html,
+  body {
+    overscroll-behavior: none;
+  }
+}

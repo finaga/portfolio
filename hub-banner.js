@@ -56,6 +56,9 @@
       'html{scroll-padding-top:' + H + 'px}body{padding-top:' + H + 'px!important}' +
       '.site-header{top:' + H + 'px!important}' +
       '.hero{min-height:calc(100dvh - ' + H + 'px)!important}';
+  } else if (layout === 'gallery') {
+    // gallery: absolutely-positioned .sh header at top:0 — shift it down
+    off = '.sh{top:' + H + 'px!important}';
   } else {
     off = 'html{scroll-padding-top:' + H + 'px}body{padding-top:' + H + 'px!important}';
   }

@@ -47,3 +47,6 @@ option2-src/dist/
 
 # folio: source build artifacts (dist is copied to /folio and committed there)
 folio-src/dist/
+
+# gallery: source build artifacts (dist is copied to /gallery and committed there)
+gallery-src/dist/
