@@ -106,7 +106,7 @@ function App() {
       else if (e.key === 'ArrowDown') { nextPlate(); e.preventDefault(); }
       else if (e.key === 'ArrowUp') { prevPlate(); e.preventDefault(); }
       else if (e.key === 'Enter') {
-        setDeepOpen(true);
+        if (!caseData.light) setDeepOpen(true);
       }
       else if (e.key === 'Escape' && deepOpen) {
         setDeepOpen(false);
@@ -160,11 +160,11 @@ function App() {
       e.preventDefault();
       el.scrollTop += e.deltaY;
       const remaining = el.scrollHeight - (el.scrollTop + el.clientHeight);
-      if (remaining < 80) setDeepOpen(true);
+      if (remaining < 80 && !caseData.light) setDeepOpen(true);
     }
     window.addEventListener('wheel', onWheel, { passive: false });
     return () => window.removeEventListener('wheel', onWheel);
-  }, [view, deepOpen]);
+  }, [view, deepOpen, caseData]);
 
   useEffect(() => {
     function onMsg(ev) {
@@ -225,7 +225,9 @@ function App() {
               />
             </div>
             <ProjectTabs cases={cases} activeIdx={activeIdx} onSelect={goToCase}/>
-            <DeepDive caseData={caseData} forwardedRef={deepRef} open={deepOpen} onClose={() => setDeepOpen(false)}/>
+            {!caseData.light && (
+              <DeepDive caseData={caseData} forwardedRef={deepRef} open={deepOpen} onClose={() => setDeepOpen(false)}/>
+            )}
           </>
         )}
         {view === 'about' && <AboutPage/>}
