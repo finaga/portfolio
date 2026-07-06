@@ -231,6 +231,9 @@ These work and look right; new similar components should use `.ds-*` instead.
 
 ## Session history — what has been decided
 
+### Session 2026-07-06 — ARCHIVED as Portfolio V1
+- **This site is no longer the main portfolio.** The directory moved from `portfolio/` → `portfolio-v1/`; the hub serves it at `/portfolio-v1/` as an archived exploration. The new main portfolio at `/portfolio/` is the **Gallery × Folio hybrid** (source: `hybrid-src/`, a Vite project — its own CLAUDE.md documents its rules; the zero-build constraint in this file applies only to THIS directory). All case content (including the PR #8 enrichment) was migrated verbatim into `hybrid-src/src/data/projects.js`. Design spec: `docs/superpowers/specs/2026-07-06-hybrid-portfolio-design.md`.
+
 ### Session 2026-07-05 (continued) — energy-focused restructure for job search
 - **Goal**: retarget the portfolio toward Design Lead roles at European renewable-energy companies. Enriched the two existing energy cases with real artifacts from `Projects/Farsight/`, added a new case built around revenue-impact research, added two non-energy side projects as a new lighter-weight case tier, and cut the one case (Fit4Box) that didn't serve this search.
 - **Added `light` case support** (new data flag, not previously in the model): `Console.jsx` branches the CTA — `light: true` cases render an `<a>` "Visit site ↗" to `caseData.liveUrl` instead of the `onReadMore` button. `app.jsx` guards the `Enter` key handler and the wheel-scroll-bottoms-out handler behind `!caseData.light`, and skips mounting `<DeepDive>` entirely for light cases (rather than adding defensive guards inside `DeepDive.jsx`). **Gotcha found and fixed**: `nextPlate`/`prevPlate` (ArrowUp/ArrowDown handlers in `app.jsx`) call `caseData.plates.length` unconditionally — light cases must always ship `plates: []`, never omit the key, or arrow keys throw.

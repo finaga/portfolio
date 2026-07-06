@@ -53,3 +53,6 @@ gallery-src/dist/
 
 # Brainstorm session artifacts (visual companion)
 .superpowers/
+
+# Hybrid build output (deployed copy lives at /portfolio/)
+hybrid-src/dist/

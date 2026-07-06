@@ -1,0 +1,153 @@
+.sh {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: var(--z-header);
+  font-weight: 500;
+}
+
+.sh__nav {
+  padding-top: 2.4rem;
+  align-items: start;
+}
+
+.sh__logo-cell {
+  grid-column: 1 / span 3;
+  position: relative;
+}
+
+.sh__wordmark {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.sh__wordmark-letter {
+  display: inline-block;
+}
+
+.intro-mask {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: calc(var(--z-header) - 1);
+  pointer-events: none;
+}
+
+.sh__wordmark-inner {
+  display: inline-block;
+  font-family: var(--ff-display);
+  font-size: 8.2rem;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  transform-origin: top left;
+  white-space: nowrap;
+}
+
+.sh__contact {
+  grid-column: 6 / span 3;
+  display: none;
+  padding-top: 0.4rem;
+}
+
+.sh__links {
+  grid-column: 9 / span 4;
+  display: none;
+  justify-content: space-between;
+  padding-top: 0.4rem;
+}
+
+.sh__menu-cell {
+  grid-column: 4 / span 1;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.4rem;
+}
+
+@media (min-width: 650px) {
+  .sh__logo-cell {
+    grid-column: 1 / span 5;
+  }
+
+  .sh__contact,
+  .sh__links {
+    display: flex;
+  }
+
+  .sh__menu-cell {
+    display: none;
+  }
+}
+
+@media (max-width: 649px) {
+  /* blend on the header element itself so it composites against the page,
+     not against its own (transparent) stacking context */
+  .sh--blend {
+    color: #fff;
+    mix-blend-mode: difference;
+  }
+
+  .sh__wordmark-inner {
+    font-size: 4.6rem;
+  }
+}
+
+/* ---- skip link ---- */
+
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: var(--z-intro);
+  background: var(--fg);
+  color: var(--bg);
+  padding: 1rem 1.6rem;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* ---- mobile menu ---- */
+
+.mm {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.mm__top {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 2.4rem;
+}
+
+.mm__nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 6rem;
+}
+
+.mm__clip {
+  overflow: hidden;
+}
+
+.mm__item {
+  display: inline-block;
+  font-family: var(--ff-display);
+  font-size: 6rem;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.mm__mail {
+  margin-top: 4rem;
+  color: var(--muted);
+}
