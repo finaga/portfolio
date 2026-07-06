@@ -50,3 +50,6 @@ folio-src/dist/
 
 # gallery: source build artifacts (dist is copied to /gallery and committed there)
 gallery-src/dist/
+
+# Brainstorm session artifacts (visual companion)
+.superpowers/
