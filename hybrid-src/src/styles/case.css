@@ -37,7 +37,11 @@
 .cp__title {
   font-family: var(--ff-display);
   font-size: clamp(34px, 6.4rem, 88px);
-  line-height: 1.02;
+  /* SplitText's line-mask permanently clips each line to this height —
+     it's not just an animation-time box. Marcellus's descenders (g, y, j)
+     need real clearance; Folio's original 1.02 was tuned for Space
+     Grotesk's much shallower descenders and clips Marcellus. */
+  line-height: 1.18;
   letter-spacing: -0.01em;
   max-width: 20ch;
   margin-bottom: 4rem;
@@ -263,7 +267,11 @@
 .cf__next-title {
   font-family: var(--ff-display);
   font-size: clamp(34px, 7rem, 96px);
-  line-height: 1.02;
+  /* SplitText's line-mask permanently clips each line to this height —
+     it's not just an animation-time box. Marcellus's descenders (g, y, j)
+     need real clearance; Folio's original 1.02 was tuned for Space
+     Grotesk's much shallower descenders and clips Marcellus. */
+  line-height: 1.18;
 }
 
 .cf__next-arrow {
