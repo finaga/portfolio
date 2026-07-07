@@ -1,0 +1,205 @@
+/* ---- List view ---- */
+
+.list {
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  font-weight: 500;
+}
+
+.list__content {
+  width: 100%;
+  padding-bottom: 8rem;
+  align-items: end;
+}
+
+.list__index {
+  grid-column: 1 / span 4;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2.4rem;
+}
+
+.list__group {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+}
+
+.list__cat {
+  grid-column: 1 / span 2;
+}
+
+.list__items {
+  grid-column: 3 / span 3;
+}
+
+.list__item {
+  display: inline-flex;
+  color: var(--muted); /* AA contrast; brightens to --fg when active */
+  transition: color var(--dur-fade) linear;
+  line-height: 1.55;
+}
+
+.list__item.is-active,
+.list__item:focus-visible {
+  /* earned accent moment: the active case name is the one lime touch
+     in dark mode; identical to --fg in light mode (see tokens.css) */
+  color: var(--accent);
+}
+
+.list__media {
+  display: none;
+  grid-column: 6 / span 7;
+  position: relative;
+  overflow: hidden;
+  height: min(66svh, 84rem);
+}
+
+.list__image {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--dur-fade) linear;
+}
+
+.list__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.06);
+  transition: transform 1.4s var(--ease-expo);
+}
+
+.list__image.is-active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.list__image.is-active img {
+  transform: scale(1);
+}
+
+@media (min-width: 650px) {
+  .list__index {
+    grid-column: 1 / span 5;
+  }
+
+  .list__media {
+    display: block;
+  }
+}
+
+@media (max-width: 649px) {
+  .list {
+    /* flows below the masthead instead of locking to one viewport */
+    align-items: flex-start;
+    padding-top: 14rem;
+  }
+
+  .list__content {
+    padding-bottom: 10rem;
+  }
+
+  .list__group {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .list__cat {
+    grid-column: 1 / span 4;
+    margin-bottom: 1rem;
+    color: var(--muted);
+  }
+
+  .list__items {
+    grid-column: 1 / span 4;
+  }
+}
+
+/* ---- Gallery view ---- */
+
+.gallery {
+  padding-top: 30rem;
+  padding-bottom: 24rem;
+  min-height: 100svh;
+}
+
+.gallery__grid {
+  row-gap: 6rem;
+}
+
+.gi {
+  display: block;
+  grid-column: 1 / -1;
+}
+
+.gi__caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--grid-gap);
+  margin-top: 1.2rem;
+}
+
+.gi__year {
+  color: var(--muted);
+}
+
+.gi__tag {
+  font-family: var(--ff-mono);
+  font-size: max(9px, 1.1rem);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+@media (min-width: 650px) {
+  .gallery__grid {
+    row-gap: 17rem;
+  }
+
+  .gi--wide {
+    grid-column: 2 / span 10;
+  }
+
+  .gi--left {
+    grid-column: 1 / span 7;
+  }
+
+  .gi--right {
+    grid-column: 6 / span 7;
+  }
+
+  .gi--mid {
+    grid-column: 3 / span 8;
+  }
+}
+
+/* ---- List | Gallery toggle ---- */
+
+.view-toggle {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: var(--z-toggle);
+  pointer-events: none;
+  font-weight: 500;
+}
+
+.view-toggle__row {
+  padding-block: 2rem;
+}
+
+.view-toggle__cell {
+  pointer-events: auto;
+}
+
+.view-toggle__cell--list {
+  grid-column: 1 / span 2;
+}
+
+.view-toggle__cell--gallery {
+  grid-column: 3 / span 2;
+}

@@ -366,6 +366,53 @@ function plate(kind, opts = {}) {
       <text x='76'  y='662' ${DISP} font-size='24' font-weight='500' fill='${ink}' letter-spacing='-0.5'>T-0042 · NOMINAL</text>`;
   }
 
+  else if (kind === 'loss-waterfall') {
+    const steps = [
+      ['THEORETICAL MAX',   1100, ''],
+      ['− WAKE',             980, '−9%'],
+      ['− AVAILABILITY',     900, '−4%'],
+      ['− ELECTRICAL',       860, '−2%'],
+      ['− PERFORMANCE',      800, '−3%'],
+      ['− ENVIRONMENTAL',    760, '−2%'],
+      ['− CURTAILMENT',      660, '−7%'],
+      ['= NET ENERGY',       660, ''],
+    ];
+    body = `${eyebrow('LOSS WATERFALL · IEC 61400-15')}
+      <text x='56' y='150' ${DISP} font-size='56' font-weight='500' fill='${ink}' letter-spacing='-1'>ONE LOSS LEDGER</text>`;
+    steps.forEach((s, i) => {
+      const y = 200 + i * 68;
+      const w = s[1];
+      const x = 56 + (1100 - w) / 2;
+      const isNet = s[0].startsWith('=');
+      body += `
+        <rect x='${x}' y='${y}' width='${w}' height='40' fill='${isNet ? ink : soft}' opacity='${isNet ? 1 : 0.35 + (1 - i / steps.length) * 0.4}'/>
+        <text x='${x + 16}' y='${y + 26}' ${MONO} font-size='11' fill='${isNet ? bg0 : ink}' letter-spacing='1.5'>${s[0]}</text>
+        <text x='${x + w - 16}' y='${y + 26}' ${MONO} font-size='11' fill='${isNet ? bg0 : ink}' text-anchor='end' letter-spacing='1.5'>${s[2]}</text>`;
+    });
+    body += `<text x='56' y='740' ${MONO} font-size='10' fill='${dim}' letter-spacing='1.5'>8 CATEGORIES · BRIDGES PRE-CONSTRUCTION &amp; OPERATIONAL STANDARDS</text>`;
+  }
+
+  else if (kind === 'availability-gap') {
+    const rows = [
+      ['TECHNICAL',   94.1, 'ASSET OWNERS · SCHEDULED MAINT. = UNAVAILABLE'],
+      ['OPERATIONAL', 95.0, 'FULL-SYSTEM OWNERS · CONFIGURABLE EXCLUSIONS'],
+      ['CONTRACTUAL', 95.8, 'OEMS · SCHEDULED MAINT. CARVED OUT'],
+    ];
+    body = `${eyebrow('AVAILABILITY · THREE DEFINITIONS, ONE DATASET')}
+      <text x='56' y='150' ${DISP} font-size='56' font-weight='500' fill='${ink}' letter-spacing='-1'>THE 1–2% GAP</text>`;
+    rows.forEach((r, i) => {
+      const y = 220 + i * 150;
+      const w = (r[1] / 100) * 1000;
+      body += `
+        <text x='56' y='${y - 14}' ${MONO} font-size='11' fill='${dim}' letter-spacing='1.5'>${r[0]}</text>
+        <rect x='56' y='${y}' width='1000' height='36' fill='none' stroke='${rule}' stroke-width='0.5'/>
+        <rect x='56' y='${y}' width='${w}' height='36' fill='${i === 2 ? ink : soft}' opacity='${i === 2 ? 1 : 0.55}'/>
+        <text x='${56 + w + 16}' y='${y + 25}' ${DISP} font-size='22' font-weight='500' fill='${ink}'>${r[1]}%</text>
+        <text x='56' y='${y + 58}' ${MONO} font-size='10' fill='${dim}' letter-spacing='1'>${r[2]}</text>`;
+    });
+    body += `<text x='56' y='700' ${MONO} font-size='10' fill='${dim}' letter-spacing='1.5'>SAME DATA · THREE NUMBERS · #1 SOURCE OF OEM DISPUTES</text>`;
+  }
+
   else {
     body = eyebrow('PLATE');
   }
@@ -390,7 +437,7 @@ window.CASES = [
     domain: 'SaaS',
     tabLabel: 'BAXENERGY FARSIGHT',
     hero: 'assets/bg-farsight.jpg',
-    abstract: 'Farsight shipped with no unified design direction — new modules clashed, onboarding suffered, entry-users were lost. I led the visual and UX reset, built the system, and aligned 30+ engineers across 6 teams around a single language.',
+    abstract: 'Farsight shipped with no unified design direction — new modules clashed, onboarding suffered, entry-users were lost. I led the visual and UX reset: a 3-layer token architecture, 24 production components, and a reusable KPI-page pattern that let 30+ engineers across 6 teams ship consistent analysis pages without re-inventing layout each time.',
     kpis: [
       { k: 'CLIENTS ONBOARDED', v: 10, suffix: '+', unit: true },
       { k: 'NEW MODULES', v: 20, suffix: '+', unit: true },
@@ -398,10 +445,10 @@ window.CASES = [
       { k: 'TEAMS ALIGNED', v: 6, suffix: '', unit: false },
     ],
     plates: [
-      { label: 'SYSTEM OVERVIEW',   art: plate('system-overview',   { tone: 'dark' }) },
-      { label: 'DENSITY MODES',     art: plate('density',           { tone: 'dark' }) },
-      { label: 'ASSET DETAIL',      art: plate('asset-detail',      { tone: 'dark' }) },
-      { label: 'COMPONENT LIBRARY', art: plate('component-library', { tone: 'dark' }) },
+      { label: 'SYSTEM OVERVIEW',                          art: plate('system-overview', { tone: 'dark' }) },
+      { label: 'KPI PAGE TEMPLATE · TURBULENCE INTENSITY',  art: 'url(assets/farsight/ti-over-time.png)' },
+      { label: 'KPI PAGE TEMPLATE · POWER CURVE',           art: 'url(assets/farsight/ti-power-curve.png)' },
+      { label: 'DESIGN SYSTEM · TOKENS & COMPONENTS',       art: 'url(assets/farsight/design-system.png)' },
     ],
     impact: [
       { k: 'CLIENTS ONBOARDED', note: 'Enterprise rollouts ship without bespoke UI per tenant.' },
@@ -411,7 +458,7 @@ window.CASES = [
     ],
     deep: {
       context: 'Farsight is BaxEnergy\'s flagship platform for monitoring renewable-energy assets — wind, solar, hydro, storage — at utility scale. When I joined, the product had grown by accretion: six teams, each owning their modules, each drifting in their own direction. Different densities, three button variants, two motion languages, inconsistent severity colors. The cost landed on the users — grid operators, not software engineers — who had to relearn the interface every time they crossed a module boundary. Heavy-weight users shipped around it with keyboard hacks and saved queries; entry users quit. Sales demos started with apologies. The engineering leads weren\'t wrong — they were unmanaged.',
-      approach: 'I ran a 6-week audit across every module, catalogued every control, state, and motion curve, and mapped the overlaps and conflicts. Then I rebuilt the vocabulary from zero: one type scale, four density modes (so the same component reads at both a laptop and a 4K wall), one severity color ramp, one stepped motion language. The deliverable was not a Figma file — it was a shared ritual. Design reviews embedded in every sprint. A weekly system-sync with eng leads where we argued tradeoffs before code, not after. Most importantly: I co-owned roadmap decisions with engineering, so design constraints became product constraints. Killing the "designer hands off, engineering re-invents" loop was worth more than any specific token.',
+      approach: 'I ran a 6-week audit across every module, catalogued every control, state, and motion curve, and mapped the overlaps and conflicts. Then I rebuilt the vocabulary from zero: one type scale, four density modes (so the same component reads at both a laptop and a 4K wall), one severity color ramp, one stepped motion language. The system itself has three layers — primitives, semantic aliases, components — validated by an automated pipeline so a raw hex value never survives review; it now ships 24 production components in light and dark. For the analysis surfaces specifically, I built one KPI-page pattern — header, control bar, KPI strip, chart array — starting with the Turbulence Intensity page, then reused it verbatim for Wind Curtailment, NTF, and Solar Analysis, so every new analysis page shipped in days, not a fresh layout negotiation. The deliverable was not a Figma file — it was a shared ritual. Design reviews embedded in every sprint. A weekly system-sync with eng leads where we argued tradeoffs before code, not after. Most importantly: I co-owned roadmap decisions with engineering, so design constraints became product constraints. Killing the "designer hands off, engineering re-invents" loop was worth more than any specific token.',
       outcome: 'Over 18 months: 20+ new modules shipped on-system, 10+ enterprise clients onboarded without custom design work, 30+ engineers fluent in the language. The system scales without me — junior designers ship against it, engineers catch drift in review. What the numbers don\'t show: the sales org stopped starting demos with apologies, and onboarding for a new grid operator dropped from weeks to days. Design stopped being a cost center; it became a velocity multiplier.',
       reflection: 'What I\'d do differently: I under-invested in component governance early. For the first quarter I was the bottleneck — every new token came through me. I should have handed ownership to a lead-per-team sooner and kept only final sign-off. The lesson: systems scale when authorship does. My job is to make my role redundant.',
     },
@@ -429,7 +476,7 @@ window.CASES = [
     domain: 'SaaS',
     tabLabel: 'BAXENERGY GRID-OPS',
     hero: 'assets/bg-grid-ops.jpg',
-    abstract: 'Grid-Ops is the command surface for operators monitoring thousands of renewable assets in real time. The brief: cut time-to-diagnose, reduce alarm fatigue, make the interface readable at 3am on a 4K wall.',
+    abstract: 'Grid-Ops is the command surface for operators monitoring thousands of renewable assets in real time — a portfolio dashboard built on a 12-column widget grid with 9 reusable chart types (KPI cards, stacked-area, donut, gauge, heatmap, sparkline tables, scatter maps). The brief: cut time-to-diagnose, reduce alarm fatigue, make the interface readable at 3am on a 4K wall.',
     kpis: [
       { k: 'TIME-TO-DIAGNOSE', v: -62, suffix: '%', unit: true },
       { k: 'ALARMS FATIGUE', v: -48, suffix: '%', unit: true },
@@ -437,10 +484,10 @@ window.CASES = [
       { k: 'UPTIME', v: 99.9, suffix: '%', unit: false, decimals: 1 },
     ],
     plates: [
-      { label: 'CONTROL ROOM',   art: plate('control-room',   { tone: 'dark' }) },
-      { label: 'ALARM TRIAGE',   art: plate('alert-triage',   { tone: 'dark' }) },
-      { label: 'BEFORE / AFTER', art: plate('before-after',   { tone: 'dark' }) },
-      { label: 'ASSET DETAIL',   art: plate('asset-detail',   { tone: 'dark' }) },
+      { label: 'PORTFOLIO WIDGET GRID', art: 'url(assets/grid-ops/dashboard-widgets.png)' },
+      { label: 'FLEET AVAILABILITY',    art: 'url(assets/grid-ops/dashboard-1.png)' },
+      { label: 'BEFORE / AFTER',        art: plate('before-after', { tone: 'dark' }) },
+      { label: 'ASSET DETAIL',          art: plate('asset-detail', { tone: 'dark' }) },
     ],
     impact: [
       { k: 'TIME-TO-DIAGNOSE', note: 'A shift lead now handles 3 concurrent incidents where one used to saturate them.' },
@@ -450,14 +497,51 @@ window.CASES = [
     ],
     deep: {
       context: 'Grid-Ops operators work 12-hour shifts inside control rooms that never sleep. A single dispatcher watches thousands of turbines, inverters, and substations across a continent, and the consequence of missing something isn\'t a bad UX score — it\'s a grid event, a fined customer, or worse. The legacy UI was built by the engineers who understood the data best, which meant everything shouted. Every anomaly — a 2°C temperature drift, a critical ground fault — looked the same shade of red. Operators coped by dismissing alarms in bulk, which meant real criticals got lost in noise. On ride-alongs I watched a shift lead miss an inverter fault for 11 minutes because it rendered identically to 40 routine warnings stacked above it. That was the north star: the UI should not be a source of cognitive load at 3am.',
-      approach: 'Three decisions shaped everything. First, severity-first information architecture: every screen sorts by impact, not by timestamp or asset ID. A critical fault owns the top of the viewport until acknowledged; lows fall into an ambient band that can be scanned peripherally. Second, color as hazard, not decoration: I pulled red from the palette entirely except for genuine P0 events. Standard state lives in neutral steel; severity uses shape, position, and weight before it uses hue. Third, stepped mechanical motion — no springs, no easing flourishes. Operators read motion as change, so a wobble means data moved; a slide means the user moved. Spring physics in a control room is a lie. I also designed four density modes so the same components read at a laptop, a wall-desk, and a 4K control wall without re-layout.',
+      approach: 'Three decisions shaped everything. First, severity-first information architecture: every screen sorts by impact, not by timestamp or asset ID. A critical fault owns the top of the viewport until acknowledged; lows fall into an ambient band that can be scanned peripherally. Second, color as hazard, not decoration: I pulled red from the palette entirely except for genuine P0 events. Standard state lives in neutral steel; severity uses shape, position, and weight before it uses hue. Third, stepped mechanical motion — no springs, no easing flourishes. Operators read motion as change, so a wobble means data moved; a slide means the user moved. Spring physics in a control room is a lie. I also designed four density modes so the same components read at a laptop, a wall-desk, and a 4K control wall without re-layout. The dashboard itself is a drag-and-resize 12-column widget grid, so an operator\'s own priority view — which KPIs, which chart type, which arrangement — persists per-shift without engineering time; the same 9 chart primitives compose every widget on the wall.',
       outcome: 'Time-to-diagnose cut by 62% on the internal benchmark. Alarm-fatigue survey scores dropped 48% over six months. The operational result is what mattered: a shift lead now handles three concurrent incidents where one used to saturate them. Deployed across four control centers in Europe and Asia-Pacific, monitoring 12k+ assets at 99.9% uptime. One grid operator put it best in a post-launch interview: "I don\'t fight the screen anymore."',
       reflection: 'The hardest decision was killing color. Engineering pushed back hard — red is information density, they said. I built the dark-mode prototype, put it in a real control room for a week, and let the operators decide. They decided in an hour. The lesson: when domain experts defend the status quo on first principles, get them in a room with the users. First principles lose to lived experience.',
     },
   },
   {
-    id: 'toptal',
+    id: 'financial-losses',
     num: '003',
+    client: 'BaxEnergy — a Yokogawa Company',
+    clientShort: 'BaxEnergy',
+    project: 'Financial Losses — Loss Taxonomy & Revenue Strategy',
+    projectShort: 'Financial Losses',
+    year: '2026',
+    role: 'Design Lead · Product Strategy',
+    scope: 'Research → spec · loss-accounting module',
+    domain: 'SaaS',
+    tabLabel: 'BAXENERGY LOSSES',
+    hero: null,
+    abstract: 'Farsight could tell an operator an asset\'s availability % but never how much revenue that represented, or why. I bridged three conflicting IEC standards — pre-construction, operational, contractual — into one loss taxonomy, and exposed the industry\'s most-disputed number: the 1–2% gap between OEM-reported and technical availability. The brief: turn a compliance metric into an auditable revenue argument.',
+    kpis: [
+      { k: 'LOSS CATEGORIES MAPPED', v: 8, suffix: '', unit: false },
+      { k: 'IEC STANDARDS BRIDGED', v: 3, suffix: '', unit: false },
+      { k: 'COMPETITORS BENCHMARKED', v: 6, suffix: '', unit: false },
+      { k: 'DIFFERENTIATION ANGLES', v: 3, suffix: '', unit: false },
+    ],
+    plates: [
+      { label: 'LOSS WATERFALL',     art: plate('loss-waterfall',   { tone: 'dark' }) },
+      { label: 'AVAILABILITY GAP',   art: plate('availability-gap', { tone: 'dark' }) },
+    ],
+    impact: [
+      { k: 'LOSS CATEGORIES MAPPED',   note: 'Every lost MWh now has a named cause — fault, curtailment, environmental, missing data — instead of one blended availability number.' },
+      { k: 'IEC STANDARDS BRIDGED',    note: 'What the energy assessor predicted at project finance can finally be compared to what Farsight reports operationally — no platform on the market does this.' },
+      { k: 'COMPETITORS BENCHMARKED',  note: 'Benchmarked against Power Factors, Bazefield, Vestas Scipher, GE APM, Clir, and AVEVA to find where every existing platform under-serves the financial layer.' },
+      { k: 'DIFFERENTIATION ANGLES',   note: 'Three scoped opportunities handed to product and engineering, ranked by design complexity vs. contract/investor value.' },
+    ],
+    deep: {
+      context: 'Farsight monitors wind, solar, and BESS assets and reports availability as a single percentage. It has never answered the two questions asset owners actually ask: how much energy did we lose and why, and how much revenue did that represent? The gap is structural, not cosmetic. Three IEC standards define this space — 61400-15 for pre-construction loss waterfalls, 61400-26-1/-2 for operational availability — and they use incompatible category definitions. An asset manager cannot compare what an energy assessor predicted at project finance with what the REMS reports two years into operation. Worse: the same operational data produces three legitimate but different availability numbers — technical, operational, contractual — depending on whether scheduled maintenance counts as downtime. The contractual number (the one OEMs report) runs 1–2% higher than the technical one by design. That 1–2% is real revenue, and it is the single largest source of disputes between asset owners and turbine OEMs.',
+      approach: 'Three moves. First, I built a Farsight-native loss taxonomy — 8 categories — that maps cleanly onto IEC 61400-26\'s 13 operational turbine states while staying legible to an operator who has never read the standard: "turbine fault," "grid curtailment," "no wind," not state codes. Second, I split "compensated curtailment" out as its own category: when a grid operator curtails a site and pays for the lost production, that MWh is not a real revenue loss, and most platforms conflate it with uncompensated curtailment, systematically overstating losses. Third, I specced the page around two audiences sharing one dataset instead of two builds — Operator mode (last 7 days, MWh, "what\'s losing right now," click-through to the asset) and Manager mode (month-to-date, €, export) — because the same loss ledger has to serve a control-room decision and a board report without becoming two products. I benchmarked six platforms (Power Factors, Bazefield, Vestas, GE APM, Clir, AVEVA) to confirm the gap was real: nobody bridges pre-construction and operational taxonomies, and financial translation everywhere else is a single price multiplier bolted onto MWh, not a first-class model.',
+      outcome: 'This shipped as a research brief and locked page structure — header, KPI strip, loss waterfall, category trend, detail table — not yet a built module; the open questions (which categories the backend can derive today, what price reference to use, whether curtailment compensation applies per client) went to product and engineering with clear ownership rather than sitting as unstated assumptions in a Figma file. Three differentiation angles came out ranked by cost and value: bridging the two IEC taxonomies (high design complexity, high investor value), a first-class carve-out ledger for OEM warranty disputes (medium complexity, very high contract value), and a toggle between the three availability definitions so the 1–2% gap becomes visible and auditable instead of a line item in a dispute (high value for owners in active OEM negotiations). Any of the three is a sellable feature on its own.',
+      reflection: 'What I\'d do differently: I wrote most of this from standards documents and competitor teardown before pressure-testing the taxonomy with a single asset manager conversation. The 8 categories are probably right, but I don\'t yet know which distinctions an asset manager actually argues about at contract renewal versus which ones only matter to an energy assessor. The lesson: reference standards give you shared vocabulary, but only a domain user tells you which distinctions carry money.',
+    },
+  },
+  {
+    id: 'toptal',
+    num: '004',
     client: 'Toptal',
     clientShort: 'Toptal',
     project: 'Growth Funnel Redesign',
@@ -494,43 +578,51 @@ window.CASES = [
     },
   },
   {
-    id: 'fit4box',
-    num: '004',
-    client: 'Fit4Box',
-    clientShort: 'Fit4Box',
-    project: 'Crossfit Apparel Brand',
-    projectShort: 'Fit4Box',
-    year: '2023 — PRESENT',
-    role: 'Founder & Designer',
-    scope: 'Brand · e-commerce · apparel',
+    id: 'erico-adv',
+    num: '005',
+    light: true,
+    liveUrl: 'https://ericoadv.vercel.app',
+    client: 'Erico Advogados',
+    clientShort: 'Erico Adv',
+    project: 'Erico Advogados — Brand Microsite',
+    projectShort: 'Erico Adv',
+    year: '2026',
+    role: 'Brand & Web Designer',
+    scope: 'Brand microsite · single-page',
     domain: 'Brand',
-    tabLabel: 'FIT4BOX BRAND',
-    hero: 'assets/bg-fit4box.jpg',
-    abstract: 'My own brand — Crossfit apparel built for people who actually train. I run the whole thing: identity, e-commerce, photography direction, and the product line itself.',
+    tabLabel: 'ERICO ADV',
+    hero: 'assets/bg-erico.jpg',
+    abstract: 'A brand microsite for a Brasília strategic-litigation firm, taken from positioning brief through to a deployed production build — plus a second, animation-heavy dark concept built to compare against the shipped direction.',
     kpis: [
-      { k: 'SKUS SHIPPED', v: 42, suffix: '', unit: false },
-      { k: 'REPEAT CUSTOMERS', v: 38, suffix: '%', unit: true },
-      { k: 'INSTA FOLLOWERS', v: 4.2, suffix: 'k', unit: false, decimals: 1 },
-      { k: 'MONTHS RUNNING', v: 24, suffix: '', unit: false },
+      { k: 'LOGO VARIANTS', v: 60, suffix: '+', unit: false },
+      { k: 'DESIGN CONCEPTS', v: 2, suffix: '', unit: false },
+      { k: 'VENDOR LIBRARIES', v: 3, suffix: '', unit: false },
+      { k: 'BUILD STEP', v: 0, suffix: '', unit: false },
     ],
-    plates: [
-      { label: 'IDENTITY',      art: plate('identity',  { tone: 'light' }) },
-      { label: 'SS25 LOOKBOOK', art: plate('lookbook',  { tone: 'light' }) },
-      { label: 'STORE · PDP',   art: plate('pdp',       { tone: 'light' }) },
-      { label: 'CAMPAIGN',      art: plate('campaign',  { tone: 'light' }) },
-      { label: 'PACKAGING',     art: plate('packaging', { tone: 'light' }) },
+    plates: [],
+  },
+  {
+    id: 'destiny-pixel',
+    num: '006',
+    light: true,
+    liveUrl: 'https://destiny-pixel.vercel.app',
+    client: 'Personal Project',
+    clientShort: 'Solo',
+    project: 'Destiny Pixel — Run & Gun',
+    projectShort: 'Destiny Pixel',
+    year: '2026',
+    role: 'Solo Designer / Builder',
+    scope: 'Kaplay engine · single-file · solo',
+    domain: 'Game',
+    tabLabel: 'DESTINY PIXEL',
+    hero: 'assets/bg-destiny-pixel.png',
+    abstract: 'A Destiny-inspired pixel-art run-and-gun built solo end-to-end — three playable classes, five enemy variants, and a three-phase boss fight — directed and built through AI-orchestrated iteration rather than a traditional dev team.',
+    kpis: [
+      { k: 'PLAYABLE CLASSES', v: 3, suffix: '', unit: false },
+      { k: 'ENEMY VARIANTS', v: 5, suffix: '', unit: false },
+      { k: 'BOSS PHASES', v: 3, suffix: '', unit: false },
+      { k: 'LINES SHIPPED', v: 2400, suffix: '+', unit: false },
     ],
-    impact: [
-      { k: 'SKUS SHIPPED',     note: 'Tight line. Every SKU earns its place — no filler, no hype drops.' },
-      { k: 'REPEAT CUSTOMERS', note: '38% come back — rare in apparel; it means the product survives real training.' },
-      { k: 'INSTA FOLLOWERS',  note: 'Community built on in-gym photography, not paid reach.' },
-      { k: 'MONTHS RUNNING',   note: 'Two years in — past the hardest stretch, still founder-run.' },
-    ],
-    deep: {
-      context: 'Most Crossfit apparel looks like energy-drink packaging: screaming logos, tribal fonts, colors tuned for Instagram. I train six days a week and I wanted clothes I\'d wear without thinking. No brand on the market served that. The constraint was not just aesthetic — it was physical: Crossfit destroys clothing. Grip work shreds forearms on cheap cotton; barbell cycles burn holes through thin shoulders; sweat ruins dye-jobs within a month. Anything I made had to survive the training before it could stand for the brand.',
-      approach: 'Product first, identity last. I spent the first four months sourcing fabrics — 220gsm combed cotton for tees, rip-stop for shorts, double-needle seams everywhere that takes load. I photographed every prototype in-gym, on real athletes, no studio, no model casting. Identity came once the clothes had earned it: a wordmark built from Big Shoulders Display (appropriate), a palette of bone and ink, and a single rule — no color that doesn\'t come from the product itself. E-commerce is Shopify with a heavily customized theme; I\'d rather edit code than fight a pagebuilder. Repeat rate, not new-customer rate, is the KPI I optimize for — returning athletes mean the product works.',
-      outcome: '42 SKUs in 24 months, 38% repeat-customer rate (industry average for indie apparel is 15–20%), 4.2k organic Instagram followers with zero paid reach. More importantly: a small, growing community of actual competitive athletes wear the gear — two regional-level Crossfitters sponsor-free, because they asked to. That\'s the only social proof that matters in this category.',
-      reflection: 'What I underestimated: photography is the product. I spent the first year treating shots as documentation and sales died on the PDP. Once I started directing real sessions — light, poses, post, all of it — conversion moved more than any product change. The lesson for designers running their own thing: the brand isn\'t the logo or the website or even the clothes; it\'s the image in the customer\'s head. Control the photography, control the brand.',
-    },
+    plates: [],
   },
 ];

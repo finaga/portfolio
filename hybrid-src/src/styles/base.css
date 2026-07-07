@@ -1,0 +1,154 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+img,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  background: none;
+  border-radius: 0;
+  cursor: pointer;
+  appearance: none;
+}
+
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* ---- layout primitives ---- */
+
+.site-max {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--pad-x);
+}
+
+.site-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+}
+
+/* media helpers */
+.media-fill {
+  position: relative;
+  overflow: hidden;
+}
+
+.media-fill img,
+.media-fill video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.aspect {
+  padding-top: var(--aspect, 75%);
+}
+
+/* ---- interaction primitives ---- */
+
+.uline {
+  display: inline-flex;
+  position: relative;
+  white-space: nowrap;
+  --bottom: -0.15em;
+}
+
+.uline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--bottom);
+  height: 0.06em;
+  min-height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur) var(--ease-expo);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .uline:hover::before,
+  .h-trig:hover .uline::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+.uline.is-active::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .h-scale img {
+    transition: transform 1s var(--ease-expo);
+  }
+
+  .h-trig:hover .h-scale img,
+  a:hover > .h-scale img {
+    transform: scale(1.0175);
+  }
+}
+
+/* ---- global reduced-motion gate ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

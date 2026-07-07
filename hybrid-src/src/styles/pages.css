@@ -1,0 +1,123 @@
+.page {
+  min-height: 100svh;
+}
+
+/* Haven pattern: About/Contact content caps at the 1920px-equivalent. */
+.page .site-max {
+  max-width: 150rem;
+}
+
+.page__head {
+  padding-top: 40svh;
+}
+
+.page__lede {
+  font-family: var(--ff-display);
+  font-size: 4rem;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.about__bio {
+  margin-top: 7rem;
+  row-gap: 4rem;
+}
+
+.about__bio-body {
+  grid-column: 1 / -1;
+}
+
+.about__bio-body p {
+  max-width: 58ch;
+  margin-bottom: 2rem;
+}
+
+.about__bio-body p:last-child {
+  margin-bottom: 0;
+}
+
+.about__bio-meta {
+  grid-column: 1 / -1;
+}
+
+.about__meta-row {
+  display: flex;
+  gap: var(--grid-gap);
+  padding-block: 0.7rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.about__meta-row:last-child {
+  border-bottom: 0;
+}
+
+.about__meta-row dt {
+  width: 12rem;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.contact__body {
+  margin-top: 7rem;
+  row-gap: 4rem;
+}
+
+.contact__cta {
+  grid-column: 1 / -1;
+}
+
+.contact__mail {
+  font-family: var(--ff-display);
+  font-size: 3.4rem;
+  line-height: 1.2;
+  --bottom: 0;
+}
+
+.contact__note {
+  grid-column: 1 / -1;
+}
+
+.contact__note p {
+  max-width: 48ch;
+  color: var(--muted);
+}
+
+@media (min-width: 650px) {
+  .page__head {
+    padding-top: 50svh;
+  }
+
+  .page__lede {
+    font-size: 6.4rem;
+  }
+
+  .about__bio {
+    margin-top: 12.5rem;
+  }
+
+  .about__bio-body {
+    grid-column: 1 / span 7;
+  }
+
+  .about__bio-meta {
+    grid-column: 9 / span 4;
+  }
+
+  .contact__body {
+    margin-top: 12.5rem;
+  }
+
+  .contact__cta {
+    grid-column: 1 / span 7;
+  }
+
+  .contact__mail {
+    font-size: 5rem;
+  }
+
+  .contact__note {
+    grid-column: 9 / span 4;
+  }
+}

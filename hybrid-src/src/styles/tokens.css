@@ -1,0 +1,82 @@
+:root {
+  /* fluid rem: 1rem = 10px at the design width (--size), scales with viewport */
+  --size: 390;
+  --grid-cols: 4;
+  --grid-gap: 0.9rem;
+  --pad-x: 2rem;
+
+  --ff-display: 'Marcellus', Georgia, 'Times New Roman', serif;
+  --ff-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --ff-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', monospace;
+
+  /* lime is scarce: active index item, KPI numerals, availability dot */
+  --lime: #b8ff3d;
+
+  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --dur: 0.75s;
+  --dur-fade: 0.35s;
+
+  /* z-scale: content < header < drawer < menu < intro */
+  --z-header: 10;
+  --z-toggle: 3;
+  --z-drawer: 5;
+  --z-menu: 20;
+  --z-intro: 30;
+}
+
+@media (min-width: 650px) {
+  :root {
+    --size: 1500;
+    --grid-cols: 12;
+    --grid-gap: 1.7rem;
+  }
+}
+
+/* light world = Folio's paper + ink (the reading surface) */
+:root,
+[data-theme='light'] {
+  --bg: #f2f1ec;
+  --fg: #0a0b0d;
+  --muted: #6f6f6c;
+  --dim: #a5a5a2;
+  --rule: rgba(10, 11, 13, 0.14);
+  --accent: #0a0b0d;
+}
+
+[data-theme='dark'] {
+  --bg: #0f1117;
+  --fg: #ececea;
+  --muted: #9a9a97;
+  --dim: #6b6b68;
+  --rule: rgba(236, 236, 234, 0.14);
+  --accent: #b8ff3d;
+}
+
+html {
+  /* fluid rem, capped at the 1920px-equivalent: type and rem-based layout
+     stop scaling past 1920 while %-width imagery keeps filling the
+     viewport (the Haven pattern — full-bleed media, readable content). */
+  font-size: min(calc(1000vw / var(--size)), calc(19200px / var(--size)));
+  -webkit-text-size-adjust: none;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--ff-sans);
+  font-size: max(11px, min(1.7rem, 19px));
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html,
+  body {
+    overscroll-behavior: none;
+  }
+}
