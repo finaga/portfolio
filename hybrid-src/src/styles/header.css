@@ -19,7 +19,6 @@
 
 .sh__wordmark {
   display: inline-block;
-  overflow: hidden;
 }
 
 .sh__wordmark-letter {
@@ -36,6 +35,7 @@
 
 .sh__wordmark-inner {
   display: inline-block;
+  overflow: hidden;
   font-family: var(--ff-display);
   font-size: 8.2rem;
   line-height: 0.9;
