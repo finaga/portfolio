@@ -8,6 +8,7 @@ import { bySlug } from '../data/projects'
 import { revealLines, fadeUp, countUp, mediaReveal } from '../lib/anim'
 import CaseFooter from '../components/CaseFooter'
 import { usePageTitle } from '../lib/usePageTitle'
+import { useFontsReady } from '../lib/useFontsReady'
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP)
 
@@ -59,6 +60,7 @@ export default function CasePage() {
   const { slug } = useParams()
   const project = bySlug(slug)
   const scope = useRef(null)
+  const fontsReady = useFontsReady()
   usePageTitle(project?.short ?? '')
 
   useEffect(() => {
@@ -67,7 +69,7 @@ export default function CasePage() {
 
   useGSAP(
     () => {
-      if (!project) return
+      if (!project || !fontsReady) return
       const mm = gsap.matchMedia()
       mm.add('(prefers-reduced-motion: no-preference)', () => {
         revealLines('.cp__title', { trigger: false, delay: 0.1 })
@@ -78,7 +80,7 @@ export default function CasePage() {
       })
       return () => mm.revert()
     },
-    { scope, dependencies: [slug] },
+    { scope, dependencies: [slug, fontsReady] },
   )
 
   if (!project) return <Navigate to="/" replace />
