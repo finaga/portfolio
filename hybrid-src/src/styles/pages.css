@@ -2,6 +2,11 @@
   min-height: 100svh;
 }
 
+/* Haven pattern: About/Contact content caps at the 1920px-equivalent. */
+.page .site-max {
+  max-width: 150rem;
+}
+
 .page__head {
   padding-top: 40svh;
 }

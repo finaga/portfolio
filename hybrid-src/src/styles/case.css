@@ -8,6 +8,13 @@
   padding-top: 14rem;
 }
 
+/* Haven pattern: interior content grid caps at the 1920px-equivalent and
+   centers; full-bleed media (.cp__hero, .cf background) keeps spanning the
+   whole viewport on ultra-wide screens. */
+.cp .site-max {
+  max-width: 150rem;
+}
+
 /* ---- head ---- */
 
 .cp__head {
