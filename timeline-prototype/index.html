@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timeline Prototype — Drag Scroll (Floema recreation)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #E9E778;
+    --ink: #241F21;
+    --ink-20: rgba(36, 31, 33, 0.2);
+    --card-w: 380px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #f4f2e6;
+    font-family: 'Onest', ui-sans-serif, system-ui, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .history {
+    width: 100%;
+    max-width: 1500px;
+    height: clamp(520px, 58vw, 680px);
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--ink);
+    position: relative;
+    padding: 56px 40px 68px;
+  }
+
+  .viewport { overflow: hidden; width: 100%; height: 100%; }
+
+  .track {
+    display: flex;
+    height: 100%;
+    cursor: grab;
+    touch-action: pan-y;
+    will-change: transform;
+    user-select: none;
+  }
+
+  .track.dragging { cursor: grabbing; }
+
+  .card {
+    width: var(--card-w);
+    height: 100%;
+    flex-shrink: 0;
+    border-left: 1px solid var(--ink);
+    padding: 0 28px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card { justify-content: flex-start; }
+
+  .card-media {
+    width: 62%;
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(160deg, rgba(36, 31, 21, 0.16), rgba(36, 31, 21, 0.06));
+    margin-bottom: 32px;
+  }
+
+  .card-year {
+    font-size: clamp(48px, 6.2vw, 88px);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 0 0 32px;
+  }
+
+  .card-desc {
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 280px;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .card.top .card-year { margin-bottom: 32px; }
+  .card.bot .card-year { margin-bottom: 0; margin-top: 32px; }
+
+  .drag-bubble {
+    position: fixed;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+  }
+
+  .drag-bubble.visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+  .foot-row {
+    position: absolute;
+    left: 40px;
+    right: 40px;
+    bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .hist-label {
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  .nav-buttons { display: flex; gap: 8px; }
+
+  .nav-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: #fff;
+    color: var(--ink);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .nav-btn:disabled { color: rgba(36, 31, 21, 0.35); cursor: default; }
+
+  .progress-track {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--ink-20);
+  }
+
+  .progress-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 1px;
+    width: 0%;
+    background: var(--ink);
+  }
+
+  @media (max-width: 640px) {
+    :root { --card-w: 240px; }
+    .history { padding: 32px 20px 56px; height: clamp(420px, 100vw, 520px); }
+    .card { padding: 0 18px; }
+    .foot-row { left: 20px; right: 20px; }
+    .drag-bubble { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<section class="history" id="history" aria-label="Our history timeline. Drag, or use the arrow buttons, to scroll.">
+  <div class="viewport" id="viewport">
+    <div class="track" id="track" tabindex="0"></div>
+  </div>
+
+  <div class="drag-bubble" id="dragBubble">Drag</div>
+
+  <div class="foot-row">
+    <p class="hist-label">Our history</p>
+    <div class="nav-buttons">
+      <button class="nav-btn" id="prevBtn" aria-label="Previous">&larr;</button>
+      <button class="nav-btn" id="nextBtn" aria-label="Next">&rarr;</button>
+    </div>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</section>
+
+<script>
+  const CARDS = [
+    { year: 1987, caption: 'First workshop opens its doors in the old mill district.' },
+    { year: 1994, caption: 'A second location follows demand from neighboring towns.' },
+    { year: 2003, caption: "The founder's daughter takes over daily operations." },
+    { year: 2011, caption: 'First export order ships overseas.' },
+    { year: 2015, caption: 'The workshop moves into a purpose-built facility.' },
+    { year: 2019, caption: 'A dedicated design studio opens alongside production.' },
+    { year: 2026, caption: 'Three generations, one craft, still hand-finished.' },
+  ];
+
+  const track = document.getElementById('track');
+  const viewport = document.getElementById('viewport');
+  const dragBubble = document.getElementById('dragBubble');
+  const progressFill = document.getElementById('progressFill');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  track.innerHTML = CARDS.map((c, i) => {
+    const staggerClass = i % 2 === 0 ? 'top' : 'bot';
+    const yearEl = `<div class="card-year">${c.year}</div>`;
+    const mediaEl = `<div class="card-media"></div>`;
+    const descEl = `<p class="card-desc">${c.caption}</p>`;
+    const inner = staggerClass === 'top' ? yearEl + mediaEl + descEl : mediaEl + descEl + yearEl;
+    return `<div class="card ${staggerClass}">${inner}</div>`;
+  }).join('');
+
+  let target = 0;
+  let current = 0;
+  let minX = 0;
+  let dragging = false;
+  let startPointerX = 0;
+  let startTarget = 0;
+
+  function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
+
+  function recalc() {
+    minX = Math.min(0, viewport.clientWidth - track.scrollWidth);
+    target = clamp(target, minX, 0);
+  }
+
+  function cardStep() {
+    return track.children[0] ? track.children[0].offsetWidth : 0;
+  }
+
+  function step(dir) {
+    target = clamp(target + dir * cardStep(), minX, 0);
+  }
+
+  prevBtn.addEventListener('click', () => step(1));
+  nextBtn.addEventListener('click', () => step(-1));
+
+  track.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') step(1);
+    if (e.key === 'ArrowRight') step(-1);
+  });
+
+  track.addEventListener('pointerdown', (e) => {
+    dragging = true;
+    startPointerX = e.clientX;
+    startTarget = target;
+    track.classList.add('dragging');
+    track.setPointerCapture(e.pointerId);
+  });
+
+  track.addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'mouse') {
+      dragBubble.style.left = e.clientX + 'px';
+      dragBubble.style.top = e.clientY + 'px';
+    }
+    if (!dragging) return;
+    target = clamp(startTarget + (e.clientX - startPointerX), minX, 0);
+  });
+
+  function endDrag() {
+    dragging = false;
+    track.classList.remove('dragging');
+  }
+
+  track.addEventListener('pointerup', endDrag);
+  track.addEventListener('pointercancel', endDrag);
+
+  track.addEventListener('pointerenter', (e) => {
+    if (e.pointerType === 'mouse') dragBubble.classList.add('visible');
+  });
+  track.addEventListener('pointerleave', () => dragBubble.classList.remove('visible'));
+
+  window.addEventListener('resize', recalc);
+
+  function raf() {
+    current += (target - current) * 0.12;
+    if (Math.abs(target - current) < 0.05) current = target;
+    track.style.transform = `translate3d(${current}px, 0, 0)`;
+    const pct = minX === 0 ? 0 : (Math.abs(current) / Math.abs(minX)) * 100;
+    progressFill.style.width = pct + '%';
+    prevBtn.disabled = target >= 0;
+    nextBtn.disabled = target <= minX;
+    requestAnimationFrame(raf);
+  }
+
+  recalc();
+  requestAnimationFrame(raf);
+</script>
+
+</body>
+</html>
