@@ -54,5 +54,5 @@ gallery-src/dist/
 # Brainstorming visual-companion scratch files
 .superpowers/
 
-# v3: built by Vercel from source, dist never committed
+# v3: source build artifacts (dist is copied to /portfolio-v3 and committed there)
 v3/dist/

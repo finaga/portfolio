@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", "-l", "5173", "."],
       "port": 5173
+    },
+    {
+      "name": "v3",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "v3", "run", "dev", "--", "--port", "5174"],
+      "port": 5174
     }
   ]
 }

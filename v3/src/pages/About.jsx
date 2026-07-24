@@ -30,7 +30,7 @@ export default function About() {
         </div>
         <MediaReveal>
           <figure className="portrait">
-            <img src="/img/ski.jpg" alt="André on a ski slope, goggles up" width="1200" height="800" />
+            <img src={`${import.meta.env.BASE_URL}img/ski.jpg`} alt="André on a ski slope, goggles up" width="1200" height="800" />
             <figcaption>Off duty — somewhere above the tree line</figcaption>
           </figure>
         </MediaReveal>

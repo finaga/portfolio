@@ -3,6 +3,9 @@
 // do not rewrite.
 
 const HUB = 'https://portfolio-finaga-5767s-projects.vercel.app'
+// import.meta.env.BASE_URL is '/' in dev and '/portfolio-v3/' in the built site — image
+// paths must be prefixed with it so they resolve under either base.
+const IMG = (name) => `${import.meta.env.BASE_URL}img/${name}`
 
 export const PROJECTS = [
   {
@@ -16,7 +19,7 @@ export const PROJECTS = [
     role: 'Lead Designer / Design Ops',
     scope: 'Enterprise SaaS · 20+ modules · 6 teams',
     discipline: 'Design systems',
-    image: '/img/farsight.jpg',
+    image: IMG('farsight.jpg'),
     imageAlt: 'Architectural facade, the visual identity reference for Farsight',
     description:
       'Farsight shipped with no unified design direction — new modules clashed, onboarding suffered, entry-users were lost. I led the visual and UX reset, built the system, and aligned 30+ engineers across 6 teams around a single language.',
@@ -43,7 +46,7 @@ export const PROJECTS = [
     role: 'Senior Product Designer',
     scope: 'Real-time SaaS · 24/7 control room',
     discipline: 'Product design',
-    image: '/img/grid-ops.jpg',
+    image: IMG('grid-ops.jpg'),
     imageAlt: 'Industrial control room with wall displays',
     description:
       'Grid-Ops is the command surface for operators monitoring thousands of renewable assets in real time. The brief: cut time-to-diagnose, reduce alarm fatigue, make the interface readable at 3am on a 4K wall.',
@@ -70,7 +73,7 @@ export const PROJECTS = [
     role: 'Product Designer · Growth',
     scope: 'Acquisition funnel · 8 A/B tests',
     discipline: 'Growth & conversion',
-    image: '/img/toptal.jpg',
+    image: IMG('toptal.jpg'),
     imageAlt: 'Earth from space at night, city lights of a global network',
     description:
       'Rethought the top-of-funnel flow for talent signup. Cut form friction without cutting qualification. Every pixel on these pages costs or earns money — so every change ran as an experiment.',
@@ -97,7 +100,7 @@ export const PROJECTS = [
     role: 'Founder & Designer',
     scope: 'Brand · e-commerce · apparel',
     discipline: 'Brand & art direction',
-    image: '/img/fit4box.jpg',
+    image: IMG('fit4box.jpg'),
     imageAlt: 'Athlete training with battle ropes in a gym',
     description:
       'My own brand — Crossfit apparel built for people who actually train. I run the whole thing: identity, e-commerce, photography direction, and the product line itself.',

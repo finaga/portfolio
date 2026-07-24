@@ -21,23 +21,16 @@ export default function Home() {
       if (!ready || prefersReduced()) return
       const tl = gsap.timeline({ defaults: { ease: EASE } })
       tl.fromTo(
-        heroRef.current.querySelectorAll('.hero-name .line-in'),
-        { yPercent: 115 },
-        { yPercent: 0, duration: 1.3, stagger: 0.12 },
+        heroRef.current.querySelector('.hero-meta'),
+        { opacity: 0, y: -14 },
+        { opacity: 1, y: 0, duration: 0.9 },
         0.05
+      ).fromTo(
+        heroRef.current.querySelector('.hero-statement'),
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.9 },
+        0.2
       )
-        .fromTo(
-          heroRef.current.querySelector('.hero-meta'),
-          { opacity: 0, y: -14 },
-          { opacity: 1, y: 0, duration: 0.9 },
-          0.55
-        )
-        .fromTo(
-          heroRef.current.querySelectorAll('.hero-foot > *'),
-          { opacity: 0, y: 18 },
-          { opacity: 1, y: 0, duration: 0.9, stagger: 0.08 },
-          0.7
-        )
     },
     { dependencies: [ready], scope: heroRef }
   )
@@ -50,18 +43,11 @@ export default function Home() {
           <span>São Paulo · 23.55°S 46.63°W</span>
           <span>Open — Q3 2026</span>
         </div>
-        <h1 className="hero-name">
-          <span className="line"><span className="line-in">André</span></span>
-          <span className="line"><span className="line-in">Finageiv</span></span>
-        </h1>
-        <div className="hero-foot">
-          <p className="statement">
-            I work where the problems are hardest and the users care the most:
-            enterprise SaaS, real-time control rooms, growth funnels that turn
-            pixels into revenue.
-          </p>
-          <span className="cue">Scroll — selected work</span>
-        </div>
+        <p className="hero-statement">
+          I work where the problems are hardest and the users care the most:
+          enterprise SaaS, real-time control rooms, growth funnels that turn
+          pixels into revenue.
+        </p>
       </section>
 
       <section className="work container" id="work" aria-labelledby="work-title">

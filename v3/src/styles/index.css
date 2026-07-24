@@ -49,7 +49,6 @@
   --z-preview: 40;
   --z-header: 50;
   --z-menu: 60;
-  --z-curtain: 70;
   --z-preloader: 80;
   --z-flip: 90;
 }
@@ -231,14 +230,10 @@ p { text-wrap: pretty; }
   font-weight: 500;
 }
 
-/* ============ Hero (home poster) ============ */
+/* ============ Hero (home intro) ============ */
 .hero {
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   padding-top: clamp(4.5rem, 9vh, 6rem);
-  padding-bottom: 1.5rem;
+  padding-bottom: clamp(2rem, 5vh, 3rem);
   position: relative;
 }
 
@@ -256,38 +251,18 @@ p { text-wrap: pretty; }
 .hero-meta > :nth-child(2) { text-align: center; }
 .hero-meta > :nth-child(3) { text-align: right; }
 
-.hero-name {
-  font-family: var(--serif);
-  font-size: var(--fs-hero);
-  line-height: 0.92;
-  font-weight: 650;
-  letter-spacing: -0.015em;
-  text-transform: uppercase;
-  margin-block: auto;
-}
-/* padding-top gives cap accents (É) headroom inside the reveal mask */
-.hero-name .line { display: block; overflow: clip; padding-top: 0.12em; margin-bottom: -0.12em; }
-.hero-name .line:last-child { text-align: right; font-style: italic; font-weight: 560; }
-.hero-name .line-in { display: inline-block; will-change: transform; }
-
-.hero-foot {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 1rem;
-}
-.hero-foot .statement {
-  max-width: 34ch;
+.hero-statement {
+  max-width: 48ch;
+  margin-top: 1.5rem;
   font-size: var(--fs-sm);
   color: var(--ink-2);
   line-height: 1.55;
 }
-.hero-foot .cue { font-size: var(--fs-xs); font-weight: 560; letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--ink-3); }
 
 @media (max-width: 720px) {
   .hero-meta { grid-template-columns: 1fr 1fr; }
   .hero-meta > :nth-child(2) { display: none; }
-  .hero-foot .statement { max-width: 26ch; }
+  .hero-statement { max-width: 26ch; }
 }
 
 /* ============ Work index ============ */
@@ -726,26 +701,6 @@ p { text-wrap: pretty; }
 .nf p { color: var(--ink-2); }
 
 /* ============ Transitions & preloader ============ */
-.curtain {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-curtain);
-  background: var(--ink);
-  transform: translateY(101%);
-  pointer-events: none;
-}
-.curtain .curtain-word {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--i-text);
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-}
-
 .preloader {
   position: fixed;
   inset: 0;

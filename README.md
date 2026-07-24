@@ -16,6 +16,8 @@ fluted-glass/         # WebGL fluted-glass shader study (vanilla WebGL, zero bui
 marathon-preview/     # Marathon HUD widget (static)
 option2/              # built output of the Button System (served at /option2/)
 option2-src/          # Vite source for option2 — build, then copy dist → /option2/
+portfolio-v3/         # built output of the v3 redesign (served at /portfolio-v3/)
+v3/                   # Vite source for portfolio-v3 — build, then copy dist → /portfolio-v3/
 ```
 
 Every page is its own folder with an `index.html`, served at `/<name>/`. `vercel.json` sets `trailingSlash: true` so subpaths keep their slash (the portfolio uses relative script paths and breaks without it).
@@ -40,6 +42,18 @@ rm -rf ../option2 && mkdir ../option2 && cp -R dist/. ../option2/
 ```
 
 Then commit the updated `option2/`.
+
+### Rebuilding portfolio-v3
+
+```bash
+cd v3
+npm install
+npx vite build --base=/portfolio-v3/
+rm -rf ../portfolio-v3 && mkdir ../portfolio-v3 && cp -R dist/. ../portfolio-v3/
+cp ../portfolio-v3/index.html ../portfolio-v3/404.html   # SPA deep-link fallback
+```
+
+Then commit the updated `portfolio-v3/`.
 
 ## Deploy
 

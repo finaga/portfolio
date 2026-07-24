@@ -6,16 +6,18 @@ import { gsap, ScrollTrigger, EASE_IO, prefersReduced } from './motion'
 const Ctx = createContext(null)
 export const useApp = () => useContext(Ctx)
 
+// BASE_URL is '/' in dev and '/portfolio-v3/' in the built site — strip the
+// trailing slash so it composes cleanly with react-router's basename and TLink's href.
+export const basename = import.meta.env.BASE_URL.replace(/\/$/, '')
+
 // Module-level morph payload survives the route unmount/mount boundary.
 let morphPayload = null
 
 export function AppProvider({ children }) {
   const navigate = useNavigate()
   const location = useLocation()
-  const curtainRef = useRef(null)
   const ghostRef = useRef(null)
   const lenisRef = useRef(null)
-  const pendingRef = useRef(null)
   // ready: preloader finished (or skipped) — pages gate their intro on it
   const [ready, setReady] = useState(false)
   const [ghost, setGhost] = useState(null) // {src, alt, plateKind}
@@ -36,23 +38,11 @@ export function AppProvider({ children }) {
     }
   }, [])
 
-  /* ---- scroll to top + curtain exit on every location change ---- */
+  /* ---- scroll to top on every location change ---- */
   useEffect(() => {
     const lenis = lenisRef.current
     if (lenis) lenis.scrollTo(0, { immediate: true, force: true })
     else window.scrollTo(0, 0)
-
-    const curtain = curtainRef.current
-    if (curtain && pendingRef.current === 'curtain') {
-      pendingRef.current = null
-      gsap.to(curtain, {
-        yPercent: -101,
-        duration: 0.7,
-        delay: 0.1,
-        ease: EASE_IO,
-        onComplete: () => gsap.set(curtain, { yPercent: 101 }),
-      })
-    }
     requestAnimationFrame(() => ScrollTrigger.refresh())
   }, [location.pathname])
 
@@ -60,28 +50,14 @@ export function AppProvider({ children }) {
   const nav = useCallback(
     (to, opts = {}) => {
       if (to === location.pathname) return
-      if (prefersReduced()) {
-        navigate(to)
-        return
-      }
-      if (opts.morph && opts.morph.el) {
+      if (opts.morph && opts.morph.el && !prefersReduced()) {
         // FLIP morph: clone the clicked media into a fixed ghost, navigate,
         // then fly it to the destination hero once it registers.
         const rect = opts.morph.el.getBoundingClientRect()
         morphPayload = { ...opts.morph, rect, to }
         setGhost({ ...opts.morph, rect })
-        navigate(to)
-        return
       }
-      pendingRef.current = 'curtain'
-      const curtain = curtainRef.current
-      gsap.set(curtain, { yPercent: 101 })
-      gsap.to(curtain, {
-        yPercent: 0,
-        duration: 0.55,
-        ease: EASE_IO,
-        onComplete: () => navigate(to),
-      })
+      navigate(to)
     },
     [navigate, location.pathname]
   )
@@ -150,7 +126,6 @@ export function AppProvider({ children }) {
   return (
     <Ctx.Provider value={value}>
       {children}
-      <div className="curtain" ref={curtainRef} aria-hidden="true" />
       {ghost && (
         <div
           className="flip-ghost"
@@ -175,7 +150,7 @@ export function TLink({ to, morph, children, ...rest }) {
   const { nav } = useApp()
   return (
     <a
-      href={to}
+      href={`${basename}${to}`}
       {...rest}
       onClick={(e) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
