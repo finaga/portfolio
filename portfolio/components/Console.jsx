@@ -38,7 +38,11 @@ function Console({ caseData, onReadMore, nextCase, onNextCase, kpiTrigger, conso
       <div className="console-section enter" style={{ animationDelay: '320ms' }}>
         <span className="section-label">ABSTRACT /</span>
         <p className="abstract">{caseData.abstract}</p>
-        <button className="cta-read" onClick={onReadMore}>Read full case ↓</button>
+        {caseData.light ? (
+          <a className="cta-read" href={caseData.liveUrl} target="_blank" rel="noopener noreferrer">Visit site ↗</a>
+        ) : (
+          <button className="cta-read" onClick={onReadMore}>Read full case ↓</button>
+        )}
       </div>
 
       <div className="console-nav enter" style={{ animationDelay: '400ms' }}>
