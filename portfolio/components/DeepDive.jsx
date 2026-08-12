@@ -43,15 +43,18 @@ function DeepDive({ caseData, forwardedRef, open, onClose }) {
     if (root && open) root.scrollTop = 0;
   }, [open, caseData.id, forwardedRef]);
 
-  const ref = caseData.deep.reflection;
+  // `deep` is optional — a case only has one once André has written the real
+  // long-form. Cases awaiting it render the plates and the impact list alone.
+  const deep = caseData.deep || {};
+  const ref = deep.reflection;
   const impact = caseData.impact || caseData.kpis.map(kpi => ({ k: kpi.k, note: '' }));
 
   const toc = [
-    { id: 'ctx', n: '§1', label: 'CONTEXT' },
-    { id: 'apr', n: '§2', label: 'APPROACH' },
-    { id: 'out', n: '§3', label: 'OUTCOME' },
-    { id: 'ref', n: '§4', label: 'REFLECTION' },
-  ];
+    deep.context && { id: 'ctx', n: '§1', label: 'CONTEXT' },
+    deep.approach && { id: 'apr', n: '§2', label: 'APPROACH' },
+    (deep.outcome || impact.length) && { id: 'out', n: '§3', label: 'OUTCOME' },
+    ref && { id: 'ref', n: '§4', label: 'REFLECTION' },
+  ].filter(Boolean);
 
   function setRef(id) {
     return el => { sectionRefs.current[id] = el; };
@@ -92,12 +95,14 @@ function DeepDive({ caseData, forwardedRef, open, onClose }) {
           <div className="eyebrow">CASE / {caseData.num} · DEEP DIVE</div>
           <h2>{caseData.project}</h2>
 
-          <section ref={setRef('ctx')}>
-            <div className="sec-label">§1 CONTEXT</div>
-            <div className="sec-body">
-              <p>{caseData.deep.context}</p>
-            </div>
-          </section>
+          {deep.context && (
+            <section ref={setRef('ctx')}>
+              <div className="sec-label">§1 CONTEXT</div>
+              <div className="sec-body">
+                <p>{deep.context}</p>
+              </div>
+            </section>
+          )}
 
           {plates[0] && (
             <figure className="plate-figure">
@@ -106,12 +111,14 @@ function DeepDive({ caseData, forwardedRef, open, onClose }) {
             </figure>
           )}
 
-          <section ref={setRef('apr')}>
-            <div className="sec-label">§2 APPROACH</div>
-            <div className="sec-body">
-              <p>{caseData.deep.approach}</p>
-            </div>
-          </section>
+          {deep.approach && (
+            <section ref={setRef('apr')}>
+              <div className="sec-label">§2 APPROACH</div>
+              <div className="sec-body">
+                <p>{deep.approach}</p>
+              </div>
+            </section>
+          )}
 
           {(plates[1] || plates[2]) && (
             <div className="plates-strip">
@@ -133,7 +140,7 @@ function DeepDive({ caseData, forwardedRef, open, onClose }) {
           <section ref={setRef('out')}>
             <div className="sec-label">§3 OUTCOME</div>
             <div className="sec-body">
-              <p>{caseData.deep.outcome}</p>
+              {deep.outcome && <p>{deep.outcome}</p>}
 
               <div className="enabled">
                 <div className="enabled-eyebrow">WHAT THIS ENABLED /</div>

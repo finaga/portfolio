@@ -4,7 +4,7 @@
 // Stream imagery: each case ships its one real hero photo plus editorial
 // "plate" diagrams (see lib/plate.js) — the same instrument-panel data
 // visualizations the real portfolio uses for these exact cases. Enterprise
-// client work (Farsight, Grid-Ops, Toptal) can't be screenshotted, so these
+// client work (Farsight, Toptal) can't be screenshotted, so these
 // stand in as honest system/data visuals rather than fabricated product
 // photos. Experiments with no shareable photo get a plate label + a live
 // iframe of the actual working demo on their project page.
@@ -41,36 +41,16 @@ export const projects = [
     ],
   },
   {
-    slug: 'grid-ops',
-    title: 'Grid-Ops Control Center',
-    short: 'Grid-Ops',
-    client: 'BaxEnergy — a Yokogawa Company',
-    category: 'case',
-    year: '2023',
-    role: 'Senior Product Designer',
-    scope: 'Real-time SaaS · 24/7 control room',
-    description:
-      'Grid-Ops is the command surface for operators monitoring thousands of renewable assets in real time. The brief: cut time-to-diagnose, reduce alarm fatigue, make the interface readable at 3am on a 4K wall.',
-    hero: heroGridOps,
-    heroAspect: 66.667,
-    images: [
-      { src: heroGridOps, aspect: 66.667, span: 'full' },
-      { src: plate('control-room', { tone: 'dark' }), aspect: 66.667, span: 'right' },
-      { src: plate('alert-triage', { tone: 'dark' }), aspect: 66.667, span: 'left' },
-      { src: plate('before-after', { tone: 'dark' }), aspect: 66.667, span: 'center' },
-    ],
-  },
-  {
     slug: 'toptal',
-    title: 'Growth Funnel Redesign',
-    short: 'Growth Funnel',
+    title: 'Growth Design',
+    short: 'Growth Design',
     client: 'Toptal',
     category: 'case',
-    year: '2022',
-    role: 'Product Designer · Growth',
-    scope: 'Acquisition funnel · 8 A/B tests',
+    year: '2019 — 2023',
+    role: 'Growth Designer',
+    scope: '5 products · homepage, landing pages, calculator, assessment, signup',
     description:
-      'Rethought the top-of-funnel flow for talent signup. Cut form friction without cutting qualification. Every pixel on these pages costs or earns money — so every change ran as an experiment.',
+      'Four years of growth design on the freelancer side of Toptal — homepage, dynamic landing pages, a rate calculator, talent assessment, and a rebuilt signup. The brief: turn freelancers into leads, keep the journey consistent end to end, and make the pages earn their traffic organically.',
     hero: heroToptal,
     heroAspect: 66.667,
     images: [
@@ -86,11 +66,11 @@ export const projects = [
     short: 'Fit4Box',
     client: 'Fit4Box',
     category: 'case',
-    year: '2023 — Present',
+    year: 'Jul 2023 — Feb 2024',
     role: 'Founder & Designer',
     scope: 'Brand · e-commerce · apparel',
     description:
-      'My own brand — Crossfit apparel built for people who actually train. I run the whole thing: identity, e-commerce, photography direction, and the product line itself.',
+      'My own brand — CrossFit apparel built for people who actually train. I ran the whole thing for eight months: identity, e-commerce, photography direction, and the product line itself.',
     hero: heroFit4box,
     heroAspect: 66.667,
     images: [

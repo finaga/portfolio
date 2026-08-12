@@ -211,7 +211,7 @@ function plate(kind, opts = {}) {
         <text x='${x + 20}' y='${y + 38}' ${MONO} font-size='12' fill='${bg0}' letter-spacing='1.5'>${String(i+1).padStart(2,'0')} · ${s[0]}</text>
         <text x='${x + w - 20}' y='${y + 38}' ${MONO} font-size='12' fill='${bg0}' text-anchor='end' letter-spacing='1.5'>${s[2]}</text>`;
     });
-    body += `<text x='56' y='770' ${MONO} font-size='10' fill='${dim}' letter-spacing='1.5'>+37% COMPLETION · −24% CPA · 8 EXPERIMENTS</text>`;
+    body += `<text x='56' y='770' ${MONO} font-size='10' fill='${dim}' letter-spacing='1.5'>FREELANCER ACQUISITION · TOP OF FUNNEL</text>`;
   }
 
   else if (kind === 'experiments') {
@@ -226,7 +226,7 @@ function plate(kind, opts = {}) {
       ['08', 'Currency pre-fill by geo',                  '+3.6%'],
     ];
     body = `${eyebrow('EXPERIMENT LOG · Q1–Q4')}
-      <text x='56' y='150' ${DISP} font-size='56' font-weight='500' fill='${ink}' letter-spacing='-1'>8 SHIPPED · 2.1× COMPOUND</text>`;
+      <text x='56' y='150' ${DISP} font-size='56' font-weight='500' fill='${ink}' letter-spacing='-1'>SHIP OR KILL</text>`;
     rows.forEach((r, i) => {
       const y = 240 + i * 58;
       body += `
@@ -257,7 +257,7 @@ function plate(kind, opts = {}) {
       <circle cx='${x}' cy='${420 - h}' r='24' fill='${ink}' opacity='0.85'/>
       <rect x='${x - 24}' y='${440}' width='14' height='180' fill='${ink}' opacity='0.7'/>
       <rect x='${x + 10}' y='${440}' width='14' height='180' fill='${ink}' opacity='0.7'/>`;
-    body = `${eyebrow('SS25 · LOOKBOOK / FRAME 04')}
+    body = `${eyebrow('LOOKBOOK / FRAME 04')}
       <text x='56' y='760' ${DISP} font-size='56' font-weight='500' fill='${ink}' letter-spacing='-1'>NO SHOUT</text>
       ${fig(300, 240)}
       ${fig(600, 260)}
@@ -417,63 +417,22 @@ window.CASES = [
     },
   },
   {
-    id: 'grid-ops',
-    num: '002',
-    client: 'BaxEnergy — a Yokogawa Company',
-    clientShort: 'BaxEnergy',
-    project: 'Grid-Ops Control Center',
-    projectShort: 'Grid-Ops',
-    year: '2023',
-    role: 'Senior Product Designer',
-    scope: 'Real-time SaaS · 24/7 control room',
-    domain: 'SaaS',
-    tabLabel: 'BAXENERGY GRID-OPS',
-    hero: 'assets/bg-grid-ops.jpg',
-    abstract: 'Grid-Ops is the command surface for operators monitoring thousands of renewable assets in real time. The brief: cut time-to-diagnose, reduce alarm fatigue, make the interface readable at 3am on a 4K wall.',
-    kpis: [
-      { k: 'TIME-TO-DIAGNOSE', v: -62, suffix: '%', unit: true },
-      { k: 'ALARMS FATIGUE', v: -48, suffix: '%', unit: true },
-      { k: 'ASSETS MONITORED', v: 12, suffix: 'k', unit: false },
-      { k: 'UPTIME', v: 99.9, suffix: '%', unit: false, decimals: 1 },
-    ],
-    plates: [
-      { label: 'CONTROL ROOM',   art: plate('control-room',   { tone: 'dark' }) },
-      { label: 'ALARM TRIAGE',   art: plate('alert-triage',   { tone: 'dark' }) },
-      { label: 'BEFORE / AFTER', art: plate('before-after',   { tone: 'dark' }) },
-      { label: 'ASSET DETAIL',   art: plate('asset-detail',   { tone: 'dark' }) },
-    ],
-    impact: [
-      { k: 'TIME-TO-DIAGNOSE', note: 'A shift lead now handles 3 concurrent incidents where one used to saturate them.' },
-      { k: 'ALARMS FATIGUE',   note: 'Operators stopped dismissing alarms by reflex — real criticals get acted on.' },
-      { k: 'ASSETS MONITORED', note: '12k assets across wind, solar, and storage surface in one coherent view.' },
-      { k: 'UPTIME',           note: 'Four control centers across Europe and Asia-Pacific, zero UI-caused incidents.' },
-    ],
-    deep: {
-      context: 'Grid-Ops operators work 12-hour shifts inside control rooms that never sleep. A single dispatcher watches thousands of turbines, inverters, and substations across a continent, and the consequence of missing something isn\'t a bad UX score — it\'s a grid event, a fined customer, or worse. The legacy UI was built by the engineers who understood the data best, which meant everything shouted. Every anomaly — a 2°C temperature drift, a critical ground fault — looked the same shade of red. Operators coped by dismissing alarms in bulk, which meant real criticals got lost in noise. On ride-alongs I watched a shift lead miss an inverter fault for 11 minutes because it rendered identically to 40 routine warnings stacked above it. That was the north star: the UI should not be a source of cognitive load at 3am.',
-      approach: 'Three decisions shaped everything. First, severity-first information architecture: every screen sorts by impact, not by timestamp or asset ID. A critical fault owns the top of the viewport until acknowledged; lows fall into an ambient band that can be scanned peripherally. Second, color as hazard, not decoration: I pulled red from the palette entirely except for genuine P0 events. Standard state lives in neutral steel; severity uses shape, position, and weight before it uses hue. Third, stepped mechanical motion — no springs, no easing flourishes. Operators read motion as change, so a wobble means data moved; a slide means the user moved. Spring physics in a control room is a lie. I also designed four density modes so the same components read at a laptop, a wall-desk, and a 4K control wall without re-layout.',
-      outcome: 'Time-to-diagnose cut by 62% on the internal benchmark. Alarm-fatigue survey scores dropped 48% over six months. The operational result is what mattered: a shift lead now handles three concurrent incidents where one used to saturate them. Deployed across four control centers in Europe and Asia-Pacific, monitoring 12k+ assets at 99.9% uptime. One grid operator put it best in a post-launch interview: "I don\'t fight the screen anymore."',
-      reflection: 'The hardest decision was killing color. Engineering pushed back hard — red is information density, they said. I built the dark-mode prototype, put it in a real control room for a week, and let the operators decide. They decided in an hour. The lesson: when domain experts defend the status quo on first principles, get them in a room with the users. First principles lose to lived experience.',
-    },
-  },
-  {
     id: 'toptal',
     num: '003',
     client: 'Toptal',
     clientShort: 'Toptal',
-    project: 'Growth Funnel Redesign',
-    projectShort: 'Growth Funnel',
-    year: '2022',
-    role: 'Product Designer · Growth',
-    scope: 'Acquisition funnel · 8 A/B tests',
+    project: 'Growth Design',
+    projectShort: 'Growth Design',
+    year: '2019 — 2023',
+    role: 'Growth Designer',
+    scope: '5 products · homepage, landing pages, calculator, assessment, signup',
     domain: 'Growth',
     tabLabel: 'TOPTAL GROWTH',
     hero: 'assets/bg-toptal.jpg',
-    abstract: 'Rethought the top-of-funnel flow for talent signup. Cut form friction without cutting qualification. Every pixel on these pages costs or earns money — so every change ran as an experiment.',
+    abstract: 'Four years of growth design on the freelancer side of Toptal — homepage, dynamic landing pages, a rate calculator, talent assessment, and a rebuilt signup. The brief: turn freelancers into leads, keep the journey consistent end to end, and make the pages earn their traffic organically.',
     kpis: [
-      { k: 'SIGNUP COMPLETION', v: 37, suffix: '%', unit: true },
-      { k: 'CPA', v: -24, suffix: '%', unit: true },
-      { k: 'EXPERIMENTS SHIPPED', v: 8, suffix: '', unit: false },
-      { k: 'LIFT COMPOUND', v: 2.1, suffix: '×', unit: true, decimals: 1 },
+      { k: 'YEARS AT TOPTAL', v: 4, suffix: '', unit: false },
+      { k: 'PRODUCTS SHIPPED', v: 5, suffix: '', unit: false },
     ],
     plates: [
       { label: 'LANDING · A / B', art: plate('landing-variants', { tone: 'dark' }) },
@@ -481,17 +440,9 @@ window.CASES = [
       { label: 'EXPERIMENT LOG',  art: plate('experiments',      { tone: 'dark' }) },
     ],
     impact: [
-      { k: 'SIGNUP COMPLETION',  note: 'More qualified talent reaching the screen without softening the bar.' },
-      { k: 'CPA',                note: 'Same quality, cheaper acquisition — the growth team reallocated the delta.' },
-      { k: 'EXPERIMENTS SHIPPED', note: '8 shipped variants built on a shared hypothesis library, not one-off tests.' },
-      { k: 'LIFT COMPOUND',      note: '2.1× over control — compounding came from staying in the same flow for a year.' },
+      { k: 'YEARS AT TOPTAL',   note: 'Four years on the freelancer growth side, not a single engagement.' },
+      { k: 'PRODUCTS SHIPPED',  note: 'Homepage, dynamic landing pages, rate calculator, talent assessment, signup.' },
     ],
-    deep: {
-      context: 'Toptal\'s top-of-funnel signup had plateaued. The product team had run dozens of tests and were getting diminishing returns — a hero-image swap, a CTA-color tweak, a headline A/B — all within noise. The hard constraint was that Toptal can\'t just "make it easier to sign up." The entire business model depends on the quality bar holding; more applicants matters only if they\'re more qualified applicants. So the question wasn\'t "how do we lift conversion" — it was "how do we lift qualified conversion without cutting the filter." That required treating the form as a product, not a wall.',
-      approach: 'Three moves. First, I reframed the form as a conversation, not a gate. The old form front-loaded every sensitive question — resume, rate, legal status, references — on page one. Drop-off was enormous. I rebuilt it as progressive disclosure: skills and experience first (candidates love talking about those), credentials and rate later (once they\'ve invested). Second, social-proof at micro-moments: peer counts, domain-specific testimonials placed at the exact points on the hesitation curve where drop-off clustered. Third, a hypothesis library — every test logged its prior, the question it answered, and the cross-experiment interactions. Instead of 8 independent tests we got one learning system; we could compound lifts by knowing which variants played well together.',
-      outcome: '+37% completion, −24% CPA, 2.1× compound lift over the control across 8 shipped experiments. The quality bar held — the filter moved from the form into the vetting loop behind it. Growth reallocated the CPA delta into new channels. The hypothesis library outlived the project: the team kept using it for two years after I left.',
-      reflection: 'The biggest surprise was how much of the lift came from removing a single credentials-upload step from page one. A full quarter of the compound came from that one change. The lesson: in growth work, the expensive tests aren\'t the ones that move the number — the expensive ones are the ones that tell you which decision in the flow is actually binding. Everything else is local optimization.',
-    },
   },
   {
     id: 'fit4box',
@@ -500,37 +451,31 @@ window.CASES = [
     clientShort: 'Fit4Box',
     project: 'Crossfit Apparel Brand',
     projectShort: 'Fit4Box',
-    year: '2023 — PRESENT',
+    year: 'JUL 2023 — FEB 2024',
     role: 'Founder & Designer',
     scope: 'Brand · e-commerce · apparel',
     domain: 'Brand',
     tabLabel: 'FIT4BOX BRAND',
     hero: 'assets/bg-fit4box.jpg',
-    abstract: 'My own brand — Crossfit apparel built for people who actually train. I run the whole thing: identity, e-commerce, photography direction, and the product line itself.',
+    abstract: 'My own brand — CrossFit apparel built for people who actually train. I ran the whole thing for eight months: identity, e-commerce, photography direction, and the product line itself.',
     kpis: [
-      { k: 'SKUS SHIPPED', v: 42, suffix: '', unit: false },
+      { k: 'SKUS SHIPPED', v: 100, suffix: '+', unit: false },
       { k: 'REPEAT CUSTOMERS', v: 38, suffix: '%', unit: true },
-      { k: 'INSTA FOLLOWERS', v: 4.2, suffix: 'k', unit: false, decimals: 1 },
-      { k: 'MONTHS RUNNING', v: 24, suffix: '', unit: false },
+      { k: 'INSTA FOLLOWERS', v: 500, suffix: '+', unit: false },
+      { k: 'MONTHS TRADING', v: 8, suffix: '', unit: false },
     ],
     plates: [
       { label: 'IDENTITY',      art: plate('identity',  { tone: 'light' }) },
-      { label: 'SS25 LOOKBOOK', art: plate('lookbook',  { tone: 'light' }) },
+      { label: 'LOOKBOOK', art: plate('lookbook',  { tone: 'light' }) },
       { label: 'STORE · PDP',   art: plate('pdp',       { tone: 'light' }) },
       { label: 'CAMPAIGN',      art: plate('campaign',  { tone: 'light' }) },
       { label: 'PACKAGING',     art: plate('packaging', { tone: 'light' }) },
     ],
     impact: [
-      { k: 'SKUS SHIPPED',     note: 'Tight line. Every SKU earns its place — no filler, no hype drops.' },
-      { k: 'REPEAT CUSTOMERS', note: '38% come back — rare in apparel; it means the product survives real training.' },
+      { k: 'SKUS SHIPPED',     note: 'Tight line. Every SKU earned its place — no filler, no hype drops.' },
+      { k: 'REPEAT CUSTOMERS', note: 'A real repeat rate — the product survived actual training.' },
       { k: 'INSTA FOLLOWERS',  note: 'Community built on in-gym photography, not paid reach.' },
-      { k: 'MONTHS RUNNING',   note: 'Two years in — past the hardest stretch, still founder-run.' },
+      { k: 'MONTHS TRADING',   note: 'Eight months, then closed on purpose — I had what I came for.' },
     ],
-    deep: {
-      context: 'Most Crossfit apparel looks like energy-drink packaging: screaming logos, tribal fonts, colors tuned for Instagram. I train six days a week and I wanted clothes I\'d wear without thinking. No brand on the market served that. The constraint was not just aesthetic — it was physical: Crossfit destroys clothing. Grip work shreds forearms on cheap cotton; barbell cycles burn holes through thin shoulders; sweat ruins dye-jobs within a month. Anything I made had to survive the training before it could stand for the brand.',
-      approach: 'Product first, identity last. I spent the first four months sourcing fabrics — 220gsm combed cotton for tees, rip-stop for shorts, double-needle seams everywhere that takes load. I photographed every prototype in-gym, on real athletes, no studio, no model casting. Identity came once the clothes had earned it: a wordmark built from Big Shoulders Display (appropriate), a palette of bone and ink, and a single rule — no color that doesn\'t come from the product itself. E-commerce is Shopify with a heavily customized theme; I\'d rather edit code than fight a pagebuilder. Repeat rate, not new-customer rate, is the KPI I optimize for — returning athletes mean the product works.',
-      outcome: '42 SKUs in 24 months, 38% repeat-customer rate (industry average for indie apparel is 15–20%), 4.2k organic Instagram followers with zero paid reach. More importantly: a small, growing community of actual competitive athletes wear the gear — two regional-level Crossfitters sponsor-free, because they asked to. That\'s the only social proof that matters in this category.',
-      reflection: 'What I underestimated: photography is the product. I spent the first year treating shots as documentation and sales died on the PDP. Once I started directing real sessions — light, poses, post, all of it — conversion moved more than any product change. The lesson for designers running their own thing: the brand isn\'t the logo or the website or even the clothes; it\'s the image in the customer\'s head. Control the photography, control the brand.',
-    },
   },
 ];

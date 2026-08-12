@@ -37,7 +37,7 @@ project). Design-award ambition.
 - Plates (`src/components/Plate.jsx`): inline-SVG bone/ink system diagrams
   (module maps, alarm triage, funnels, A/B ledger…) standing in for NDA'd
   enterprise screenshots — honest visuals, two colors only.
-- Data (`src/data/projects.js`): 4 cases (Farsight, Grid-Ops, Toptal, Fit4Box)
+- Data (`src/data/projects.js`): 3 cases (Farsight, Toptal, Fit4Box)
   + 4 experiments (Fluted Glass, Marathon HUD, Button System, Timeline).
   **All copy/KPIs/bio verbatim from previous versions — NEVER rewrite André's
   voice** (rule from PRODUCT.md). Experiments embed live demos via iframe from

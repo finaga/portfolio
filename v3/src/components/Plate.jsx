@@ -146,110 +146,20 @@ function AssetDetail() {
   )
 }
 
-/* ---- Grid-Ops ---- */
-
-function ControlRoom() {
-  // 4K wall: panels, one alarming.
-  const panels = []
-  const cols = 4, rows = 2
-  const pw = 164, ph = 130, g = 12
-  const ox = (W - cols * (pw + g) + g) / 2
-  const oy = 116
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      const x = ox + c * (pw + g), y = oy + r * (ph + g)
-      const hot = r === 0 && c === 2
-      panels.push(
-        <g key={`${r}${c}`}>
-          {hot ? bar(x, y, pw, ph) : box(x, y, pw, ph, 0.4)}
-          {!hot && (
-            <polyline
-              points={`${x + 16},${y + ph - 28} ${x + 52},${y + ph - 48 - (c * 7) % 20} ${x + 88},${y + ph - 34} ${x + 124},${y + ph - 56 - (r * 9) % 18} ${x + pw - 16},${y + ph - 40}`}
-              fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.7"
-            />
-          )}
-          {hot && (
-            <text x={x + pw / 2} y={y + ph / 2 + 7} textAnchor="middle" fontFamily="var(--sans)"
-              fontSize="15" fontWeight="600" letterSpacing="0.08em" fill="var(--bg)">
-              ALERT 03
-            </text>
-          )}
-        </g>
-      )
-    }
-  }
-  return (
-    <Frame label="Control-room wall diagram — eight panels, one active alert">
-      {txt(40, 60, 'Grid-Ops · control wall', 13)}
-      {txt(W - 40, 60, '03:00 · 12k assets', 13, 0.5, 'end')}
-      {ln(40, 80, W - 40, 80, 0.4)}
-      {panels}
-      {ln(40, 430, W - 40, 430, 0.4)}
-      {txt(40, 456, 'Time-to-diagnose −62%', 13)}
-      {txt(W - 40, 456, 'Uptime 99.9%', 13, 0.5, 'end')}
-    </Frame>
-  )
-}
-
-function AlertTriage() {
-  const rows = [0.95, 0.8, 0.55, 0.4, 0.3, 0.22]
-  return (
-    <Frame label="Alarm triage diagram — severity ranked above noise">
-      {txt(40, 60, 'Triage · severity first', 13)}
-      {ln(40, 80, W - 40, 80, 0.4)}
-      {rows.map((o, i) => {
-        const y = 116 + i * 56
-        return (
-          <g key={i}>
-            {ln(40, y + 40, W - 40, y + 40, 0.15)}
-            {bar(40, y, 14, 28, o)}
-            {bar(78, y + 6, 180 - i * 18, 9, o * 0.85)}
-            {bar(78, y + 20, 90 - i * 8, 6, 0.25)}
-            {txt(W - 40, y + 22, i < 2 ? 'Act' : i < 4 ? 'Watch' : 'Log', 11, o, 'end')}
-          </g>
-        )
-      })}
-    </Frame>
-  )
-}
-
-function BeforeAfter() {
-  return (
-    <Frame label="Before and after — diagnosis time cut by 62 percent">
-      {ln(W / 2, 48, W / 2, H - 48, 0.3)}
-      {txt(40, 60, 'Before', 13, 0.5)}
-      {txt(W / 2 + 24, 60, 'After', 13)}
-      {/* before: scattered blocks */}
-      {[
-        [60, 120, 110, 44], [200, 180, 90, 44], [90, 260, 130, 44],
-        [240, 330, 100, 44], [70, 390, 80, 44],
-      ].map((r, i) => (
-        <g key={i}>{box(r[0], r[1], r[2], r[3], 0.35)}</g>
-      ))}
-      {/* after: aligned stack */}
-      {[0, 1, 2, 3].map((i) => (
-        <g key={i}>{bar(W / 2 + 24, 120 + i * 72, 300 - i * 60, 44, 0.9 - i * 0.18)}</g>
-      ))}
-      <text x={W - 40} y={H - 58} textAnchor="end" fontFamily="var(--serif)" fontSize="64" fontWeight="560" fill="currentColor">
-        −62%
-      </text>
-    </Frame>
-  )
-}
 
 /* ---- Toptal ---- */
 
 function Funnel() {
   const steps = [
-    { w: 640, label: 'Visit', v: '100%' },
-    { w: 470, label: 'Start', v: '73%' },
-    { w: 350, label: 'Qualify', v: '55%' },
-    { w: 280, label: 'Complete', v: '+37%' },
+    { w: 640, label: 'Visit', v: '' },
+    { w: 470, label: 'Start', v: '' },
+    { w: 350, label: 'Qualify', v: '' },
+    { w: 280, label: 'Complete', v: '' },
   ]
   return (
     <Frame label="Acquisition funnel — signup completion up 37 percent">
       {txt(40, 60, 'Talent signup · top of funnel', 13)}
-      {txt(W - 40, 60, '8 experiments', 13, 0.5, 'end')}
+      {txt(W - 40, 60, 'top of funnel', 13, 0.5, 'end')}
       {ln(40, 80, W - 40, 80, 0.4)}
       {steps.map((s, i) => {
         const y = 120 + i * 84
@@ -307,7 +217,7 @@ function Experiments() {
   return (
     <Frame label="Eight A/B experiments — six wins compounding to 2.1x lift">
       {txt(40, 60, 'Experiment ledger', 13)}
-      {txt(W - 40, 60, 'Compound 2.1×', 13, 0.5, 'end')}
+      {txt(W - 40, 60, 'ship or kill', 13, 0.5, 'end')}
       {ln(40, 80, W - 40, 80, 0.4)}
       {outcomes.map((win, i) => {
         const y = 106 + i * 42
@@ -490,9 +400,6 @@ const KINDS = {
   'system-overview': SystemOverview,
   density: Density,
   'asset-detail': AssetDetail,
-  'control-room': ControlRoom,
-  'alert-triage': AlertTriage,
-  'before-after': BeforeAfter,
   funnel: Funnel,
   'landing-variants': LandingVariants,
   experiments: Experiments,

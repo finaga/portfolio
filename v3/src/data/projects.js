@@ -36,79 +36,50 @@ export const PROJECTS = [
     ],
   },
   {
-    slug: 'grid-ops',
-    num: '02',
-    title: 'Grid-Ops Control Center',
-    short: 'Grid-Ops',
-    client: 'BaxEnergy — a Yokogawa Company',
-    category: 'work',
-    year: '2023',
-    role: 'Senior Product Designer',
-    scope: 'Real-time SaaS · 24/7 control room',
-    discipline: 'Product design',
-    image: IMG('grid-ops.jpg'),
-    imageAlt: 'Industrial control room with wall displays',
-    description:
-      'Grid-Ops is the command surface for operators monitoring thousands of renewable assets in real time. The brief: cut time-to-diagnose, reduce alarm fatigue, make the interface readable at 3am on a 4K wall.',
-    kpis: [
-      { label: 'Time-to-diagnose', value: 62, prefix: '−', suffix: '%' },
-      { label: 'Alarm fatigue', value: 48, prefix: '−', suffix: '%' },
-      { label: 'Assets monitored', value: 12, suffix: 'k' },
-      { label: 'Uptime', value: 99.9, suffix: '%', decimals: 1 },
-    ],
-    plates: [
-      { kind: 'control-room', caption: 'Readable at 3am on a 4K wall', span: 'full' },
-      { kind: 'alert-triage', caption: 'Alarm triage — severity before noise', span: 'duo' },
-      { kind: 'before-after', caption: 'Time-to-diagnose, before and after', span: 'duo' },
-    ],
-  },
-  {
     slug: 'toptal',
-    num: '03',
-    title: 'Growth Funnel Redesign',
-    short: 'Growth Funnel',
+    num: '02',
+    title: 'Growth Design',
+    short: 'Growth Design',
     client: 'Toptal',
     category: 'work',
-    year: '2022',
-    role: 'Product Designer · Growth',
-    scope: 'Acquisition funnel · 8 A/B tests',
+    year: '2019 — 2023',
+    role: 'Growth Designer',
+    scope: '5 products · homepage, landing pages, calculator, assessment, signup',
     discipline: 'Growth & conversion',
     image: IMG('toptal.jpg'),
     imageAlt: 'Earth from space at night, city lights of a global network',
     description:
-      'Rethought the top-of-funnel flow for talent signup. Cut form friction without cutting qualification. Every pixel on these pages costs or earns money — so every change ran as an experiment.',
+      'Four years of growth design on the freelancer side of Toptal — homepage, dynamic landing pages, a rate calculator, talent assessment, and a rebuilt signup. The brief: turn freelancers into leads, keep the journey consistent end to end, and make the pages earn their traffic organically.',
     kpis: [
-      { label: 'Signup completion', value: 37, prefix: '+', suffix: '%' },
-      { label: 'Cost per acquisition', value: 24, prefix: '−', suffix: '%' },
-      { label: 'Experiments shipped', value: 8 },
-      { label: 'Compound lift', value: 2.1, suffix: '×', decimals: 1 },
+      { label: 'Years at Toptal', value: 4 },
+      { label: 'Products shipped', value: 5 },
     ],
     plates: [
       { kind: 'funnel', caption: 'The funnel, measured at every step', span: 'full' },
       { kind: 'landing-variants', caption: 'Landing variants under test', span: 'duo' },
-      { kind: 'experiments', caption: 'Eight experiments, one compounding lift', span: 'duo' },
+      { kind: 'experiments', caption: 'Experiments — ship or kill', span: 'duo' },
     ],
   },
   {
     slug: 'fit4box',
-    num: '04',
+    num: '03',
     title: 'Fit4Box — Crossfit Apparel Brand',
     short: 'Fit4Box',
     client: 'Fit4Box',
     category: 'work',
-    year: '2023 — Present',
+    year: 'Jul 2023 — Feb 2024',
     role: 'Founder & Designer',
     scope: 'Brand · e-commerce · apparel',
     discipline: 'Brand & art direction',
     image: IMG('fit4box.jpg'),
     imageAlt: 'Athlete training with battle ropes in a gym',
     description:
-      'My own brand — Crossfit apparel built for people who actually train. I run the whole thing: identity, e-commerce, photography direction, and the product line itself.',
+      'My own brand — CrossFit apparel built for people who actually train. I ran the whole thing for eight months: identity, e-commerce, photography direction, and the product line itself.',
     kpis: [
-      { label: 'SKUs shipped', value: 42 },
+      { label: 'SKUs shipped', value: 100, suffix: '+' },
       { label: 'Repeat customers', value: 38, suffix: '%' },
-      { label: 'Organic followers', value: 4.2, suffix: 'k', decimals: 1 },
-      { label: 'Months running', value: 24 },
+      { label: 'Organic followers', value: 500, suffix: '+' },
+      { label: 'Months trading', value: 8 },
     ],
     plates: [
       { kind: 'identity', caption: 'Identity — built to be worn, not framed', span: 'full' },
@@ -118,7 +89,7 @@ export const PROJECTS = [
   },
   {
     slug: 'fluted-glass',
-    num: '05',
+    num: '04',
     title: 'Fluted Glass',
     short: 'Fluted Glass',
     client: 'Self-initiated',
@@ -135,7 +106,7 @@ export const PROJECTS = [
   },
   {
     slug: 'marathon-hud',
-    num: '06',
+    num: '05',
     title: 'Marathon HUD',
     short: 'Marathon HUD',
     client: 'Self-initiated',
@@ -152,7 +123,7 @@ export const PROJECTS = [
   },
   {
     slug: 'button-system',
-    num: '07',
+    num: '06',
     title: 'Button System',
     short: 'Button System',
     client: 'Self-initiated',
@@ -169,7 +140,7 @@ export const PROJECTS = [
   },
   {
     slug: 'timeline',
-    num: '08',
+    num: '07',
     title: 'Timeline Prototype',
     short: 'Timeline',
     client: 'Self-initiated',
@@ -198,7 +169,7 @@ export const nextOf = (slug) => {
 
 export const BIO = [
   'Currently leading design operations for Farsight at BaxEnergy — a Yokogawa company — where I took every screen under my umbrella and am accountable for how the whole product feels.',
-  'I work where the problems are hardest and the users care the most: enterprise SaaS, real-time control rooms, growth funnels that turn pixels into revenue. I also run Fit4Box, my own Crossfit apparel brand, because sometimes you need to ship your own thing.',
+  'I work where the problems are hardest and the users care the most: enterprise SaaS, real-time control rooms, growth funnels that turn pixels into revenue. I also ran Fit4Box, my own CrossFit apparel brand, because sometimes you need to ship your own thing.',
   'Based in São Paulo, available for one senior engagement in Q3 2026. Currently open to full-time leadership roles and select freelance projects.',
 ]
 
@@ -212,8 +183,8 @@ export const STATS = [
 export const CLIENTS = [
   { name: 'BaxEnergy', years: 'Since 2022' },
   { name: 'Yokogawa', years: 'Since 2023' },
-  { name: 'Toptal', years: '2019 to 2022' },
-  { name: 'Fit4Box', years: 'Since 2024' },
+  { name: 'Toptal', years: 'Apr 2019 to Feb 2023' },
+  { name: 'Fit4Box', years: 'Jul 2023 to Feb 2024' },
 ]
 
 export const LINKS = {

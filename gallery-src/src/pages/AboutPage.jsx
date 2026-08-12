@@ -23,7 +23,7 @@ export default function AboutPage() {
           <p>
             I work where the problems are hardest and the users care the most:
             enterprise SaaS, real-time control rooms, growth funnels that turn
-            pixels into revenue. I also run Fit4Box, my own Crossfit apparel
+            pixels into revenue. I also ran Fit4Box, my own CrossFit apparel
             brand, because sometimes you need to ship your own thing.
           </p>
           <p>

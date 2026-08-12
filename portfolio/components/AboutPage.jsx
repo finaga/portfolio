@@ -59,7 +59,7 @@ function AboutPage() {
 
           <p>Currently leading design operations for Farsight at BaxEnergy — a Yokogawa company — where I took every screen under my umbrella and am accountable for how the whole product feels.</p>
 
-          <p>I work where the problems are hardest and the users care the most: enterprise SaaS, real-time control rooms, growth funnels that turn pixels into revenue. I also run Fit4Box, my own Crossfit apparel brand, because sometimes you need to ship your own thing.</p>
+          <p>I work where the problems are hardest and the users care the most: enterprise SaaS, real-time control rooms, growth funnels that turn pixels into revenue. I also ran Fit4Box, my own CrossFit apparel brand, because sometimes you need to ship your own thing.</p>
 
           <p>Based in São Paulo, available for one senior engagement in Q3 2026. Currently open to full-time leadership roles and select freelance projects.</p>
         </div>

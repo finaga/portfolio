@@ -172,7 +172,7 @@ export function plate(kind, opts = {}) {
         <text x='${x + 20}' y='${y + 38}' ${MONO} font-size='12' fill='${bg0}' letter-spacing='1.5'>${String(i + 1).padStart(2, '0')} · ${s[0]}</text>
         <text x='${x + w - 20}' y='${y + 38}' ${MONO} font-size='12' fill='${bg0}' text-anchor='end' letter-spacing='1.5'>${s[2]}</text>`
     })
-    body += `<text x='56' y='770' ${MONO} font-size='10' fill='${dim}' letter-spacing='1.5'>+37% COMPLETION · −24% CPA · 8 EXPERIMENTS</text>`
+    body += `<text x='56' y='770' ${MONO} font-size='10' fill='${dim}' letter-spacing='1.5'>FREELANCER ACQUISITION · TOP OF FUNNEL</text>`
   } else if (kind === 'experiments') {
     const rows = [
       ['01', 'Social-proof micro-moment above fold', '+4.2%'],
@@ -185,7 +185,7 @@ export function plate(kind, opts = {}) {
       ['08', 'Currency pre-fill by geo', '+3.6%'],
     ]
     body = `${eyebrow('EXPERIMENT LOG · Q1–Q4')}
-      <text x='56' y='150' ${DISP} font-size='56' font-weight='500' fill='${ink}' letter-spacing='-1'>8 SHIPPED · 2.1× COMPOUND</text>`
+      <text x='56' y='150' ${DISP} font-size='56' font-weight='500' fill='${ink}' letter-spacing='-1'>SHIP OR KILL</text>`
     rows.forEach((r, i) => {
       const y = 240 + i * 58
       body += `
@@ -212,7 +212,7 @@ export function plate(kind, opts = {}) {
       <circle cx='${x}' cy='${420 - h}' r='24' fill='${ink}' opacity='0.85'/>
       <rect x='${x - 24}' y='${440}' width='14' height='180' fill='${ink}' opacity='0.7'/>
       <rect x='${x + 10}' y='${440}' width='14' height='180' fill='${ink}' opacity='0.7'/>`
-    body = `${eyebrow('SS25 · LOOKBOOK / FRAME 04')}
+    body = `${eyebrow('LOOKBOOK / FRAME 04')}
       <text x='56' y='760' ${DISP} font-size='56' font-weight='500' fill='${ink}' letter-spacing='-1'>NO SHOUT</text>
       ${fig(300, 240)}
       ${fig(600, 260)}
