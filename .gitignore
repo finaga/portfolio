@@ -56,3 +56,6 @@ gallery-src/dist/
 
 # v3: source build artifacts (dist is copied to /portfolio-v3 and committed there)
 v3/dist/
+
+# Interview material — lives in the private repo finaga/portfolio-content
+content/

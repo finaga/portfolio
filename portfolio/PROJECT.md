@@ -22,7 +22,7 @@ How to write to it:
 
 André Finageiv's personal design portfolio. Editorial-luxury aesthetic inspired by Italian fashion case sites. Four case studies + About + Contact + Deep-dive.
 
-- **User / subject**: André Finageiv. 20+ yr product designer. **Based in São Paulo, Brazil** (23.55°S 46.63°W — NOT Lisbon; we corrected this). Leads design ops for Farsight at BaxEnergy (a Yokogawa company). Runs Fit4Box (Crossfit apparel). Primary email `hello@finageiv.com`, personal `finaga@gmail.com`.
+- **User / subject**: André Finageiv. 20+ yr product designer. **Based in São Paulo, Brazil** (23.55°S 46.63°W — NOT Lisbon; we corrected this). Leads design ops for Farsight at BaxEnergy (a Yokogawa company). Ran Fit4Box (CrossFit apparel) Jul 2023 → Feb 2024; **closed** — do not write it in the present tense. Primary email `hello@finageiv.com`, personal `finaga@gmail.com`.
 - **Availability**: one senior engagement open Q3 2026.
 - **Destination URL**: likely `finageiv.com` (or Vercel subdomain for now).
 
@@ -230,6 +230,57 @@ These work and look right; new similar components should use `.ds-*` instead.
 ---
 
 ## Session history — what has been decided
+
+### Session 2026-08-10 — case-study data correction
+
+An accuracy audit found that several case entries could not be substantiated. They were
+generated during the first AI-assisted build session (`initial commit`, 2026-04-20) and had
+never been checked against Andre's actual record. All were verified before removal, not assumed.
+
+**The full audit — evidence, sourcing, and the reasoning behind each call — lives in the private
+repo `finaga/portfolio-content` (`decisions.md`). This repo is public; that record is not
+publishable. Read it there before reinstating anything removed below.**
+
+- **Case `grid-ops` removed entirely.** The project it described does not exist. Removed from
+  `data.js` here and from the three sibling portfolio versions (`v3`, `folio-src`, `gallery-src`),
+  along with the `ControlRoom` / `AlertTriage` / `BeforeAfter` plate renderers in `v3`.
+  **Do not reinstate.** Case numbering here is unchanged (`001` Farsight, `003` Toptal,
+  `004` Fit4Box) — `002` is now a gap; renumber in a future pass if it shows in the UI.
+- **Case `toptal` corrected to the real record**, verified against Andre's previous portfolio at
+  `finaga.work/latest-work/toptal`: `project` → **Growth Design**; `year` → **2019 — 2023**
+  (Apr 2019 to Feb 2023, confirmed); `role` → **Growth Designer**; `scope` → **five products**
+  (homepage, dynamic landing pages, freelancer calculator, talent assessment, quick sign-up);
+  `abstract` rewritten from those deliverables. Its four percentage KPIs had no basis in his own
+  case study — replaced with `YEARS AT TOPTAL 4` / `PRODUCTS SHIPPED 5`. `impact` notes rewritten
+  to match, and the `deep` block removed.
+- **Case `fit4box` corrected.** It ran **Jul 2023 → Feb 2024 (8 months)** and is **closed**, so
+  `2023 — PRESENT`, `MONTHS RUNNING 24` and the present-tense copy were all wrong. Now
+  `JUL 2023 — FEB 2024` · `SKUS SHIPPED 100+` · `INSTA FOLLOWERS 500+` · `MONTHS TRADING 8`
+  (`REPEAT CUSTOMERS 38%` retained at Andre's instruction). `deep` block removed. The
+  `SS25 · LOOKBOOK` plate label became `LOOKBOOK` — SS25 is a season the brand never traded in.
+- **Bio corrected everywhere** — *"I also run Fit4Box"* → *"I also **ran** Fit4Box"*. The present
+  tense appeared in `components/AboutPage.jsx`, `v3`, `folio-src` and `gallery-src`. The `CLIENTS`
+  entry `Fit4Box, 'Since 2024'` → `'Jul 2023 to Feb 2024'`.
+- **Unsupported figures were also baked into the `plate()` SVG factory**, not just the data:
+  funnel percentages, `8 EXPERIMENTS`, `2.1× COMPOUND`. Removed here and in the sibling versions.
+- **`components/DeepDive.jsx` — `deep` is now optional.** It previously dereferenced
+  `caseData.deep.context` / `.approach` / `.outcome` unguarded, so a case without a `deep` block
+  crashed the panel. Now `const deep = caseData.deep || {}`, each of §1/§2/§3 renders only when its
+  copy exists, and the TOC is built by filtering rather than hardcoding four entries. §3 still
+  renders for the `impact` list even with no outcome prose. Verified in preview: Farsight shows all
+  four sections, Toptal and Fit4Box collapse to §3, **zero console errors**.
+
+**Standing rule established this session — this is the durable constraint:** no number goes on this
+site without a known provenance. Tag every figure *measured / reported / estimated / gut / placeholder*;
+the last two get deleted, not softened. **The "Copy is sacred" constraint above protects Andre's own
+voice — it does not protect generated filler written in his voice.** When in doubt, ask him rather
+than keeping the number.
+
+⚠️ **Still outstanding:** the current Fit4Box figures are memory-based estimates, not measured —
+`38% repeat customers` most of all, since it survived a pass in which the follower count was
+corrected by roughly 8×. The `farsight` `deep` block is also original generated prose; it is
+substantially closer to the truth and partly corroborated by the Farsight repo, but Andre did not
+write it. Both pending his review.
 
 ### Initial brief (prior session)
 - Fetched Portfolio Hi-Fi.html prototype, applied editorial-luxury redesign
