@@ -13,24 +13,41 @@ Installed 2026-08-17 via `npx shadcn@latest add @bklit/area-chart`. Built on **v
 | `components.json` | Written **by hand** — see below |
 | `--chart-*` tokens in `src/styles/index.css` | Added by the installer, additive only |
 
-### ⚠️ Two things done deliberately — don't undo them
+### One thing done deliberately — and one claim retracted
 
-**1. Tailwind is imported WITHOUT preflight.** The top of `src/styles/index.css` reads:
+**`components.json` was written by hand rather than via `shadcn init`.** `init` rewrites the target
+CSS file with its own token block and base layer. On a bespoke stylesheet that is destructive.
+Writing the config by hand and running only `add` kept the installer additive — the actual diff to
+`index.css` was **88 insertions, 0 deletions**.
 
-```css
-@layer theme, base, components, utilities;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
-```
+**Retracted: the claim that Preflight would damage this design system.** It does not, and this was
+measured rather than assumed after a peer session pushed back on the original assertion.
 
-Not `@import "tailwindcss";`. The full import pulls in preflight, which resets margins, the type
-scale and borders — and would flatten the 740-line hand-written Swiss-poster system this site is
-built on. Verified after install: preflight signature counts are identical to the pre-Tailwind build.
+Why it's safe: v3's own reset (`*, *::before, *::after { box-sizing; margin: 0; padding: 0 }` and
+the element rules below it) is **unlayered**. Per the CSS cascade-layers spec, unlayered rules beat
+layered ones regardless of source order — and Tailwind's Preflight ships inside `@layer base`. So
+the hand-written reset wins every conflict automatically.
 
-**2. `components.json` was written by hand rather than via `shadcn init`.** `init` rewrites the
-target CSS file with its own token block and base layer. On a bespoke stylesheet that is a
-destructive operation. Writing the config by hand and running only `add` keeps the installer
-additive — the actual diff to `index.css` was **88 insertions, 0 deletions**.
+The measurement: full computed-style fingerprint of the live Home page, **296 elements × 27
+properties**, captured with Preflight on and off and diffed.
+
+| Result | |
+|---|---|
+| Properties that differed | **`border-top-style` only** |
+| Elements affected | 289 |
+| Elements with a non-zero top border | 5 — all of which set their own style |
+| Every other property | identical |
+
+`border-top-style: solid` on a zero-width border renders nothing. Visually inert.
+
+**And the theme/utilities-only import turned out to be the riskier option.** It drops Preflight's
+`border: 0 solid`, which Tailwind's own `border-*` utilities rely on for their style — so a future
+`border` class would silently render nothing. The chart package doesn't use border utilities today
+(the six apparent `ring` matches are substrings of "during", "string", "spring"), but new code
+would hit it.
+
+**Conclusion: use the plain `@import "tailwindcss";`.** It costs ~4 KB of CSS, changes nothing
+visually, and keeps Tailwind's utilities behaving as documented.
 
 ## Bug fixed in the pulled package
 

@@ -1,9 +1,14 @@
-/* Tailwind v4 — utilities and theme only. Preflight is deliberately NOT imported:
-   it resets margins, type scale and borders, which would flatten the hand-written
-   design system below. Added for shadcn/@bklit chart components. */
-@layer theme, base, components, utilities;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
+/* Tailwind v4, full import — added for the shadcn/@bklit chart components.
+   Preflight is safe here and this was measured, not assumed: v3's own reset below
+   is UNLAYERED, and per the cascade-layers spec unlayered rules beat layered ones,
+   so Preflight (which ships inside @layer base) loses every conflict. A full
+   computed-style diff across 296 elements x 27 properties, with and without
+   Preflight, found exactly one difference: border-top-style solid vs none, on
+   elements whose border-width is 0 — visually inert.
+   Do NOT switch to the theme/utilities-only import: it drops Preflight's
+   `border: 0 solid`, which Tailwind's own border-* utilities depend on for their
+   style, so `border` classes would silently render nothing. */
+@import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
 
