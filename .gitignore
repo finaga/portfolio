@@ -57,5 +57,6 @@ gallery-src/dist/
 # v3: source build artifacts (dist is copied to /portfolio-v3 and committed there)
 v3/dist/
 
-# Interview material — lives in the private repo finaga/portfolio-content
+# Interview material moved out 2026-08-18 to Projects/Work-2026 (finaga/portfolio-content,
+# private). Kept ignored so a stray copy here can never be committed to this public repo.
 content/
