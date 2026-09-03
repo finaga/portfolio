@@ -1,10 +1,7 @@
 {
   "trailingSlash": true,
   "rewrites": [
-    { "source": "/probe-root", "destination": "/favicon.svg" },
-    { "source": "/probe-deep/:path*", "destination": "/favicon.svg" },
-    { "source": "/gallery/:path*", "destination": "/gallery/" },
-    { "source": "/portfolio-v3/:path*", "destination": "/portfolio-v3/index.html" },
+    { "source": "/gallery/:path*/", "destination": "/gallery/index.html" },
     { "source": "/portfolio-v3/:path*/", "destination": "/portfolio-v3/index.html" }
   ],
   "headers": [
