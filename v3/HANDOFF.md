@@ -41,7 +41,7 @@ project). Design-award ambition.
   + 4 experiments (Fluted Glass, Marathon HUD, Button System, Timeline).
   **All copy/KPIs/bio verbatim from previous versions — NEVER rewrite André's
   voice** (rule from PRODUCT.md). Experiments embed live demos via iframe from
-  the hub: `https://portfolio-finaga-5767s-projects.vercel.app/...`.
+  the hub: `https://portfolio-finaga-projects.vercel.app/...`.
 - Photos in `v3/public/img/` optimized (3.1MB→650KB, mozjpeg q78 @1600px).
 - `v3/scripts/fetch-assets.mjs` (prebuild): downloads photos from raw GitHub
   (pinned SHA 2bbb3d2) when absent — supports source-only file deploys; no-op

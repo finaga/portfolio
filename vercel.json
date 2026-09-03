@@ -1,11 +1,8 @@
 {
-  "cleanUrls": true,
   "trailingSlash": true,
   "rewrites": [
-    { "source": "/gallery", "destination": "/gallery/index.html" },
-    { "source": "/gallery/(.*)", "destination": "/gallery/index.html" },
-    { "source": "/portfolio-v3", "destination": "/portfolio-v3/index.html" },
-    { "source": "/portfolio-v3/(.*)", "destination": "/portfolio-v3/index.html" }
+    { "source": "/gallery/:path*/", "destination": "/gallery/index.html" },
+    { "source": "/portfolio-v3/:path*/", "destination": "/portfolio-v3/index.html" }
   ],
   "headers": [
     {

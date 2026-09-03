@@ -231,6 +231,14 @@ These work and look right; new similar components should use `.ds-*` instead.
 
 ## Session history — what has been decided
 
+### 2026-09-02 — dead production URL, and SPA deep links 404ing
+
+- **The documented production URL was dead.** `README.md`, `v3/README.md`, `v3/HANDOFF.md`, `PROJECT.md` and the `HUB` constant in `v3/src/data/projects.js` all pointed at `portfolio-finaga-5767s-projects.vercel.app`. That host still returns 200 at the root, which is why the rot went unnoticed — but it serves a frozen deployment and 404s on everything added since. Real host is `portfolio-finaga-projects.vercel.app`, confirmed from the GitHub deployment `environment_url` for merge commit `a56bdd0`.
+- **`v3`'s lab links are now root-relative.** `HUB` was an absolute URL, so all four "Open live" links in Portfolio v3 pointed at the dead host. `HUB = ''` makes them same-origin (`/fluted-glass/`, …) so they cannot rot again. Trade-off: they 404 under `vite dev` on port 5174, since the sibling pages only exist on the composed site.
+- **SPA deep links were 404ing in production.** `/portfolio-v3/about` and `/gallery/<anything>` both returned 404. The `vercel.json` rewrites used regex sources (`/portfolio-v3/(.*)`) which did not survive the `trailingSlash: true` redirect. Replaced with Vercel's `:path*` form, which also covers the bare `/portfolio-v3` case the old two-rule pairs needed.
+- **Carry-forward**: the Vercel team and project IDs recorded in § Deploy predate the host move and have not been re-verified.
+
+
 ### Session 2026-08-10 — case-study data correction
 
 An accuracy audit found that several case entries could not be substantiated. They were
@@ -382,10 +390,11 @@ Connect Vercel to the GitHub repo so every `git push origin main` auto-deploys p
 ### Preferred: GitHub-integrated Vercel (active)
 Push to `main` → Vercel auto-deploys production. Push to any other branch / open a PR → Vercel builds a preview deployment at a unique URL.
 
-- **Team**: `finaga-5767s-projects` (`team_y5GaYAU4NKo0bDNkPkdtKR1N`)
-- **Project**: `portfolio` (`prj_IuRliC3CyeOTMsjyWTS2TXhkaiNZ`)
-- **Production URL**: `portfolio-finaga-5767s-projects.vercel.app` (⚠ currently protected — see carry-forwards)
-- **Git branch alias**: `portfolio-git-main-finaga-5767s-projects.vercel.app`
+- **Team**: `finaga-projects` — the deployment host changed from `finaga-5767s-projects`; the old team id `team_y5GaYAU4NKo0bDNkPkdtKR1N` below has NOT been re-verified against the current team and may be stale.
+- **Project**: `portfolio` (`prj_IuRliC3CyeOTMsjyWTS2TXhkaiNZ` — likewise unverified since the move)
+- **Production URL**: `portfolio-finaga-projects.vercel.app` ✅ verified serving current `main`
+- **⚠ Dead host**: `portfolio-finaga-5767s-projects.vercel.app` still answers 200 at the root but serves a frozen old deployment — it 404s on `/folio/`, `/manual/`, `/timeline-prototype/`. Do not use it to verify a deploy; it will never update.
+- **Per-deploy URL**: each production build also gets a unique `portfolio-<hash>-finaga-projects.vercel.app`. The GitHub deployment status (`gh api repos/finaga/portfolio/deployments`) reports it as `environment_url` — that is the reliable way to find where a given commit actually landed.
 - **Framework detected**: `null` (correct — we're zero-build; Vercel serves as static).
 
 ### Fallback: CLI

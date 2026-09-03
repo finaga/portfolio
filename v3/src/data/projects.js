@@ -2,7 +2,10 @@
 // verbatim from portfolio/data.js, folio-src/src/data/cases.js and the hub —
 // do not rewrite.
 
-const HUB = 'https://portfolio-finaga-5767s-projects.vercel.app'
+// Same-origin, root-relative: the lab studies are siblings of this app on the
+// same host. An absolute URL here rots whenever the deployment alias changes —
+// which is exactly how these links ended up pointing at a dead host.
+const HUB = ''
 // import.meta.env.BASE_URL is '/' in dev and '/portfolio-v3/' in the built site — image
 // paths must be prefixed with it so they resolve under either base.
 const IMG = (name) => `${import.meta.env.BASE_URL}img/${name}`
