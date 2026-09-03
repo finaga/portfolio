@@ -181,10 +181,10 @@ export const STATS = [
 ]
 
 export const CLIENTS = [
-  { name: 'BaxEnergy', years: 'Since 2022' },
-  { name: 'Yokogawa', years: 'Since 2023' },
-  { name: 'Toptal', years: 'Apr 2019 to Feb 2023' },
+  { name: 'BaxEnergy — a Yokogawa Company', years: 'Since 2024' },
   { name: 'Fit4Box', years: 'Jul 2023 to Feb 2024' },
+  { name: 'Toptal', years: 'Apr 2019 to Feb 2023' },
+  { name: 'Accenture / Fjord', years: '2016 to 2019' },
 ]
 
 export const LINKS = {
