@@ -40,4 +40,4 @@ npm run build    # dist/
 
 Separate Vercel project (not the hub's `portfolio` project). SPA rewrites and
 asset caching live in `vercel.json`. Experiments embed the hub's live pages
-(`portfolio-finaga-5767s-projects.vercel.app/...`) as iframes.
+(`portfolio-finaga-projects.vercel.app/...`) as iframes.

@@ -2,7 +2,7 @@
 
 André Finageiv's site. A landing **hub** at the root links to the portfolio and a growing set of experiments and interface studies.
 
-**Live →** https://portfolio-finaga-5767s-projects.vercel.app
+**Live →** https://portfolio-finaga-projects.vercel.app
 
 ---
 
