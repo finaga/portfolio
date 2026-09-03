@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Project from './pages/Project'
 import About from './pages/About'
 import NotFound from './pages/NotFound'
+import ChartTest from './pages/ChartTest'
 
 /* Remount Project per slug so intros and morph targets reset cleanly. */
 function ProjectRoute() {
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/work/:slug" element={<ProjectRoute />} />
           <Route path="/about" element={<About />} />
+          <Route path="/chart-test" element={<ChartTest />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
